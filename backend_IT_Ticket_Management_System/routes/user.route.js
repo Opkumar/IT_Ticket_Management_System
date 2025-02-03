@@ -5,9 +5,9 @@ const userController = require("../controllers/user.controller");
 const authMiddleware = require("../middlewares/auth.middleware");
 const { UserUpload } = require("../middlewares/multerConfig");
 
-router.get("/",(req,res)=>{
-    res.send("Welcome to the API");
-})
+// router.get("/",(req,res)=>{
+//     res.send("Welcome to the API");
+// })
 
 router.post("/signup",UserUpload,[
     body("fullname.firstname").isLength({min:2}).withMessage("minimum 2 characters required"),
