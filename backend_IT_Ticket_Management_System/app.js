@@ -18,9 +18,9 @@ app.use(cookieParser());
 
 connectDB();
 
-app.use("/",(req,res)=>{
-    res.send("Welcome to the API");
-})
+// app.use("/",(req,res)=>{
+//     res.send("Welcome to the API");
+// })
 
 app.use("/users", userRoute);
 
