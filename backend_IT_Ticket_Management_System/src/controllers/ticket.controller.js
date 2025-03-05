@@ -1,28 +1,33 @@
 const ticketService = require('../services/ticket.service');
 const { validationResult, cookie } = require("express-validator");
+const cloudinary = require("../config/cloudinaryConfig.js");
 
 module.exports.createTickets = async (req, res, next) => {
     try {
-        const { typeIssue, issueDetail, issueAddress, urgent } = req.body;
+        const { typeIssue, issueDetail, issueAddress, urgent ,issueImage} = req.body;
 
         const error = validationResult(req);
         if (!error.isEmpty()) {
             return res.status(400).json({ error: error.array() });
         }
 
-        if (!req.user) {  // Ensure user is available from auth middleware
+        if (!req.user) {  
             return res.status(401).json({ message: "Unauthorized" });
         }
-        console.log(req.user);
-
-        const issueImage = req.file ? req.file.path : null;
+         let userImageURL = null;
+          if (issueImage) {
+            const uploadResponse = await cloudinary.uploader.upload(issueImage,{
+                folder:"TicketsImage",
+            });
+            userImageURL = uploadResponse.secure_url;
+          }
 
         const ticket = await ticketService.createTicket({
             ticketRaisedbyId: req.user._id, // Use req.user instead of undefined user
             fullname:  req.user.fullname,
             email: req.user.email,
             typeIssue,
-            issueImage,
+            issueImage:userImageURL,
             issueDetail,
             issueAddress,
             urgent,
@@ -37,6 +42,18 @@ module.exports.createTickets = async (req, res, next) => {
 };
 
 
+module.exports.getUserTickets = async (req , res ) =>{
+    try {
+        const {_id:userId} = req.user;
+        const tickets = await ticketService.getUserTickets(userId);
+        res.status(200).json(tickets);
+    } catch (error) {
+        console.error("Get All Tickets Error:", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+
+}
+
 module.exports.getAllTickets = async (req, res, next) => {
     try {
         const tickets = await ticketService.getAllTickets();
@@ -50,10 +67,10 @@ module.exports.getAllTickets = async (req, res, next) => {
 module.exports.updateTickets = async (req, res, next) => {
     try {
         const {
-            
             ticketId,
             acceptedTicketByUserId,
             submissionTime,
+            assignedAt,
             startWorkingOnTicketIssueTime,
             reachAddressIssueTime,
             solvingIssueTime,
@@ -63,22 +80,28 @@ module.exports.updateTickets = async (req, res, next) => {
             reachIssueAddress,
             solvingIssue,
             completedIssueByIt,
-            completedIssue
+            completedIssue,
+            userIssueReason,
+            resolvingIssue,
+            userIssueReasonDetail,
+            resolvingIssueTime,
+            completedIssueByItTime,
         } = req.body;
-        const { role } = req.user;
+        // const { role } = req.user;
 
-        if (
-            role !== "admin" ||
-            role !== "it-executive" ||
-            role !== "it-admin-executive"
-        ) {
-            return res.status(401).json({ message: "Unauthorized for update tickets or requirements" });
-        }
+        // if (
+        //     role !== "admin" &&
+        //     role !== "it-team" 
+           
+        // ) {
+        //     return res.status(401).json({ message: "Unauthorized for update tickets or requirements" });
+        // }
 
         const ticket = await ticketService.updateTicket({
             ticketId,
             acceptedTicketByUserId,
             submissionTime,
+            assignedAt,
             startWorkingOnTicketIssueTime,
             reachAddressIssueTime,
             solvingIssueTime,
@@ -88,8 +111,12 @@ module.exports.updateTickets = async (req, res, next) => {
             reachIssueAddress,
             solvingIssue,
             completedIssueByIt,
-            completedIssue
-
+            completedIssue,
+            userIssueReason,
+            resolvingIssue,
+            userIssueReasonDetail,
+            resolvingIssueTime,
+            completedIssueByItTime,
         });
 
         res.status(200).json(ticket);

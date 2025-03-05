@@ -14,7 +14,7 @@ module.exports.createTicket = async ({
   if (!typeIssue || !issueDetail || !issueAddress || !ticketRaisedbyId || !fullname || !email  || !submissionTime) {
     throw new Error("All fields are required");
   }
-  const ticket = ticketModel.create({
+  const ticket = await ticketModel.create({
     ticketRaisedbyId,
     fullname: {
       firstname: fullname.firstname,
@@ -32,6 +32,10 @@ module.exports.createTicket = async ({
   return ticket;
 };
 
+module.exports.getUserTickets = async (userId) => {
+  const tickets = await ticketModel.find({ticketRaisedbyId:userId});
+  return tickets;
+};
 module.exports.getAllTickets = async () => {
   const tickets = await ticketModel.find();
   return tickets;
@@ -41,6 +45,7 @@ module.exports.updateTicket = async ({
   ticketId,
   acceptedTicketByUserId,
   submissionTime,
+  assignedAt,
   startWorkingOnTicketIssueTime,
   reachAddressIssueTime,
   solvingIssueTime,
@@ -51,25 +56,39 @@ module.exports.updateTicket = async ({
   solvingIssue,
   completedIssueByIt,
   completedIssue,
+  userIssueReason,
+  resolvingIssue,
+  userIssueReasonDetail,
+  resolvingIssueTime,
+  completedIssueByItTime,
 }) => {
   const ticket = await ticketModel.findById(ticketId);
   if (!ticket) {
     throw new Error("Ticket not found");
   }
-  ticket.acceptedTicketByUserId = acceptedTicketByUserId;
-  ticket.submissionTime = submissionTime;
-  ticket.startWorkingOnTicketIssueTime = startWorkingOnTicketIssueTime;
-  ticket.reachAddressIssueTime = reachAddressIssueTime;
-  ticket.solvingIssueTime = solvingIssueTime;
-  ticket.completedTime = completedTime;
-  ticket.assigned = assigned;
-  ticket.startToTicket = startToTicket;
-  ticket.reachIssueAddress = reachIssueAddress;
-  ticket.solvingIssue = solvingIssue;
-  ticket.completedIssueByIt = completedIssueByIt;
-  ticket.completedIssue = completedIssue;
-  ticket.save();
 
+  // Update only if the field is provided (not undefined)
+  if (acceptedTicketByUserId !== undefined) ticket.acceptedTicketByUserId = acceptedTicketByUserId;
+  if (submissionTime !== undefined) ticket.submissionTime = submissionTime;
+  if (assignedAt !== undefined) ticket.assignedAt = assignedAt;
+  if (startWorkingOnTicketIssueTime !== undefined) ticket.startWorkingOnTicketIssueTime = startWorkingOnTicketIssueTime;
+  if (reachAddressIssueTime !== undefined) ticket.reachAddressIssueTime = reachAddressIssueTime;
+  if (solvingIssueTime !== undefined) ticket.solvingIssueTime = solvingIssueTime;
+  if (completedTime !== undefined) ticket.completedTime = completedTime;
+  if (assigned !== undefined) ticket.assigned = assigned;
+  if (startToTicket !== undefined) ticket.startToTicket = startToTicket;
+  if (reachIssueAddress !== undefined) ticket.reachIssueAddress = reachIssueAddress;
+  if (solvingIssue !== undefined) ticket.solvingIssue = solvingIssue;
+  if (completedIssueByIt !== undefined) ticket.completedIssueByIt = completedIssueByIt;
+  if (completedIssue !== undefined) ticket.completedIssue = completedIssue;
+  if (userIssueReason !== undefined) ticket.userIssueReason = userIssueReason;
+  if (resolvingIssue !== undefined) ticket.resolvingIssue = resolvingIssue;
+  if (userIssueReasonDetail !== undefined) ticket.userIssueReasonDetail = userIssueReasonDetail;
+  if (resolvingIssueTime !== undefined) ticket.resolvingIssueTime = resolvingIssueTime;
+  if (completedIssueByItTime !== undefined) ticket.completedIssueByItTime = completedIssueByItTime;
+
+  await ticket.save();
   return ticket;
 };
+
 

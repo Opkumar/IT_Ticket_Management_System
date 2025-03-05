@@ -44,7 +44,12 @@ router.post(
 );
 
 router.get(
-  "all",
+  "/user-requirements",
+  authMiddleware.authUser,
+  requirementController.getUserRequirements
+);
+router.get(
+  "/all",
   authMiddleware.authUser,
   requirementController.getAllRequirements
 );

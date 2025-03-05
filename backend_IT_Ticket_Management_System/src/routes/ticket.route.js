@@ -25,7 +25,7 @@ router.post(
   authMiddleware.authUser,
   ticketController.createTickets
 );
-
+router.get("/user-tickets",authMiddleware.authUser,ticketController.getUserTickets)
 router.get("/all", authMiddleware.authUser, ticketController.getAllTickets);
 // router.get("/my-tickets", authMiddleware.authUser, ticketController.getMyTickets);
 

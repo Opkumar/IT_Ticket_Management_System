@@ -1,74 +1,95 @@
-import Footer from './components/Footer/Footer'
-import Header from './components/Header/Header'
-import { Outlet } from 'react-router-dom'
-
+import {
+  Routes,
+  Route,
+  Navigate,
+  useLocation,
+} from "react-router-dom";
+import { useEffect, useMemo } from "react";
+import useAuthStore from "./store/useAuthStore";
+import SignupPage from "./pages/signupPage";
+import HeaderPage from "./pages/headerPage/HeaderPage";
+import FooterPage from "./pages/footerPage/FooterPage";
+import LoginPage from "./pages/LoginPage";
+import HomePage from "./pages/HomePage";
+import VerifyPage from "./pages/verifyPage/VerifyPage";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import TicketPage from "./pages/TicketPage";
+import TrackTicketPage from "./pages/TrackTicketPage";
+import HistoryTicketPage from "./pages/HistoryTicketPage";
+import ITteamPage from "./pages/ITteamPage";
+import AdminPage from "./pages/AdminPage";
+import AssignedTicketsPage from "./pages/AssignedTicketsPage";
+import AssignedRequirementsPage from "./pages/AssignedRequirementsPage";
+import HistoryItTeamPage from "./pages/HistoryItTeamPage";
+import NotFoundPage from "./pages/NotFoundPage";
+import PrivateRoute from "./utils/PrivateRoute";
 
 function App() {
+  const { checkAuth, authUser, isCheckingAuth } = useAuthStore();
+  const location = useLocation();
+
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
+
+  // Role-based Component Rendering
+  const renderRoleComponent = useMemo(() => {
+    switch (authUser?.role) {
+      case "faculty":
+        return <HomePage />;
+      case "it-team":
+        return <ITteamPage />;
+      case "admin":
+        return <AdminPage />;
+      default:
+        return (
+          <div className="min-h-[calc(100vh-80px)] flex justify-center items-center h-screen bg-gray-50">
+            <div className="w-16 h-16 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+          </div>
+        );
+    }
+  }, [authUser]);
+
+  // Show loading spinner while checking authentication
+  if (isCheckingAuth) {
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <div className="w-16 h-16 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
   return (
-    <>
-     <Header />
-     <Outlet  />
-     <Footer />
-    </>
-  )
+    <GoogleOAuthProvider clientId="750891349161-bk3iard1bnevo7m08vuc5ql86s6gsnju.apps.googleusercontent.com">
+      <div>
+        {authUser && <HeaderPage />}
+
+        <Routes>
+          <Route
+            path="/"
+            element={
+              authUser ? <PrivateRoute>{renderRoleComponent}</PrivateRoute> : <Navigate to="/login" replace />
+            }
+          />
+          <Route path="/signup" element={!authUser ? <SignupPage /> : <Navigate to="/" replace />} />
+          <Route path="/login" element={!authUser ? <LoginPage /> : <Navigate to="/" replace />} />
+          <Route path="/:id/verify/:token" element={<VerifyPage />} />
+
+          {/* Protected Routes */}
+          <Route path="/create-ticket" element={<PrivateRoute><TicketPage /></PrivateRoute>} />
+          <Route path="/ticket/tracking" element={<PrivateRoute><TrackTicketPage /></PrivateRoute>} />
+          <Route path="/ticket/history" element={<PrivateRoute><HistoryTicketPage /></PrivateRoute>} />
+          <Route path="/ticket/assigned-ticket" element={<PrivateRoute><AssignedTicketsPage /></PrivateRoute>} />
+          <Route path="/Requirement/assigned-Requirement" element={<PrivateRoute><AssignedRequirementsPage /></PrivateRoute>} />
+          <Route path="/ticket-it-team/history" element={<PrivateRoute><HistoryItTeamPage /></PrivateRoute>} />
+
+          <Route path="/*" element={<NotFoundPage />} />
+        </Routes>
+
+        {authUser && <FooterPage />}
+      </div>
+    </GoogleOAuthProvider>
+  );
 }
 
-export default App
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// src/App.js
-// import React from 'react';
-// import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-
-// src/App.js
-// import React from 'react';
-// import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-// import SignUp from './components/Main/SignUp';
-// import Login from './components/Main/Login';
-
-
-// const App = () => {
-//   return (
-//     <Router>
-//       <div className="App">
-//         <Routes>
-//           <Route path="/" element={<SignUp />} />
-//           <Route path="/login" element={<Login />} />
-//         </Routes>
-//       </div>
-//     </Router>
-//   );
-// };
-
-// export default App;
-
-
+export default App;

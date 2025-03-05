@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { auth, storage } from "../config/firebaseConfig"; // Adjust the path based on your structure
-import {
-  createUserWithEmailAndPassword,
-  updateProfile,
-  sendEmailVerification,
-} from "firebase/auth";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { getDatabase, ref as dbRef, set } from "firebase/database"; // Import Realtime Database functions
+// import { auth, storage } from "../config/firebaseConfig"; // Adjust the path based on your structure
+// import {
+  // createUserWithEmailAndPassword,
+//   updateProfile,
+//   sendEmailVerification,
+// } from "firebase/auth";
+// import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+// import { getDatabase, ref as dbRef, set } from "firebase/database"; // Import Realtime Database functions
 import { Link } from "react-router-dom";
 
 const SignUp = () => {

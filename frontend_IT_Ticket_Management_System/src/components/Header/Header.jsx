@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import Logo from "../subComponents/Logo";
+import Logo from "../logoComponent/Logo";
 import { NavLink, Link, useNavigate } from "react-router-dom";
-import { getAuth, signOut } from "firebase/auth";
-import { ref, get, onValue } from "firebase/database"; // Correct imports
-import { db } from "../config/firebaseConfig"; // Correct import for db
+// import { getAuth, signOut } from "firebase/auth";
+// import { ref, get, onValue } from "firebase/database"; // Correct imports
+// import { db } from "../config/firebaseConfig"; // Correct import for db
 
 import {
   Sheet,
@@ -15,75 +15,76 @@ import {
 } from "@/components/ui/sheet";
 
 function Header() {
-  const navigate = useNavigate();
-  const auth = getAuth();
-  const userlogin = auth.currentUser;
+  // const navigate = useNavigate();
+  // const auth = getAuth();
+  // const userlogin = auth.currentUser;
   const [userData, setUserData] = useState(null); // State for user data
 
   const [rating, setRating] = useState(0); // Store the fetched rating
   const [isLoading, setIsLoading] = useState(true); // Track loading state
 
-  useEffect(() => {
-    const ticketRef = ref(db, `users/${userlogin.uid}/sentiments`);
+  // useEffect(() => {
+  //   const ticketRef = ref(db, `users/${userlogin.uid}/sentiments`);
 
-    const unsubscribe = onValue(
-      ticketRef,
-      (snapshot) => {
-        if (snapshot.exists()) {
-          const sentimentsData = snapshot.val(); // Get the object of sentiments
+  //   const unsubscribe = onValue(
+  //     ticketRef,
+  //     (snapshot) => {
+  //       if (snapshot.exists()) {
+  //         const sentimentsData = snapshot.val(); // Get the object of sentiments
 
-          // Extract the feedback values (assuming feedback is a key in each entry)
-          const ratingsArray = Object.values(sentimentsData).map(
-            (feedback) => feedback.feedback
-          );
+  //         // Extract the feedback values (assuming feedback is a key in each entry)
+  //         const ratingsArray = Object.values(sentimentsData).map(
+  //           (feedback) => feedback.feedback
+  //         );
 
-          // Calculate the total and average rating
-          const totalRating = ratingsArray.reduce((sum, rate) => sum + rate, 0);
-          const averageRating = totalRating / ratingsArray.length;
+  //         // Calculate the total and average rating
+  //         const totalRating = ratingsArray.reduce((sum, rate) => sum + rate, 0);
+  //         const averageRating = totalRating / ratingsArray.length;
 
-          // console.log("Fetched Average Rating:", averageRating);
+  //         // console.log("Fetched Average Rating:", averageRating);
 
-          setRating(averageRating); // Update the rating state
-        } else {
-          // console.log("No rating data found for this user.");
-          setRating(0); // Default rating if no data exists
-        }
-      },
-      (error) => {
-        console.error("Error fetching real-time rating data:", error);
-      }
-    );
+  //         setRating(averageRating); // Update the rating state
+  //       } else {
+  //         // console.log("No rating data found for this user.");
+  //         setRating(0); // Default rating if no data exists
+  //       }
+  //     },
+  //     (error) => {
+  //       console.error("Error fetching real-time rating data:", error);
+  //     }
+  //   );
 
-    // Cleanup listener on component unmount
-    return () => unsubscribe(); // Use the return value of onValue as the cleanup function
-  }, [userlogin.uid]);
+  //   // Cleanup listener on component unmount
+  //   return () => unsubscribe(); // Use the return value of onValue as the cleanup function
+  // }, [userlogin.uid]);
 
   // Fetch the user's data from Realtime Database
-  const fetchUserData = async () => {
-    if (userlogin) {
-      try {
-        const userRef = ref(db, `users/${userlogin.uid}`); // Reference to user data
-        const snapshot = await get(userRef); // Get the user data
-        if (snapshot.exists()) {
-          const data = snapshot.val();
-          setUserData(data); // Set user data in state
-        } else {
-          console.log("No such user document found");
-        }
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    }
-  };
+  // const fetchUserData = async () => {
+  //   if (userlogin) {
+  //     try {
+  //       const userRef = ref(db, `users/${userlogin.uid}`); // Reference to user data
+  //       const snapshot = await get(userRef); // Get the user data
+  //       if (snapshot.exists()) {
+  //         const data = snapshot.val();
+  //         setUserData(data); // Set user data in state
+  //       } else {
+  //         console.log("No such user document found");
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching user data:", error);
+  //     }
+  //   }
+  // };
 
-  useEffect(() => {
-    fetchUserData();
-  }, [userlogin]);
+  // useEffect(() => {
+  //   fetchUserData();
+  // }, [userlogin]);
 
   const handleLogout = async () => {
     try {
       await signOut(auth);
-      navigate("/login");
+      // navigate("/login");
+      // navigate("/");
     } catch (error) {
       console.error("Logout failed:", error);
     }
@@ -123,7 +124,7 @@ function Header() {
           <SheetContent>
             <SheetHeader>
               <SheetTitle>
-                <div className="grid justify-center gap-1">
+                {/* <div className="grid justify-center gap-1">
                   <div className="flex justify-center">
                     <img
                       src={
@@ -138,13 +139,13 @@ function Header() {
                     {userData?.fullName}
                   </h2>
                   <p>{userData?.email}</p>
-                </div>
+                </div> */}
               </SheetTitle>
-              <div className="w-full text-left pt-10 space-y-5">
+              {/* <div className="w-full text-left pt-10 space-y-5">
                 {userData?.role === "it-team" && (
                   <div className="grid justify-center">
                     <h3 className="font-bold text-lg">Rate Our Service</h3>
-                    {/* Star Rating UI */}
+                    
                     <div className="flex space-x-2">
                       {[1, 2, 3, 4, 5].map((star) => (
                         <span
@@ -256,7 +257,7 @@ function Header() {
                 >
                   Log Out
                 </button>
-              </div>
+              </div> */}
             </SheetHeader>
           </SheetContent>
         </Sheet>

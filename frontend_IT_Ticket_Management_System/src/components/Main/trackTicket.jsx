@@ -3,7 +3,7 @@ import { getAuth } from "firebase/auth";
 import { ref, get, onValue } from "firebase/database";
 import { db } from "../config/firebaseConfig"; // Assuming you already have db initialized
 import { format } from "date-fns";
-import TrackTicketView from "./TrackTicketView";
+import TrackTicketView from "../TrackTicketView";
 
 const TrackTicket = () => {
   const [ticketIds, setTicketIds] = useState([]); // Initialize as an array
@@ -21,8 +21,9 @@ const TrackTicket = () => {
 
   const fetchTickets = async () => {
     try {
-      const requirementsRef = ref(db, "requirement");
-      const snapshotrequirements = await get(requirementsRef);
+      // const requirementsRef = ref(db, "requirement");
+      const snapshotrequirements =null
+      //  await get(requirementsRef);
 
       if (snapshotrequirements.exists()) {
         const fetchedTickets = [];
@@ -166,12 +167,6 @@ const TrackTicket = () => {
       fetchTicketTrackingData();
     }
   }, [ticketIds]);
-
-  // const handleToggleView = (ticketId) => {
-  //   setViewTicketId((prevTicketId) =>
-  //     prevTicketId === ticketId ? null : ticketId
-  //   );
-  // };
 
   return (
     <div className="min-h-[calc(100vh-76px)]">

@@ -1,6 +1,7 @@
+import useAuthStore from "@/store/useAuthStore";
+import useTicketStore from "@/store/useTicketStore";
+import { getFormattedDate, getFormattedTime } from "@/utils/dateTimeUtils";
 import React, { useState } from "react";
-import { getDatabase, ref, update } from "firebase/database"; // Import Firebase Realtime Database
-import { getAuth } from "firebase/auth"; // Import Firebase Authentication
 
 function TrackTicketView({ ticket, confirmationView }) {
   const [reasonView, setReasonView] = useState(false);
@@ -9,20 +10,20 @@ function TrackTicketView({ ticket, confirmationView }) {
   const [view, setView] = useState(true);
   const [issueReason, setIssueReason] = useState("");
   const [rating, setRating] = useState(0);
-  const db = getDatabase(); // Initialize Firebase Database
-  const auth = getAuth(); // Initialize Firebase Authentication
-  const user = auth.currentUser; // Get the currently logged-in user
+
+  const { updateTicket } = useTicketStore();
+  const { authUser, updateUser } = useAuthStore();
 
   const sendRating = async (itUserId) => {
-    if (!user) {
-      console.error("No user logged in.");
-      return;
-    }
-    const ticketId = new Date().getTime();
     try {
-      const itUserRef = ref(db, `users/${itUserId}/sentiments/${ticketId}`);
-      update(itUserRef, {
-        feedback: rating,
+      await updateUser({
+        userId: itUserId, // Ensure you provide the correct user ID
+        sentiments: [
+          {
+            feedback: rating,
+            givenByUserId: authUser._id,
+          },
+        ],
       });
     } catch (error) {
       console.error("error in IT Executive data fetch : ", error);
@@ -30,20 +31,17 @@ function TrackTicketView({ ticket, confirmationView }) {
   };
 
   const userComfirmation = async (ticketId) => {
-    if (!user) {
-      console.error("No user logged in.");
-      return;
-    }
     if (!ticketId) {
       console.error("Ticket ID is required.");
       return;
     }
     try {
-      const updateTicketRef = ref(db, `tickets/${ticketId}`);
-      await update(updateTicketRef, {
+      await updateTicket({
+        ticketId,
         completedIssue: true,
         completedTime: Date.now(),
       });
+      // window.location.reload();
       console.log("Ticket status updated successfully.");
     } catch (error) {
       console.error("Error updating ticket status: ", error);
@@ -51,10 +49,7 @@ function TrackTicketView({ ticket, confirmationView }) {
   };
 
   const userReason = async (ticketId) => {
-    if (!user) {
-      console.error("No user logged in.");
-      return;
-    }
+
     if (!ticketId) {
       console.error("Ticket ID is required.");
       return;
@@ -64,8 +59,8 @@ function TrackTicketView({ ticket, confirmationView }) {
       return;
     }
     try {
-      const updateTicketRef = ref(db, `tickets/${ticketId}`);
-      await update(updateTicketRef, {
+      await updateTicket({
+        ticketId,
         userIssueReason: true,
         resolvingIssue: false,
         userIssueReasonDetail: issueReason,
@@ -102,13 +97,13 @@ function TrackTicketView({ ticket, confirmationView }) {
           <p className="text-gray-600 mb-1">Details: {ticket.issueDetail}</p>
           <p className="text-gray-600 mb-1">Address: {ticket.issueAddress}</p>
           <div className="flex justify-between items-center mt-3 text-gray-600 text-sm">
-            <p className="font-bold">
-              Priority: {ticket.urgent ? "Urgent" : "Normal"}
-            </p>
+            <p className="font-bold">Priority: {ticket.urgent}</p>
           </div>
           <div className="text-sm">
-            <p>Raise Ticket Date : {ticket.date} </p>
-            <p>Raise Ticket Time : {ticket.time}</p>
+            <p>
+              Raise Ticket Date : {getFormattedDate(ticket.submissionTime)}{" "}
+            </p>
+            <p>Raise Ticket Time : {getFormattedTime(ticket.submissionTime)}</p>
           </div>
         </div>
         <div className="w-full max-w-2xl mx-auto px-4 py-8">
@@ -407,124 +402,125 @@ function TrackTicketView({ ticket, confirmationView }) {
             </div>
           )}
         </div>
-        {confirmationView && view && (ticket.completedIssueByIt || ticket.resolvingIssue)  &&(
-          <div className="flex justify-center items-center">
-            <div className="w-full max-w-md p-6 bg-white shadow-md rounded-lg">
-              {/* Confirmation Section */}
-              {ticket.completedIssueByIt &&
-                
-                confirmView &&
-                !reasonView &&
-                !starView && (
+        {confirmationView &&
+          view &&
+          (ticket.completedIssueByIt || ticket.resolvingIssue) && (
+            <div className="flex justify-center items-center">
+              <div className="w-full max-w-md p-6 bg-white shadow-md rounded-lg">
+                {/* Confirmation Section */}
+                {ticket.completedIssueByIt &&
+                  confirmView &&
+                  !reasonView &&
+                  !starView && (
+                    <div className="space-y-4">
+                      <h2 className="text-xl font-bold text-gray-800">
+                        Your Confirmation
+                      </h2>
+                      <p className="text-gray-600">
+                        Is your raised issue resolved?
+                      </p>
+                      <div className="flex gap-4 justify-end mt-4">
+                        {!ticket.resolvingIssue && (
+                          <button
+                            onClick={() => setReasonView(true)}
+                            className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-md"
+                          >
+                            No
+                          </button>
+                        )}
+                        <button
+                          onClick={() => (
+                            userComfirmation(ticket._id), setStarView(true)
+                          )}
+                          className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md"
+                        >
+                          Yes
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                {/* Reason Input Section */}
+                {reasonView && !starView && ticket.completedIssueByIt && (
                   <div className="space-y-4">
+                    <button
+                      onClick={() => setReasonView(false)}
+                      className="text-gray-500 hover:text-gray-700"
+                    >
+                      <i className="fa-solid fa-arrow-left"></i> Back
+                    </button>
                     <h2 className="text-xl font-bold text-gray-800">
-                      Your Confirmation
+                      Provide a Reason
                     </h2>
                     <p className="text-gray-600">
-                      Is your raised issue resolved?
+                      Please enter your reason in detail so we can address your
+                      issue effectively.
                     </p>
-                    <div className="flex gap-4 justify-end mt-4">
-                      {!ticket.resolvingIssue &&(<button
-                        onClick={() => setReasonView(true)}
-                        className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-md"
-                      >
-                        No
-                      </button>)}
+                    <textarea
+                      type="text"
+                      value={issueReason}
+                      onChange={(e) => setIssueReason(e.target.value)}
+                      placeholder="Enter your reason..."
+                      className="w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring focus:ring-blue-200"
+                      rows="4"
+                      required
+                    ></textarea>
+                    <button
+                      className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md"
+                      onClick={() => (
+                        userReason(ticket._id),
+                        setReasonView(false),
+                        setConfirmView(false),
+                        setView(false)
+                      )}
+                    >
+                      Submit
+                    </button>
+                  </div>
+                )}
+
+                {/* Star Rating Section */}
+                {starView && !reasonView && ticket.completedIssueByIt && (
+                  <div className="space-y-4 mt-4">
+                    <h2 className="text-xl font-bold text-gray-800">
+                      Rate the IT Executive's Work
+                    </h2>
+                    <div className="flex justify-center space-x-2">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <span
+                          key={star}
+                          className={`cursor-pointer text-3xl ${
+                            star <= rating ? "text-yellow-400" : "text-gray-300"
+                          }`}
+                          onClick={() => setRating(star)}
+                        >
+                          ★
+                        </span>
+                      ))}
+                    </div>
+                    <div className="flex gap-4 justify-center">
                       <button
-                        onClick={() => (
-                          userComfirmation(ticket.ticketId), setStarView(true)
-                        )}
-                        className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md"
+                        className="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded-md"
+                        onClick={() => (setStarView(false), setView(false))}
                       >
-                        Yes
+                        Cancel
+                      </button>
+                      <button
+                        className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md"
+                        onClick={() => (
+                          sendRating(ticket.acceptedTicketByUserId),
+                          setStarView(false),
+                          setView(false)
+                        )}
+                      >
+                        OK
                       </button>
                     </div>
                   </div>
                 )}
-
-              {/* Reason Input Section */}
-              {reasonView && !starView && ticket.completedIssueByIt && (
-                <div className="space-y-4">
-                  <button
-                    onClick={() => setReasonView(false)}
-                    className="text-gray-500 hover:text-gray-700"
-                  >
-                    <i className="fa-solid fa-arrow-left"></i> Back
-                  </button>
-                  <h2 className="text-xl font-bold text-gray-800">
-                    Provide a Reason
-                  </h2>
-                  <p className="text-gray-600">
-                    Please enter your reason in detail so we can address your
-                    issue effectively.
-                  </p>
-                  <textarea
-                    type="text"
-                    value={issueReason}
-                    onChange={(e) => setIssueReason(e.target.value)}
-                    placeholder="Enter your reason..."
-                    className="w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring focus:ring-blue-200"
-                    rows="4"
-                    required
-                  ></textarea>
-                  <button
-                    className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md"
-                    onClick={() => (
-                      userReason(ticket.ticketId),
-                      setReasonView(false),
-                      setConfirmView(false),
-                      setView(false)
-                    )}
-                  >
-                    Submit
-                  </button>
-                </div>
-              )}
-
-              {/* Star Rating Section */}
-              {starView && !reasonView && ticket.completedIssueByIt && (
-                <div className="space-y-4 mt-4">
-                  <h2 className="text-xl font-bold text-gray-800">
-                    Rate the IT Executive's Work
-                  </h2>
-                  <div className="flex justify-center space-x-2">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <span
-                        key={star}
-                        className={`cursor-pointer text-3xl ${
-                          star <= rating ? "text-yellow-400" : "text-gray-300"
-                        }`}
-                        onClick={() => setRating(star)}
-                      >
-                        ★
-                      </span>
-                    ))}
-                  </div>
-                  <div className="flex gap-4 justify-center">
-                    <button
-                      className="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded-md"
-                      onClick={() => (setStarView(false),setView(false))}
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md"
-                      onClick={() => (
-                        sendRating(ticket.acceptedTicketByUserId),
-                        setStarView(false),
-                        setView(false)
-                      )}
-                    >
-                      OK
-                    </button>
-                  </div>
-                </div>
-              )}
+              </div>
             </div>
-          </div>
-        )}
-
-        
+          )}
       </div>
     </div>
   );

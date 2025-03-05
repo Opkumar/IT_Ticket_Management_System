@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { db } from "../config/firebaseConfig";
 import { ref, get } from "firebase/database";
-import ItTable from "./sub-Admin/ITteam.Admin";
+import ItTable from "../ItTableComponent";
 import { getAuth } from "firebase/auth";
 import TicketAdmin from "./sub-Admin/TicketAdmin";
 

@@ -25,21 +25,18 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { db } from "../../config/firebaseConfig";
-import { getDatabase, ref, onValue, get, set } from "firebase/database";
-import { format } from "date-fns"; // To format the date and time
-import { getAuth } from "firebase/auth";
+import useRequirementStore from "@/store/useRequirementStore";
+import { getFormattedDate } from "@/utils/dateTimeUtils";
 
 const ComAdminRequirementList = () => {
-  const [data, setData] = useState([]);
+  // const [data, setData] = useState([]);
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
   const [rowSelection, setRowSelection] = useState({});
-
-  const auth = getAuth();
-  const currentUser = auth.currentUser;
   const [expandedRow, setExpandedRow] = useState(null);
+
+  const {getAllRequirements,allRequirements:data} = useRequirementStore();
 
   const handleRowClick = (rowId) => {
     setExpandedRow((prevExpandedRow) =>
@@ -48,26 +45,28 @@ const ComAdminRequirementList = () => {
   };
 
   useEffect(() => {
-    const fetchData = () => {
-      const ticketRef = ref(db, "requirement");
-      onValue(
-        ticketRef,
-        (snapshot) => {
-          if (snapshot.exists()) {
-            const ticketList = Object.values(snapshot.val()); // Make sure data is in array format
-            setData(ticketList);
-          } else {
-            console.log("No data available");
-          }
-        },
-        (error) => {
-          console.error("Error fetching data:", error);
-        }
-      );
-    };
+    // const fetchData = () => {
+    //   const ticketRef = ref(db, "requirement");
+    //   onValue(
+    //     ticketRef,
+    //     (snapshot) => {
+    //       if (snapshot.exists()) {
+    //         const ticketList = Object.values(snapshot.val()); // Make sure data is in array format
+    //         setData(ticketList);
+    //       } else {
+    //         console.log("No data available");
+    //       }
+    //     },
+    //     (error) => {
+    //       console.error("Error fetching data:", error);
+    //     }
+    //   );
+    // };
 
-    fetchData();
-  }, []);
+    // fetchData();
+    getAllRequirements();
+  }, [getAllRequirements]);
+
   const columns = [
     {
       accessorKey: "componentCount", // Changed key to make it unique
@@ -88,7 +87,9 @@ const ComAdminRequirementList = () => {
       ),
       filterFn: (row, columnId, filterValue) => {
         // Custom filter logic for arrays
-        const components = row.getValue(columnId) || [];
+        const components = 
+        row.getValue(columnId) ||
+         [];
         if (!Array.isArray(components)) return false;
         return components.some((component) =>
           component.toLowerCase().includes(filterValue.toLowerCase())
@@ -100,7 +101,7 @@ const ComAdminRequirementList = () => {
       header: "To",
       cell: ({ row }) => (
         <div className="capitalize">
-          {row.getValue("startingDate")} at {row.original.startingTime}
+          {getFormattedDate(row.getValue("startingDate"))} at {row.original.startingTime}
         </div>
       ),
     },
@@ -109,7 +110,7 @@ const ComAdminRequirementList = () => {
       header: "From",
       cell: ({ row }) => (
         <div className="capitalize">
-          {row.getValue("endingDate")} at {row.original.endingTime}
+          {getFormattedDate(row.getValue("endingDate"))} at {row.original.endingTime}
         </div>
       ),
     },
@@ -303,7 +304,7 @@ const ComAdminRequirementList = () => {
                                   Requirement Raised By :-
                                 </h2>
                                 <p className="ml-2">
-                                  Name: {row.original.fullName}
+                                  Name: {row.original.fullname?.firstname} {row.original.fullname?.lastname}
                                 </p>
                                 <p className="ml-2 mb-2">
                                   Email: {row.original.email}
@@ -325,7 +326,7 @@ const ComAdminRequirementList = () => {
                                   {row.original.assigned ? (
                                     <p className="ml-2">
                                       {new Date(
-                                        row.original.assignedAt
+                                        row.original.assignedTime
                                       ).toLocaleString(
                                         "en-US", // Change to desired locale
                                         {

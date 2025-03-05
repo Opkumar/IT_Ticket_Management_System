@@ -6,9 +6,9 @@ import {
   sendPasswordResetEmail,
 } from "firebase/auth";
 import { useNavigate, Link } from "react-router-dom";
-import { get, ref as dbRef, set } from "firebase/database";
-import { deleteUser } from "firebase/auth";
-import { db, auth } from "../config/firebaseConfig"; // Use the imported 'auth' from your firebaseConfig
+// import { get, ref as dbRef, set } from "firebase/database";
+// import { deleteUser } from "firebase/auth";
+// import { db, auth } from "../config/firebaseConfig"; // Use the imported 'auth' from your firebaseConfig
 
 const Login = () => {
   const [email, setEmail] = useState("");

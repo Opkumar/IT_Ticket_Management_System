@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-function Footer() {
+function FooterPage() {
   return (
     <div className='text-center'>
       <div className="  bg-gray-400 text-center">
@@ -17,4 +17,4 @@ function Footer() {
   )
 }
 
-export default Footer
+export default FooterPage

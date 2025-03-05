@@ -3,7 +3,7 @@ import { getAuth } from "firebase/auth";
 import { ref, get, onValue } from "firebase/database";
 import { db } from "../config/firebaseConfig"; // Assuming you already have db initialized
 import { format } from "date-fns";
-import TrackTicketView from "./TrackTicketView";
+import TrackTicketView from "../TrackTicketView";
 
 const HistoryTicket = () => {
   const [ticketIds, setTicketIds] = useState([]); // Initialize as an array

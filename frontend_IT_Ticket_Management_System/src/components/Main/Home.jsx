@@ -52,8 +52,8 @@ function Home() {
 
   return (
     <div className="min-h-[calc(100vh-76px)]">
-      <div className="relative z-10">
-        {/* Toggle Button */}
+      {/* <div className="relative z-10">
+      
         <button
           onClick={() => setIsChatOpen(!isChatOpen)}
           className="fixed bottom-4 right-4 bg-blue-500 text-white p-3 rounded-full shadow-lg hover:bg-blue-600"
@@ -61,7 +61,7 @@ function Home() {
           Chat
         </button>
 
-        {/* Chatbot UI */}
+        
         {isChatOpen && (
           <div className="fixed bottom-16 right-4 w-full max-w-md bg-gray-100 border border-gray-300 rounded-lg shadow-lg flex flex-col h-96">
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
@@ -102,7 +102,8 @@ function Home() {
             </div>
           </div>
         )}
-      </div>
+      </div> */}
+
       <div className=" block z-0">
         <Carousel
           className=" w-screen p-0 m-0 "

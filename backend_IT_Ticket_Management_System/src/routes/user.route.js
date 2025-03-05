@@ -21,7 +21,11 @@ router.post("/login",[
     body("password",).isLength({min:6}).withMessage("minimum 6 characters required"),
 ],userController.loginUser);
 
-router.get("/profile",authMiddleware.authUser,userController.getUserProfile);
+router.get("/:id/verify/:token",userController.verifyUser)
+router.get("/google",userController.loginWithGoogle)
+
+router.get("/check",authMiddleware.authUser,userController.getUserProfile);
+router.get("/get-users",authMiddleware.authUser,userController.getUsersDetails);
 router.post("/update",authMiddleware.authUser,userController.updateUserProfile);
 router.get("/logout",authMiddleware.authUser,userController.logoutUser);
 

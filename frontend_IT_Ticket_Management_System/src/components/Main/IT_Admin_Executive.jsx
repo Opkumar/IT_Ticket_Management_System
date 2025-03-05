@@ -42,8 +42,8 @@ import {
 import { db } from "../config/firebaseConfig";
 import { ref, onValue, get } from "firebase/database";
 import { format } from "date-fns"; // To format the date and time
-import ItTable from "./sub-Admin/ITteam.Admin";
-import ComAdminRequirementList from "./sub-Admin/ComAdminRequirementList";
+import ItTable from "../ItTableComponent";
+import ComAdminRequirementList from "../ComAdminRequirementListComponent";
 import TicketAdmin from "./sub-Admin/TicketAdmin";
 
 const IT_Admin_Executive = () => {

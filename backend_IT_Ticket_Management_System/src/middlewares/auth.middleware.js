@@ -17,6 +17,9 @@ module.exports.authUser = async (req, res, next)=>{
     try {
         const userId =jwt.verify(token,process.env.JWT_SECRET);
         const user = await userModel.findById(userId._id);
+        if (!user.verified) {
+            return res.status(401).json({message:"Unauthorized : Email not verified"})
+        }
         req.user = user;
         next();
         
