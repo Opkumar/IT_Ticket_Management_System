@@ -24,6 +24,7 @@ import HistoryItTeamPage from "./pages/HistoryItTeamPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import PrivateRoute from "./utils/PrivateRoute";
 
+
 function App() {
   const { checkAuth, authUser, isCheckingAuth } = useAuthStore();
   const location = useLocation();
@@ -60,7 +61,7 @@ function App() {
   }
 
   return (
-    <GoogleOAuthProvider clientId="750891349161-bk3iard1bnevo7m08vuc5ql86s6gsnju.apps.googleusercontent.com">
+    <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
       <div>
         {authUser && <HeaderPage />}
 
