@@ -1,5 +1,7 @@
 import { axiosInstance } from "@/lib/axios";
 import { create } from "zustand";
+import io from "socket.io-client";
+const BASE_URL= "http://localhost:4000";
 
 const useAuthStore = create((set, get) => ({
   authUser: JSON.parse(localStorage.getItem("authUser")) || null,
@@ -15,6 +17,7 @@ const useAuthStore = create((set, get) => ({
       const res = await axiosInstance.get("/users/check");
       set({ authUser: res.data });
       localStorage.setItem("authUser", JSON.stringify(res.data)); // ✅ Store user in localStorage
+      get().connectSocket();
     } catch (error) {
       console.log(
         "Error in checkAuth:",
@@ -62,6 +65,7 @@ const useAuthStore = create((set, get) => ({
       const res = await axiosInstance.get(`/users/google?code=${code}`);
       set({ authUser: res.data });
       console.log("Google login successful");
+      get().connectSocket();
     } catch (error) {
       console.log(
         "Google Auth Error:",
@@ -78,6 +82,7 @@ const useAuthStore = create((set, get) => ({
       const res = await axiosInstance.post("/users/login", info);
       set({ authUser: res.data });
       console.log("User login successful");
+      get().connectSocket();
     } catch (error) {
       console.log(
         "Login Error:",
@@ -94,6 +99,7 @@ const useAuthStore = create((set, get) => ({
       await axiosInstance.get("/users/logout");
       set({ authUser: null });
       console.log("User logged out successfully");
+      get().socket.disconnect()
     } catch (error) {
       console.log(
         "Logout Error:",
@@ -124,6 +130,24 @@ const useAuthStore = create((set, get) => ({
       );
       set({ allUsers: [] });
     }
+  },
+  connectSocket: () => {
+    const { authUser } = get();
+    if (!authUser || get().socket?.connected) return;
+    const socket = io(BASE_URL, {
+      query: {
+        userId: authUser._id,
+      },
+    });
+    socket.connect();
+
+    set({ socket: socket });
+    // socket.on("getOnlineUsers", (userIds) => {
+    //   set({ onlineUsers: userIds });
+    // });
+  },
+  disconnectSocket: () => {
+    if (get().socket?.connected) get().socket.disconnect();
   },
 }));
 

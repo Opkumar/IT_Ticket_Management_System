@@ -54,6 +54,25 @@ const useTicketStore = create((set, get) => ({
       );
     }
   },
+  subscribeToMessages: () => {
+    const { authUser } = get();
+    if (!authUser) return;
+
+    const socket = useAuthStore.getState().socket;
+
+    socket.on("ticketUpdates", (newTicket => {
+      const isMessageSentFromSelectedUser = newTicket.ticketRaisedbyId === authUser._id;
+      if (!isMessageSentFromSelectedUser) return;
+
+      set({
+        allTickets: [...get().allTickets, newTicket],
+      })
+    }));
+  },
+  unsubscribeFromMessages: () => {
+    const socket = useAuthStore.getState().socket;
+    socket.off("ticketUpdates");
+  },
 }));
 
 export default useTicketStore;

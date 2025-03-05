@@ -21,6 +21,7 @@ function LoginPage() {
     try {
       if (authResult["code"]) {
         await googleAuth(authResult.code);
+        window.location.reload()
       } else {
         console.error("Google OAuth Failed:", authResult);
         setMessageGoogle("Google Login Failed. Please try again.");

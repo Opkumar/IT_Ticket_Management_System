@@ -62,6 +62,8 @@ function AssignedTicketsPage() {
     try {
       await updateTicket(updateData);
       window.location.reload();
+      subscribeToMessages();
+      unsubscribeFromMessages();
     } catch (error) {
       console.log("update ticket data :", error);
     }
