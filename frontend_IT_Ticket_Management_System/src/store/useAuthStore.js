@@ -3,13 +3,14 @@ import { create } from "zustand";
 import io from "socket.io-client";
 const BASE_URL= "http://localhost:4000";
 
-const useAuthStore = create((set, get) => ({
+export const useAuthStore = create((set, get) => ({
   authUser: JSON.parse(localStorage.getItem("authUser")) || null,
   isCheckingAuth: true,
   isSigningUp: false,
   isLoggingIn: false,
   validUrl: null,
   allUsers: [],
+  socket: null,
 
   checkAuth: async () => {
     set({ isCheckingAuth: true });
@@ -134,17 +135,13 @@ const useAuthStore = create((set, get) => ({
   connectSocket: () => {
     const { authUser } = get();
     if (!authUser || get().socket?.connected) return;
-    const socket = io(BASE_URL, {
-      query: {
-        userId: authUser._id,
-      },
-    });
+    const socket = io(BASE_URL
+    
+  );
     socket.connect();
 
     set({ socket: socket });
-    // socket.on("getOnlineUsers", (userIds) => {
-    //   set({ onlineUsers: userIds });
-    // });
+    
   },
   disconnectSocket: () => {
     if (get().socket?.connected) get().socket.disconnect();

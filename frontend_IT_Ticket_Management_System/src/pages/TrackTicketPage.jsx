@@ -10,20 +10,24 @@ function TrackTicketPage() {
   const [ticketIndex, setTicketIndex] = useState(null);
   const [view, setView] = useState(true);
 
-  const { getUserTickets, userTickets: ticketTracking } = useTicketStore();
+  const { getUserTickets, userTickets: ticketTracking ,subscribeToMessages, unsubscribeFromMessages} = useTicketStore();
 
 
   useEffect(() => {
-    const fetchTicketData = async () => {
+    const fetchTicketData = () => {
       try {
-        await getUserTickets(false);
+         getUserTickets(false);
+        subscribeToMessages();
+
+        return () => unsubscribeFromMessages();
+    
       } catch (error) {
         console.error("Fetching ticket data error:", error);
       }
     };
 
     fetchTicketData();
-  }, [getUserTickets]);
+  }, [subscribeToMessages, unsubscribeFromMessages]);
 
  
 

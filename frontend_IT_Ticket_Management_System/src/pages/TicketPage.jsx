@@ -536,6 +536,7 @@ function TicketPage() {
       setOtherAddress(""); // Clear the "Other" address input
       setRequireIssue(false); // Reset validation error for issue selection
       setRequireIssue2(false); // Reset validation error for address selection
+      setImagePreview(null); // Clear the image preview
       if (imageInputRef.current) {
         imageInputRef.current.value = null; // Clear the file input
       }
@@ -664,7 +665,7 @@ function TicketPage() {
               </div>
 
               {/* Image Upload */}
-              <div className="flex flex-col space-y-3">
+              <div className="flex flex-col items-center gap-4 p-6 border rounded-lg shadow-sm">
                 <label className="block text-sm font-medium text-gray-700">
                   Upload Image of Issue (Optional)
                 </label>
@@ -693,15 +694,16 @@ function TicketPage() {
 
                 {/* Image Preview */}
                 {imagePreview && (
-                  <div className="relative inline-block">
+                  <div className="relative inline-block mt-4">
                     <img
-                      src={imagePreview}
+                      src={imagePreview || "/placeholder.svg"}
                       alt="Preview"
                       className="w-36 h-36 object-cover border rounded-xl shadow-lg"
                     />
                     <button
                       onClick={handleRemoveImage}
                       className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white rounded-full w-7 h-7 flex items-center justify-center text-sm shadow-md hover:bg-red-600 transition duration-200"
+                      aria-label="Remove image"
                     >
                       ✕
                     </button>

@@ -14,25 +14,14 @@ import { getFormattedDate, getFormattedTime } from "@/utils/dateTimeUtils";
 
 function AssignedTicketsPage() {
   const [view, setView] = useState(true);
-  // const [acceptedTicketId, setAcceptedTicketId] = useState("");
-  // const [status, setStatus] = useState({
-  //   startToTicket: false,
-  //   reachIssueAddress: false,
-  //   solvingIssue: false,
-  //   completedIssue: false,
-  // });
-  // const [startWorkingOnTicketIssueTime, setStartWorkingOnTicketIssueTime] =
-  //   useState(null);
-  // const [reachAddressIssueTime, setReachAddressIssueTime] = useState(null);
-  // const [solvingIssueTime, setSolvingIssueTime] = useState(null);
-  // const [completedTime, setCompletedTime] = useState(null);
-
   const [loading, setLoading] = useState(true);
 
   const {
     getAllTickets,
     allTickets: acceptedTickets,
     updateTicket,
+    subscribeToMessages,
+    unsubscribeFromMessages,
   } = useTicketStore();
   const { authUser } = useAuthStore();
 
@@ -40,6 +29,10 @@ function AssignedTicketsPage() {
     try {
       getAllTickets();
       setLoading(false);
+    //   subscribeToMessages();
+
+    // return () => unsubscribeFromMessages();
+
     } catch (error) {
       console.log(error);
       setLoading(true);
@@ -48,7 +41,7 @@ function AssignedTicketsPage() {
 
   const SubmitResolve = async (ticketId) => {
     try {
-      await updateTicket( {
+      await updateTicket({
         ticketId,
         resolvingIssue: true,
         resolvingIssueTime: Date.now(),
@@ -58,12 +51,11 @@ function AssignedTicketsPage() {
     }
   };
 
-  const handleStatusChange = async (updateData) => {
+  const handleStatusChange = (updateData) => {
     try {
-      await updateTicket(updateData);
+      updateTicket(updateData);
       window.location.reload();
-      subscribeToMessages();
-      unsubscribeFromMessages();
+      
     } catch (error) {
       console.log("update ticket data :", error);
     }
@@ -182,7 +174,7 @@ function AssignedTicketsPage() {
                         {/* Start to Ticket */}
                         <li className="flex items-center justify-between">
                           <p className="font-semibold text-lg text-gray-700">
-                            Start to Ticket:{" "}
+                            Initiated:{" "}
                             <span
                               className={
                                 ticket.startToTicket
@@ -296,7 +288,7 @@ function AssignedTicketsPage() {
                                   handleStatusChange({
                                     ticketId: ticket._id,
                                     completedIssueByIt: true,
-                                    completedIssueByItTime:Date.now(),
+                                    completedIssueByItTime: Date.now(),
                                   })
                                 }
                               >
@@ -466,10 +458,7 @@ function AssignedTicketsPage() {
             ) // Filter out completed tickets
             .map((ticket) => (
               <div className="" key={ticket._id}>
-                <div
-                  
-                  className="border rounded-lg shadow-md p-4 bg-white"
-                >
+                <div className="border rounded-lg shadow-md p-4 bg-white">
                   <h2 className="text-xl font-semibold mb-2">
                     {ticket.typeIssue}
                   </h2>
@@ -497,8 +486,8 @@ function AssignedTicketsPage() {
                       Priority: {ticket.urgent ? "Urgent" : "Normal"}
                     </p>
                     <div className="flex gap-1 text-sm">
-                    <p>{getFormattedDate(ticket.submissionTime)} at</p>
-                    <p>{getFormattedTime(ticket.submissionTime)}</p>
+                      <p>{getFormattedDate(ticket.submissionTime)} at</p>
+                      <p>{getFormattedTime(ticket.submissionTime)}</p>
                     </div>
                   </div>
                   <div className="">

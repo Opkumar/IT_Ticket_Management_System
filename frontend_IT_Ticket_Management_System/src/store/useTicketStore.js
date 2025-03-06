@@ -1,7 +1,8 @@
 import { axiosInstance } from "@/lib/axios";
 import { create } from "zustand";
+import { useAuthStore } from "./useAuthStore";
 
-const useTicketStore = create((set, get) => ({
+export const useTicketStore = create((set, get) => ({
   userTickets: [],
   userCompletedTickets: [],
   allTickets: [],
@@ -17,19 +18,12 @@ const useTicketStore = create((set, get) => ({
       );
     }
   },
-  getUserTickets: async (data) => {
+  getUserTickets: async () => { 
     try {
       const res = await axiosInstance.get("/tickets/user-tickets");
-      
-        set({ userTickets: res.data });
-      
+      set({ userTickets: res.data });
     } catch (error) {
-      console.error(
-        "Error fetching user tickets:",
-        error.response?.data?.message || error.message
-      );
-      set({ userTickets: [] });
-      set({ userCompletedTickets: [] });
+      console.error("Error fetching user tickets:", error);
     }
   },
   getAllTickets: async () => {
@@ -41,7 +35,7 @@ const useTicketStore = create((set, get) => ({
         "Error fetching all tickets:",
         error.response?.data?.message || error.message
       );
-      set({ allTickets: [] });
+      // set({ allTickets: [] });
     }
   },
   updateTicket: async (updateData) => {
@@ -55,20 +49,32 @@ const useTicketStore = create((set, get) => ({
     }
   },
   subscribeToMessages: () => {
-    const { authUser } = get();
-    if (!authUser) return;
-
     const socket = useAuthStore.getState().socket;
 
-    socket.on("ticketUpdates", (newTicket => {
-      const isMessageSentFromSelectedUser = newTicket.ticketRaisedbyId === authUser._id;
-      if (!isMessageSentFromSelectedUser) return;
+    // socket.off("ticketUpdates"); // Remove previous listener
 
-      set({
-        allTickets: [...get().allTickets, newTicket],
-      })
-    }));
-  },
+    socket.on("ticketUpdates", (ticket) => {
+      // console.log("New Ticket Update:", ticket);
+
+      set((state) => {
+        const existingIndex = state.userTickets.findIndex((t) => t._id === ticket._id);
+
+        let updatedTickets;
+        if (existingIndex !== -1) {
+          updatedTickets = [...state.userTickets];
+          updatedTickets[existingIndex] = ticket;
+        } else {
+          updatedTickets = [...state.userTickets, ticket];
+        }
+
+        // console.log("Updated Tickets:", updatedTickets);
+        return { userTickets: updatedTickets };
+      });
+    });
+},
+
+
+  
   unsubscribeFromMessages: () => {
     const socket = useAuthStore.getState().socket;
     socket.off("ticketUpdates");

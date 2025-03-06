@@ -5,7 +5,7 @@
   "type": "commonjs",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon ./server.js"
   },
   "author": "om prakash",
   "license": "ISC",

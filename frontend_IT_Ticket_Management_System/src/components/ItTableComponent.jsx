@@ -73,7 +73,7 @@ const ItTable = ({ itrole, itAssignedView,ticketDataOfRow ,allUsers,allTickets})
 
               const ticketDate = format(assignedDate, "dd/MM/yyyy");
 
-              if (!ticket.completedIssue && ticketDate === today) {
+              if (ticket.assigned && ticketDate === today) {
                 todayAcceptedTickets++;
               }
               if (ticket.completedIssue && ticketDate === today) {

@@ -30,6 +30,7 @@ module.exports.updateUserProfile = async ({
   totalAcceptedTickets,
   totalCompletedTickets,
   sentiments,
+  userVenue,
 }) => {
   if (!userId) {
     throw new Error("User ID is required");
@@ -42,6 +43,7 @@ module.exports.updateUserProfile = async ({
   if (todayCompletedTickets !== undefined) updateFields.todayCompletedTickets = todayCompletedTickets;
   if (totalAcceptedTickets !== undefined) updateFields.totalAcceptedTickets = totalAcceptedTickets;
   if (totalCompletedTickets !== undefined) updateFields.totalCompletedTickets = totalCompletedTickets;
+  if (userVenue !== undefined) updateFields.userVenue = userVenue;
 
   if (sentiments !== undefined) {
     if (!Array.isArray(sentiments)) {

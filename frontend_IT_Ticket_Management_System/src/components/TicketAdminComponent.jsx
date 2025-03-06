@@ -840,7 +840,7 @@ function TicketAdmin({ allUsers, allTickets: data }) {
                                         <i className="fa-solid fa-circle"></i>
                                       )}
                                       <div className="flex items-center gap-2">
-                                        <p>Start working on Ticket : </p>
+                                        <p>Initiated : </p>
                                         {ticketDetails.startToTicket ? (
                                           <p className="ml-2">
                                             {new Date(
@@ -1001,24 +1001,30 @@ function TicketAdmin({ allUsers, allTickets: data }) {
               </TableBody>
             </Table>
           </div>
-          <div className="flex items-center justify-end space-x-2 py-4">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-            >
-              Previous
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-            >
-              Next
-            </Button>
-          </div>
+          <div className="flex items-center justify-end space-x-2 py-4 px-5">
+                    <div className="flex-1 text-sm text-muted-foreground">
+                      {table.getFilteredSelectedRowModel().rows.length} of{" "}
+                      {table.getFilteredRowModel().rows.length} row(s) selected.
+                    </div>
+                    <div className="space-x-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => table.previousPage()}
+                        disabled={!table.getCanPreviousPage()}
+                      >
+                        Previous
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => table.nextPage()}
+                        disabled={!table.getCanNextPage()}
+                      >
+                        Next
+                      </Button>
+                    </div>
+                  </div>
         </div>
       ) : (
         <ComAdminRequirementList />

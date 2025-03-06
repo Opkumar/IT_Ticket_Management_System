@@ -199,6 +199,7 @@ module.exports.updateUserProfile = async (req, res, next) => {
     totalAcceptedTickets,
     totalCompletedTickets,
     sentiments,
+    userVenue,
   } = req.body;
 
   const updateUser = await userService.updateUserProfile({
@@ -209,6 +210,7 @@ module.exports.updateUserProfile = async (req, res, next) => {
     totalAcceptedTickets,
     totalCompletedTickets,
     sentiments,
+    userVenue,
   });
 
   res.status(200).json(updateUser);
