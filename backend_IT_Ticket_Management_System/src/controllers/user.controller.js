@@ -109,6 +109,7 @@ module.exports.loginUser = async (req, res, next) => {
   if (!error.isEmpty()) {
     return res.status(400).json({ error: error.array() });
   }
+  console.log("login user 1");
 
   const { email, password } = req.body;
 
@@ -117,6 +118,7 @@ module.exports.loginUser = async (req, res, next) => {
   if (!user) {
     return res.status(401).json({ message: "Invalid email or password" });
   }
+  console.log("login user 2");
 
   const isMatch = await user.comparePassword(password);
 
@@ -127,6 +129,7 @@ module.exports.loginUser = async (req, res, next) => {
     return res.status(400).json({ message: "Email not verified" });
   }
   const token = await user.generateAuthToken();
+  console.log("login user 3");
 
   res.cookie("token", token, {
     httpOnly: true,  // Secure from JavaScript access
