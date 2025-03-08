@@ -6,7 +6,8 @@ import {
 } from "react-router-dom";
 import { useEffect, useMemo } from "react";
 import useAuthStore from "./store/useAuthStore";
-import SignupPage from "./pages/signupPage";
+// import SignupPage from "./pages/signupPage";
+import SignupPage from "./pages/SignupPage";
 import HeaderPage from "./pages/headerPage/HeaderPage";
 import FooterPage from "./pages/footerPage/FooterPage";
 import LoginPage from "./pages/LoginPage";

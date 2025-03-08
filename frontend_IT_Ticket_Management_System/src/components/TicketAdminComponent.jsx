@@ -102,27 +102,27 @@ function TicketAdmin({ allUsers, allTickets: data }) {
           row.original.fullname?.lastname || ""
         }`,
         Email: row.original.email || "N/A",
-        "Assigned Time": row.original.ticketDetails?.assignedAt
-          ? getFormattedDateAndTime(row.original.ticketDetails.assignedAt)
+        "Assigned Time": row.original.assignedAt
+          ? getFormattedDateAndTime(row.original.assignedAt)
           : "N/A",
-        "Start Working": row.original.ticketDetails?.startToTicket
+        "Start Working": row.original.startToTicket
           ? getFormattedDateAndTime(
-              row.original.ticketDetails.startWorkingOnTicketIssueTime
+              row.original.startWorkingOnTicketIssueTime
             )
           : "N/A",
-        "Reached Address": row.original.ticketDetails?.reachIssueAddress
+        "Reached Address": row.original.reachIssueAddress
           ? getFormattedDateAndTime(
-              row.original.ticketDetails.reachAddressIssueTime
+              row.original.reachAddressIssueTime
             )
           : "N/A",
-        "Started Solving": row.original.ticketDetails?.solvingIssue
-          ? getFormattedDateAndTime(row.original.ticketDetails.solvingIssueTime)
+        "Started Solving": row.original.solvingIssue
+          ? getFormattedDateAndTime(row.original.solvingIssueTime)
           : "N/A",
-        "Completed Issue": row.original.ticketDetails?.completedIssue
-          ? getFormattedDateAndTime(row.original.ticketDetails.completedTime)
+        "Completed Issue": row.original.completedIssue
+          ? getFormattedDateAndTime(row.original.completedTime)
           : "N/A",
         "User Issue Reason":
-          row.original.ticketDetails?.userIssueReasonDetail || "N/A",
+          row.original.userIssueReasonDetail || "N/A",
       };
     });
 
