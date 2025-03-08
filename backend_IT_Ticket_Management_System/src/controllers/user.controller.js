@@ -134,7 +134,7 @@ module.exports.loginUser = async (req, res, next) => {
     sameSite: "Lax", // Lax prevents some CSRF while allowing external login
   });
   
-  console.log("login user");
+  console.log("login user",token);
 
   res.status(200).json({ user, token });
 };

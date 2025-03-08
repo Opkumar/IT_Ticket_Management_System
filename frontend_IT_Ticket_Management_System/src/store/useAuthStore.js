@@ -1,7 +1,7 @@
 import { axiosInstance } from "@/lib/axios";
 import { create } from "zustand";
 import io from "socket.io-client";
-const BASE_URL= "https://it-ticket-management-system-xi.vercel.app";
+const BASE_URL = "https://it-ticket-management-system-xi.vercel.app";
 
 export const useAuthStore = create((set, get) => ({
   authUser: JSON.parse(localStorage.getItem("authUser")) || null,
@@ -100,7 +100,7 @@ export const useAuthStore = create((set, get) => ({
       await axiosInstance.get("/users/logout");
       set({ authUser: null });
       console.log("User logged out successfully");
-      get().socket.disconnect()
+      get().socket.disconnect();
     } catch (error) {
       console.log(
         "Logout Error:",
@@ -135,13 +135,10 @@ export const useAuthStore = create((set, get) => ({
   connectSocket: () => {
     const { authUser } = get();
     if (!authUser || get().socket?.connected) return;
-    const socket = io(BASE_URL
-    
-  );
+    const socket = io(BASE_URL);
     socket.connect();
 
     set({ socket: socket });
-    
   },
   disconnectSocket: () => {
     if (get().socket?.connected) get().socket.disconnect();
