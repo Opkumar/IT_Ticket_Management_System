@@ -129,10 +129,11 @@ module.exports.loginUser = async (req, res, next) => {
   const token = await user.generateAuthToken();
 
   res.cookie("token", token, {
-    httpOnly: true, // Prevents JavaScript from accessing it
-    secure: true, // Ensures HTTPS in production
-    sameSite: "Strict", // Prevents CSRF attacks
+    httpOnly: true,  // Secure from JavaScript access
+    secure: process.env.NODE_ENV === "production", // Ensures HTTPS only in production
+    sameSite: "Lax", // Lax prevents some CSRF while allowing external login
   });
+  
   console.log("login user");
 
   res.status(200).json({ user, token });
