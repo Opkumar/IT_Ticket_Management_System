@@ -6,7 +6,7 @@ function initializeSocket(app) {
   const server = http.createServer(app); // Attach Express app to server
   const io = new Server(server, {
     cors: {
-      origin: ["http://localhost:5173","https://it-ticket-management-system-app.vercel.app"],
+      origin: ["http://localhost:5173","https://it-ticket-management-system-om-app.vercel.app"],
       credentials: true,
     },
   });
