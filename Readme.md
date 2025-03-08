@@ -17,4 +17,4 @@ The **IT Ticket Management System** is a web-based platform designed to streamli
 - **Frontend:** React.js, Tailwind CSS, ShadCN UI
 - **Real-time Communication:** Socket.io
 - **Authentication:** JWT & Cookies
-- **Styling:** Tailwind CSS & NativeWind
+- **Styling:** Tailwind CSS

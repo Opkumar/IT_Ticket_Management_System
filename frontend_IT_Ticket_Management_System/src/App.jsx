@@ -71,11 +71,11 @@ function App() {
           <Route
             path="/"
             element={
-              authUser ? <PrivateRoute>{renderRoleComponent}</PrivateRoute> : <Navigate to="/login" replace />
+              authUser ? <PrivateRoute>{renderRoleComponent}</PrivateRoute> : <Navigate to="/login"  />
             }
           />
-          <Route path="/signup" element={!authUser ? <SignupPage /> : <Navigate to="/" replace />} />
-          <Route path="/login" element={!authUser ? <LoginPage /> : <Navigate to="/" replace />} />
+          <Route path="/signup" element={!authUser ? <SignupPage /> : <Navigate to="/"  />} />
+          <Route path="/login" element={!authUser ? <LoginPage /> : <Navigate to="/"  />} />
           <Route path="/:id/verify/:token" element={<VerifyPage />} />
 
           {/* Protected Routes */}
