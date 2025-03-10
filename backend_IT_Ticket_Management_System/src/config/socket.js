@@ -1,4 +1,5 @@
 // src/config/socket.js
+require("dotenv").config();
 const { Server } = require("socket.io");
 const http = require("http");
 const app = require("../app"); // Import the Express app directly
@@ -9,7 +10,7 @@ function createServer() {
 
   const io = new Server(server, {
     cors: {
-      origin: "https://it-ticket-management-system-om-app.vercel.app",
+      origin: process.env.BASE_URL,
       credentials: true,
     },
   });
