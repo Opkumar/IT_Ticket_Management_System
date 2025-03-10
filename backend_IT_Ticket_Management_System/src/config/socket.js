@@ -6,14 +6,8 @@ const app = require("../app");
 
 function createServer() {
   let server;
-
   if (process.env.NODE_ENV === "production") {
     try {
-      // const privateKey = fs.readFileSync('/path/to/ssl/key.pem', 'utf8');
-      // const certificate = fs.readFileSync('/path/to/ssl/cert.pem', 'utf8');
-      // const ca = fs.readFileSync('/path/to/ssl/chain.pem', 'utf8');
-
-      // const credentials = { key: privateKey, cert: certificate, ca: ca };
       server = https.createServer( app);
       console.log("Using HTTPS server");
     } catch (error) {
