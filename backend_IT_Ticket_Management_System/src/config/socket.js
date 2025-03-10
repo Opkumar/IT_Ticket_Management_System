@@ -2,7 +2,6 @@
 const { Server } = require("socket.io");
 const https = require("https");
 const http = require("http");
-const fs = require("fs");
 const app = require("../app");
 
 function createServer() {
@@ -10,12 +9,12 @@ function createServer() {
 
   if (process.env.NODE_ENV === "production") {
     try {
-      const privateKey = fs.readFileSync('/path/to/ssl/key.pem', 'utf8');
-      const certificate = fs.readFileSync('/path/to/ssl/cert.pem', 'utf8');
-      const ca = fs.readFileSync('/path/to/ssl/chain.pem', 'utf8');
+      // const privateKey = fs.readFileSync('/path/to/ssl/key.pem', 'utf8');
+      // const certificate = fs.readFileSync('/path/to/ssl/cert.pem', 'utf8');
+      // const ca = fs.readFileSync('/path/to/ssl/chain.pem', 'utf8');
 
-      const credentials = { key: privateKey, cert: certificate, ca: ca };
-      server = https.createServer(credentials, app);
+      // const credentials = { key: privateKey, cert: certificate, ca: ca };
+      server = https.createServer( app);
       console.log("Using HTTPS server");
     } catch (error) {
       console.error("SSL configuration failed:", error.message);
