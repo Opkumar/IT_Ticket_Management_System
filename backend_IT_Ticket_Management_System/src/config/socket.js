@@ -9,7 +9,7 @@ function createServer() {
 
   const io = new Server(server, {
     cors: {
-      origin:  "https://it-ticket-management-system-om-app.vercel.app",
+      origin: "https://it-ticket-management-system-om-app.vercel.app",
       credentials: true,
     },
   });
