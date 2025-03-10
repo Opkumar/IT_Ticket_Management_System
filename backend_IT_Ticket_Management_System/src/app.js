@@ -7,11 +7,12 @@ const userRoute = require("./routes/user.route");
 const ticketRoute = require("./routes/ticket.route");
 const requirementRoute = require("./routes/requirement.route");
 const cookieParser = require("cookie-parser");
-const initializeSocket = require("./config/socket");
+// const initializeSocket = require("./config/socket");
+const { app } = require("./config/socket");
 
 dotenv.config();
 
-const app = express(); // Create Express instance
+// const app = express(); // Create Express instance
 
 // Middleware setup
 app.use(express.json({ limit: "10mb" }));
@@ -32,6 +33,6 @@ app.use("/api/tickets", ticketRoute);
 app.use("/api/requirements", requirementRoute);
 
 // Initialize Socket.io with Express app
-const { server } = initializeSocket(app);
+// const { server } = initializeSocket(app);
 
-module.exports = { app, server };
+// module.exports = { app, server };

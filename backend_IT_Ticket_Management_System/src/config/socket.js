@@ -2,8 +2,10 @@
 const { Server } = require("socket.io");
 // const http = require("http");
 const https = require("https");
+const express = require("express");
+const app = express();
 
-function initializeSocket(app) {
+// function initializeSocket(app) {
   const server = https.createServer(app); // Attach Express app to server
   const io = new Server(server, {
     cors: {
@@ -19,8 +21,8 @@ function initializeSocket(app) {
     });
   });
 
-  return { server, io };
-}
+  // return { server, io };
+// }
 
-module.exports = initializeSocket;
+module.exports = { server, io ,app};
 
