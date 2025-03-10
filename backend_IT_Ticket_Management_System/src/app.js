@@ -23,8 +23,6 @@ app.use(
   cors({
     origin: ["http://localhost:5173", "https://it-ticket-management-system-om-app.vercel.app"],
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE"], // Allow all necessary methods
-    allowedHeaders: ["Content-Type", "Authorization"], // Allow necessary headers
   })
 );
 
