@@ -1,6 +1,4 @@
-// server.js
-// const { server } = require("./src/app"); // Import from `app.js`
-const { server } = require("./src/config/socket"); // Import from `config/socket.js`
+const { server } = require("./src/config/socket"); 
 
 const PORT = process.env.PORT || 4000;
 
