@@ -21,8 +21,8 @@ connectDB();
 
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://it-ticket-management-system-om-app.vercel.app"],
-    credentials: true,
+    origin: "https://it-ticket-management-system-om-app.vercel.app", // Allow frontend URLs
+    credentials: true, // Allow cookies to be sent
   })
 );
 
