@@ -7,7 +7,7 @@ const userRoute = require("./routes/user.route");
 const ticketRoute = require("./routes/ticket.route");
 const requirementRoute = require("./routes/requirement.route");
 const cookieParser = require("cookie-parser");
-// const { app } = require("./config/socket");
+
 const app = express();
 
 dotenv.config();
