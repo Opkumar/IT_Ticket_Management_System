@@ -132,9 +132,9 @@ module.exports.loginUser = async (req, res, next) => {
   console.log("login user 3");
 
   res.cookie("token", token, {
-    httpOnly: true,  // Secure from JavaScript access
-    secure: process.env.NODE_ENV === "production", // Ensures HTTPS only in production
-    sameSite: "Lax", // Lax prevents some CSRF while allowing external login
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "None", // Use "None" if your frontend and backend are on different domains
   });
   
   console.log("login user",token);
