@@ -1,8 +1,7 @@
-// src/app.js
 const dotenv = require("dotenv");
 const express = require("express");
 const connectDB = require("./db/db");
-const cors = require("cors");
+const cors = require("cors");  // Keep this one
 const userRoute = require("./routes/user.route");
 const ticketRoute = require("./routes/ticket.route");
 const requirementRoute = require("./routes/requirement.route");
@@ -18,8 +17,6 @@ app.use(express.urlencoded({ limit: "10mb", extended: true }));
 app.use(cookieParser());
 
 connectDB();
-
-const cors = require("cors");
 
 // Allowed Origins List
 const allowedOrigins = [
@@ -43,9 +40,8 @@ app.use(
   })
 );
 
-
 app.use("/api/users", userRoute);
 app.use("/api/tickets", ticketRoute);
 app.use("/api/requirements", requirementRoute);
 
-module.exports = app;  // Make sure you're exporting app here
+module.exports = app;
