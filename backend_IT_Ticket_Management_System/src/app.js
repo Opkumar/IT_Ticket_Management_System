@@ -19,18 +19,21 @@ app.use(cookieParser());
 
 connectDB();
 
-// Improved CORS Configuration
-// Improved CORS Configuration
+const cors = require("cors");
+
+// Allowed Origins List
 const allowedOrigins = [
   "https://it-ticket-management-system-om-app.vercel.app",
-  "http://localhost:5173", // Allow localhost for testing
+  "http://localhost:5173", // Include for local testing
 ];
+
 app.use(
   cors({
-    origin: function (origin, callback) {
-      if (allowedOrigins.includes(origin) || !origin) {
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
+        console.error(`Blocked by CORS: ${origin}`);
         callback(new Error("Not allowed by CORS"));
       }
     },
