@@ -1,23 +1,11 @@
 // src/config/socket.js
 const { Server } = require("socket.io");
-const https = require("https");
 const http = require("http");
-const app = require("../app");
+const app = require("../app"); // Import the Express app directly
 
 function createServer() {
-  let server;
-  if (process.env.NODE_ENV === "production") {
-    try {
-      server = https.createServer( app);
-      console.log("Using HTTPS server");
-    } catch (error) {
-      console.error("SSL configuration failed:", error.message);
-      server = http.createServer(app);
-    }
-  } else {
-    server = http.createServer(app);
-    console.log("Using HTTP server");
-  }
+  const server = http.createServer(app);
+  console.log("Using HTTP server");
 
   const io = new Server(server, {
     cors: {
@@ -34,7 +22,7 @@ function createServer() {
     });
   });
 
-  return server;
+  return server; // Return the server instance
 }
 
 module.exports = { createServer };
