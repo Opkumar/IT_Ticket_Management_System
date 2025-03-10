@@ -19,13 +19,19 @@ app.use(cookieParser());
 
 connectDB();
 
+// Improved CORS Configuration
+const allowedOrigins = [
+  "https://it-ticket-management-system-om-app.vercel.app",
+  "http://localhost:5173", // Allow localhost for testing
+];
 app.use(
   cors({
-    origin: "https://it-ticket-management-system-om-app.vercel.app", // Allow frontend URLs
+    origin: allowedOrigins,
     credentials: true, // Allow cookies to be sent
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
-
 
 app.use("/api/users", userRoute);
 app.use("/api/tickets", ticketRoute);

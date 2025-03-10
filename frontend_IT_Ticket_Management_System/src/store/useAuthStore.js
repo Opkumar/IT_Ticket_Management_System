@@ -15,7 +15,9 @@ export const useAuthStore = create((set, get) => ({
   checkAuth: async () => {
     set({ isCheckingAuth: true });
     try {
-      const res = await axiosInstance.get("/users/check");
+      const res = await axiosInstance.get("/users/check",{
+        withCredentials: true, // VERY IMPORTANT to include cookies
+      });
       set({ authUser: res.data });
       localStorage.setItem("authUser", JSON.stringify(res.data)); // ✅ Store user in localStorage
       get().connectSocket();
