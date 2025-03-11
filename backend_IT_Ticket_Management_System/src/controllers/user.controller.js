@@ -136,7 +136,7 @@ module.exports.loginUser = async (req, res, next) => {
     secure: true,
     sameSite: "None", // Use "None" if your frontend and backend are on different domains
   });
-  setlocalStorage.setItem("token", token);
+  // setlocalStorage.setItem("token", token);
   console.log("login user",token);
 
   res.status(200).json({ user, token });
