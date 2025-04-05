@@ -11,7 +11,7 @@ function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [messageGoogle, setMessageGoogle] = useState("");
 
-  const { login, googleAuth, user } = useAuthStore();
+  const { login, googleAuth, authUser } = useAuthStore();
   const navigate = useNavigate();
 
   const togglePasswordVisibility = () => {
@@ -19,10 +19,10 @@ function LoginPage() {
   };
 
   useEffect(() => {
-    if (user) {
+    if (authUser) {
       navigate("/"); // Redirect if already logged in
     }
-  }, [user, navigate]);
+  }, [authUser, navigate]);
 
   const responseGoogle = async (authResult) => {
     try {
