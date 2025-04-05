@@ -1,4 +1,5 @@
 // server.js
+require("dotenv").config();
 const { createServer } = require("./src/config/socket");
 
 const PORT = process.env.PORT || 4000;

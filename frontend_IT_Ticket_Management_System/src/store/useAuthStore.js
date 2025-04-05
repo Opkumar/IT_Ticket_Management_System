@@ -1,7 +1,8 @@
 import { axiosInstance } from "@/lib/axios";
 import { create } from "zustand";
 import io from "socket.io-client";
-const BASE_URL = "https://it-ticket-management-system-xi.vercel.app";
+// const BASE_URL = "https://it-ticket-management-system-xi.vercel.app";
+const BASE_URL = "https://it-ticket-management-system.onrender.com";
 
 export const useAuthStore = create((set, get) => ({
   authUser: JSON.parse(localStorage.getItem("authUser")) || null,
