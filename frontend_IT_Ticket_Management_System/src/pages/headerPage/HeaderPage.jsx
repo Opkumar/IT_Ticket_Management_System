@@ -13,22 +13,22 @@ import Logo from "@/components/logoComponent/Logo";
 
 function HeaderPage() {
   const [rating, setRating] = useState(0);
-  const { authUser ,logout} = useAuthStore();
-  
+  const { authUser, logout } = useAuthStore();
 
-  const handleLogout = ()=>{
-    logout()
-  }
+  const handleLogout = () => {
+    logout();
+  };
 
   return (
     <header className="bg-slate-400 h-14 flex items-center justify-between">
       <div className="ml-1">
-        <Logo />
+        <Link to="/">
+          <Logo />
+        </Link>
       </div>
       <div className="flex gap-4 mr-1">
         <div className="flex items-center">
-          {(authUser?.role === "faculty" ||
-            authUser?.role === "admin") && (
+          {(authUser?.role === "faculty" || authUser?.role === "admin") && (
             <Link to="/create-ticket">
               <button className="px-3 py-1 mx-auto rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white font-semibold text-lg shadow-md hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600 focus:outline-none focus:ring-4 focus:ring-purple-300 hover:shadow-lg transform hover:scale-105 transition-all duration-300 ease-in-out">
                 Raise Ticket
@@ -42,8 +42,8 @@ function HeaderPage() {
             <div className="w-[44px] h-[44px] overflow-hidden">
               <img
                 src={
-                   authUser?.userImage ||
-                        `https://cdn-icons-png.flaticon.com/512/149/149071.png`
+                  authUser?.userImage ||
+                  `https://cdn-icons-png.flaticon.com/512/149/149071.png`
                 }
                 alt="userImage"
                 className="rounded-full w-[44px] h-[44px]"
@@ -184,11 +184,11 @@ function HeaderPage() {
                 </ul>
 
                 <button
-                onClick={handleLogout}
-                className="px-2 py-1 rounded-sm bg-slate-400 text-center items-center"
-              >
-                Log Out
-              </button>
+                  onClick={handleLogout}
+                  className="px-2 py-1 rounded-sm bg-slate-400 text-center items-center"
+                >
+                  Log Out
+                </button>
               </div>
             </SheetHeader>
           </SheetContent>

@@ -1,7 +1,7 @@
 import useAuthStore from "@/store/useAuthStore";
 import { useGoogleLogin } from "@react-oauth/google";
-import React, { useState } from "react";
-import {  Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 function LoginPage() {
   const [email, setEmail] = useState("");
@@ -9,19 +9,26 @@ function LoginPage() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [messageGoogle, setMessageGoogle] = useState(""); // Default to an empty string
+  const [messageGoogle, setMessageGoogle] = useState("");
 
-  const { login, googleAuth } = useAuthStore();
+  const { login, googleAuth, user } = useAuthStore();
+  const navigate = useNavigate();
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
+  useEffect(() => {
+    if (user) {
+      navigate("/"); // Redirect if already logged in
+    }
+  }, [user, navigate]);
+
   const responseGoogle = async (authResult) => {
     try {
       if (authResult["code"]) {
         await googleAuth(authResult.code);
-        window.location.reload()
+        navigate("/");
       } else {
         console.error("Google OAuth Failed:", authResult);
         setMessageGoogle("Google Login Failed. Please try again.");
@@ -52,9 +59,9 @@ function LoginPage() {
   };
 
   const handleLogin = async (e) => {
-    setMessageGoogle(""); // Clear Google message before submitting
-
+    setMessageGoogle("");
     e.preventDefault();
+
     if (!navigator.onLine) {
       setMessage("You are offline. Please check your internet connection.");
       return;
@@ -67,11 +74,8 @@ function LoginPage() {
 
     setLoading(true);
     try {
-      await login({
-        email,
-        password,
-      });
-      window.location.reload()
+      await login({ email, password });
+      navigate("/");
     } catch (error) {
       setMessage(`Error: ${error.message}`);
     } finally {
