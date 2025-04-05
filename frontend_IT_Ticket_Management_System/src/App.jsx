@@ -2,7 +2,7 @@ import {
   Routes,
   Route,
   Navigate,
-  useLocation,
+
 } from "react-router-dom";
 import { useEffect, useMemo } from "react";
 import useAuthStore from "./store/useAuthStore";
@@ -28,7 +28,6 @@ import PrivateRoute from "./utils/PrivateRoute";
 
 function App() {
   const { checkAuth, authUser, isCheckingAuth } = useAuthStore();
-  const location = useLocation();
 
   useEffect(() => {
     checkAuth();
