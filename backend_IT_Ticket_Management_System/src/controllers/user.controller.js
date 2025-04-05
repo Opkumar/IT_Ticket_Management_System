@@ -109,7 +109,7 @@ module.exports.loginUser = async (req, res, next) => {
   if (!error.isEmpty()) {
     return res.status(400).json({ error: error.array() });
   }
-  console.log("login user 1");
+  // console.log("login user 1");
 
   const { email, password } = req.body;
 
@@ -118,7 +118,7 @@ module.exports.loginUser = async (req, res, next) => {
   if (!user) {
     return res.status(401).json({ message: "Invalid email or password" });
   }
-  console.log("login user 2");
+  // console.log("login user 2");
 
   const isMatch = await user.comparePassword(password);
 
@@ -129,7 +129,7 @@ module.exports.loginUser = async (req, res, next) => {
     return res.status(400).json({ message: "Email not verified" });
   }
   const token = await user.generateAuthToken();
-  console.log("login user 3");
+  // console.log("login user 3");
 
   res.cookie("token", token, {
     httpOnly: true,
@@ -137,7 +137,7 @@ module.exports.loginUser = async (req, res, next) => {
     sameSite: "None", // Use "None" if your frontend and backend are on different domains
   });
   // setlocalStorage.setItem("token", token);
-  console.log("login user",token);
+  // console.log("login user",token);
 
   res.status(200).json({ user, token });
 };
@@ -152,9 +152,9 @@ module.exports.loginWithGoogle = async (req, res, next) => {
     );
 
     const { email, name, picture } = userRes.data;
-    // if (!isValidDomain(email)) {
-    //   return res.status(403).json({ message: "Unauthorized email domain" });
-    // }
+    if (!isValidDomain(email)) {
+      return res.status(403).json({ message: "Unauthorized email domain" });
+    }
     let user = await userModel.findOne({ email });
 
     if (!user) {
@@ -171,7 +171,11 @@ module.exports.loginWithGoogle = async (req, res, next) => {
     }
     const token = await user.generateAuthToken();
 
-    res.cookie("token", token);
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None", // Use "None" if your frontend and backend are on different domains
+    });
 
     res.status(200).json({ user, token });
   } catch (error) {
