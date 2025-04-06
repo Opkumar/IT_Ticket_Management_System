@@ -5,7 +5,7 @@ import io from "socket.io-client";
 const BASE_URL = "https://it-ticket-management-system.onrender.com";
 
 export const useAuthStore = create((set, get) => ({
-  authUser:  null,
+  authUser: null,
   isCheckingAuth: true,
   isSigningUp: false,
   isLoggingIn: false,
@@ -16,7 +16,7 @@ export const useAuthStore = create((set, get) => ({
   checkAuth: async () => {
     set({ isCheckingAuth: true });
     try {
-      const res = await axiosInstance.get("/users/check",{
+      const res = await axiosInstance.get("/users/check", {
         withCredentials: true, // VERY IMPORTANT to include cookies
       });
       set({ authUser: res.data });
@@ -68,6 +68,7 @@ export const useAuthStore = create((set, get) => ({
       const res = await axiosInstance.get(`/users/google?code=${code}`);
       set({ authUser: res.data });
       console.log("Google login successful");
+      await get().checkAuth();
       get().connectSocket();
     } catch (error) {
       console.log(
@@ -79,6 +80,25 @@ export const useAuthStore = create((set, get) => ({
     }
   },
 
+  // login: async (info) => {
+  //   set({ isLoggingIn: true });
+  //   try {
+  //     const res = await axiosInstance.post("/users/login", info, {
+  //       withCredentials: true,
+  //     });
+  //     set({ authUser: res.data });
+  //     console.log("User login successful");
+  //     get().connectSocket();
+  //   } catch (error) {
+  //     console.log(
+  //       "Login Error:",
+  //       error?.response?.data?.message || error.message
+  //     );
+  //     set({ authUser: null });
+  //   } finally {
+  //     set({ isLoggingIn: false });
+  //   }
+  // },
   login: async (info) => {
     set({ isLoggingIn: true });
     try {
@@ -87,6 +107,10 @@ export const useAuthStore = create((set, get) => ({
       });
       set({ authUser: res.data });
       console.log("User login successful");
+
+      // 🔥 ADD THIS LINE — re-validate session after login
+      await get().checkAuth();
+
       get().connectSocket();
     } catch (error) {
       console.log(
@@ -98,7 +122,6 @@ export const useAuthStore = create((set, get) => ({
       set({ isLoggingIn: false });
     }
   },
-
   logout: async () => {
     try {
       await axiosInstance.get("/users/logout");
