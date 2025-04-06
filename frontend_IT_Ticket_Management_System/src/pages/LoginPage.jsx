@@ -76,6 +76,8 @@ function LoginPage() {
     try {
       await login({ email, password });
       navigate("/");
+      console.log("Cookies on phone:", document.cookie);
+
     } catch (error) {
       setMessage(`Error: ${error.message}`);
     } finally {
