@@ -39,12 +39,11 @@ export const useAuthStore = create((set, get) => ({
       const token = localStorage.getItem("token");
   
       const res = await axiosInstance.get("/users/check", {
-        withCredentials: true, // still needed for cookie support
+        withCredentials: true,
         headers: token ? { Authorization: `Bearer ${token}` } : {},
       });
   
       set({ authUser: res.data });
-  
       get().connectSocket();
     } catch (error) {
       console.log(
@@ -56,6 +55,7 @@ export const useAuthStore = create((set, get) => ({
       set({ isCheckingAuth: false });
     }
   },
+  
   
 
   signup: async (info) => {
@@ -93,6 +93,7 @@ export const useAuthStore = create((set, get) => ({
       const res = await axiosInstance.get(`/users/google?code=${code}`);
       set({ authUser: res.data });
       console.log("Google login successful");
+      localStorage.setItem("token", res.data.token);
       await get().checkAuth();
       get().connectSocket();
     } catch (error) {
@@ -132,6 +133,7 @@ export const useAuthStore = create((set, get) => ({
       });
       set({ authUser: res.data });
       console.log("User login successful");
+      localStorage.setItem("token", res.data.token);
 
       // 🔥 ADD THIS LINE — re-validate session after login
       await get().checkAuth();
