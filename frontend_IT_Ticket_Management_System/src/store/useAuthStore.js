@@ -13,14 +13,38 @@ export const useAuthStore = create((set, get) => ({
   allUsers: [],
   socket: null,
 
+  // checkAuth: async () => {
+  //   set({ isCheckingAuth: true });
+  //   try {
+  //     const res = await axiosInstance.get("/users/check", {
+  //       withCredentials: true, // VERY IMPORTANT to include cookies
+  //     });
+  //     set({ authUser: res.data });
+
+  //     get().connectSocket();
+  //   } catch (error) {
+  //     console.log(
+  //       "Error in checkAuth:",
+  //       error?.response?.data?.message || error.message
+  //     );
+  //     set({ authUser: null });
+  //   } finally {
+  //     set({ isCheckingAuth: false });
+  //   }
+  // },
   checkAuth: async () => {
     set({ isCheckingAuth: true });
+  
     try {
+      const token = localStorage.getItem("token");
+  
       const res = await axiosInstance.get("/users/check", {
-        withCredentials: true, // VERY IMPORTANT to include cookies
+        withCredentials: true, // still needed for cookie support
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
       });
+  
       set({ authUser: res.data });
-
+  
       get().connectSocket();
     } catch (error) {
       console.log(
@@ -32,6 +56,7 @@ export const useAuthStore = create((set, get) => ({
       set({ isCheckingAuth: false });
     }
   },
+  
 
   signup: async (info) => {
     set({ isSigningUp: true });
