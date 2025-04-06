@@ -23,8 +23,8 @@ connectDB();
 
 app.use(
   cors({
-    // origin: "https://it-ticket-management-system-om-app.vercel.app", // YOUR frontend URL
-    origin: "http://localhost:5173", // YOUR frontend URL
+    origin: "https://it-ticket-management-system-om-app.vercel.app", // YOUR frontend URL
+    // origin: "http://localhost:5173", // YOUR frontend URL
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
