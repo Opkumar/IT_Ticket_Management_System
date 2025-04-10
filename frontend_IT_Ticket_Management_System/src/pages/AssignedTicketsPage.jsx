@@ -29,9 +29,9 @@ function AssignedTicketsPage() {
     try {
       getAllTickets();
       setLoading(false);
-    //   subscribeToMessages();
+      subscribeToMessages();
 
-    // return () => unsubscribeFromMessages();
+    return () => unsubscribeFromMessages();
 
     } catch (error) {
       console.log(error);
@@ -54,7 +54,7 @@ function AssignedTicketsPage() {
   const handleStatusChange = (updateData) => {
     try {
       updateTicket(updateData);
-      window.location.reload();
+      // window.location.reload();
       
     } catch (error) {
       console.log("update ticket data :", error);

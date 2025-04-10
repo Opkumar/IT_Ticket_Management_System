@@ -1,5 +1,5 @@
 const ticketService = require("../services/ticket.service");
-const { validationResult, cookie } = require("express-validator");
+const { validationResult } = require("express-validator");
 const cloudinary = require("../config/cloudinaryConfig.js");
 
 

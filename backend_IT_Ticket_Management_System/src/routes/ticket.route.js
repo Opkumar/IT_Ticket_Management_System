@@ -1,10 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { body } = require("express-validator");
-
 const ticketController = require("../controllers/ticket.controller");
-// const authMiddleware = require("../middlewares/auth.middleware");
-
 const authMiddleware = require("../middlewares/auth.middleware");
 const { ticketUpload } = require("../middlewares/multerConfig");
 

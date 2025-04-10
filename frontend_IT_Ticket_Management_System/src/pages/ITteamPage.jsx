@@ -9,7 +9,8 @@ function ITteamPage() {
   const [view, setView] = useState(true);
 
   const { authUser } = useAuthStore();
-  const { getAllTickets, allTickets: tickets, updateTicket } = useTicketStore();
+  const { getAllTickets, allTickets: tickets, updateTicket,subscribeToMessages,
+    unsubscribeFromMessages, } = useTicketStore();
   const {
     allRequirements: requirements,
     getAllRequirements,
@@ -21,6 +22,9 @@ function ITteamPage() {
       getAllTickets();
       getAllRequirements();
       setLoading(false);
+      subscribeToMessages();
+
+    return () => unsubscribeFromMessages();
     } catch (error) {
       console.log(error);
       setLoading(true);
@@ -72,7 +76,7 @@ function ITteamPage() {
         assigned: true,
         assignedAt: Date.now(),
       });
-      window.location.reload();
+      // window.location.reload();
     } catch (error) {
       console.error("Error assigning ticket: ", error);
       //   setError("Failed to assign ticket.");
