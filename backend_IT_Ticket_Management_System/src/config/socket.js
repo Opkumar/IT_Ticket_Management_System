@@ -1,14 +1,12 @@
-// src/config/socket.js
 require("dotenv").config();
 const { Server } = require("socket.io");
 const http = require("http");
 const app = require("../app");
 
-let io; // Define io in a broader scope
+let io;
 
 function createServer() {
   const server = http.createServer(app);
-  console.log("Using HTTP server");
 
   io = new Server(server, {
     cors: {
@@ -28,7 +26,16 @@ function createServer() {
   return server;
 }
 
-module.exports = { createServer, io };
+// Add this getter
+function getIO() {
+  if (!io) {
+    throw new Error("Socket.io not initialized. Call createServer() first.");
+  }
+  return io;
+}
+
+module.exports = { createServer, getIO };
+
 
 // // src/config/socket.js
 // require("dotenv").config();

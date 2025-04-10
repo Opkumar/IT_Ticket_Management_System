@@ -1,5 +1,7 @@
 const ticketModel = require("../models/ticket.model");
-const { io } = require("../config/socket");
+// const { io } = require("../config/socket");
+const { getIO } = require("../config/socket");
+
 
 
 module.exports.createTicket = async ({
@@ -92,7 +94,9 @@ module.exports.updateTicket = async ({
   await ticket.save();
   // const receiverSocketId = getReceiverSocketId(ticket.ticketRaisedbyId);
   // if (io ) {
-    io.emit("ticketUpdates", ticket);
+    // io.emit("ticketUpdates", ticket);
+    getIO().emit("ticketUpdates", ticket);
+
   // }
   return ticket;
 };
