@@ -96,6 +96,7 @@ module.exports.updateTicket = async ({
   // if (io ) {
     // io.emit("ticketUpdates", ticket);
     getIO().emit("ticketUpdates", ticket);
+    console.log("Ticket updates emitted to socket");
 
   // }
   return ticket;

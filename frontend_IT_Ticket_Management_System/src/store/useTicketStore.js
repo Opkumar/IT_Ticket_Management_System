@@ -70,31 +70,82 @@ export const useTicketStore = create((set, get) => ({
       );
     }
   },
-
   subscribeToMessages: () => {
     const socket = useAuthStore.getState().socket;
-
+  
+    if (!socket) {
+      console.warn("Socket not initialized, cannot subscribe to messages.");
+      return;
+    }
+  
     socket.on("ticketUpdates", (ticket) => {
+      console.log("Received ticket update via socket:", ticket);
+  
       set((state) => {
         const existingIndex = state.userTickets.findIndex((t) => t._id === ticket._id);
-
+        const existingIndex1 = state.allTickets.findIndex((t) => t._id === ticket._id);
+  
         let updatedTickets;
+        let updatedAllTickets;
+  
         if (existingIndex !== -1) {
           updatedTickets = [...state.userTickets];
           updatedTickets[existingIndex] = ticket;
         } else {
           updatedTickets = [...state.userTickets, ticket];
         }
-
-        return { userTickets: updatedTickets };
+  
+        if (existingIndex1 !== -1) {
+          updatedAllTickets = [...state.allTickets];
+          updatedAllTickets[existingIndex1] = ticket;
+        } else {
+          updatedAllTickets = [...state.allTickets, ticket]; // ✅ Corrected this line
+        }
+  
+        return {
+          userTickets: updatedTickets,
+          allTickets: updatedAllTickets,
+        };
       });
     });
   },
-
+  
   unsubscribeFromMessages: () => {
     const socket = useAuthStore.getState().socket;
+  
+    if (!socket) {
+      console.warn("Socket not initialized, cannot unsubscribe from messages.");
+      return;
+    }
+  
     socket.off("ticketUpdates");
   },
+  
+  
+  // subscribeToMessages: () => {
+  //   const socket = useAuthStore.getState().socket;
+
+  //   socket.on("ticketUpdates", (ticket) => {
+  //     set((state) => {
+  //       const existingIndex = state.userTickets.findIndex((t) => t._id === ticket._id);
+
+  //       let updatedTickets;
+  //       if (existingIndex !== -1) {
+  //         updatedTickets = [...state.userTickets];
+  //         updatedTickets[existingIndex] = ticket;
+  //       } else {
+  //         updatedTickets = [...state.userTickets, ticket];
+  //       }
+
+  //       return { userTickets: updatedTickets };
+  //     });
+  //   });
+  // },
+
+  // unsubscribeFromMessages: () => {
+  //   const socket = useAuthStore.getState().socket;
+  //   socket.off("ticketUpdates");
+  // },
 }));
 
 export default useTicketStore;

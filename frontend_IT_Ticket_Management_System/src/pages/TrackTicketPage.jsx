@@ -10,17 +10,20 @@ function TrackTicketPage() {
   const [ticketIndex, setTicketIndex] = useState(null);
   const [view, setView] = useState(true);
 
-  const { getUserTickets, userTickets: ticketTracking ,subscribeToMessages, unsubscribeFromMessages} = useTicketStore();
-
+  const {
+    getUserTickets,
+    userTickets: ticketTracking,
+    subscribeToMessages,
+    unsubscribeFromMessages,
+  } = useTicketStore();
 
   useEffect(() => {
     const fetchTicketData = () => {
       try {
-         getUserTickets(false);
+        getUserTickets(false);
         subscribeToMessages();
 
         return () => unsubscribeFromMessages();
-    
       } catch (error) {
         console.error("Fetching ticket data error:", error);
       }
@@ -28,8 +31,6 @@ function TrackTicketPage() {
 
     fetchTicketData();
   }, [subscribeToMessages, unsubscribeFromMessages]);
-
- 
 
   return (
     <div className="min-h-[calc(100vh-76px)]">
@@ -62,8 +63,7 @@ function TrackTicketPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 m-5">
                 {ticketTracking.map(
                   (ticket, index) =>
-                    !ticket.completedIssue &&
-                  (
+                    !ticket.completedIssue && (
                       <div key={index}>
                         <div
                           key={index}
@@ -96,7 +96,9 @@ function TrackTicketPage() {
                               Priority: {ticket.urgent}
                             </p>
                             <div className="flex gap-1 text-sm">
-                              <p>{getFormattedDate(ticket.submissionTime)} at</p>
+                              <p>
+                                {getFormattedDate(ticket.submissionTime)} at
+                              </p>
                               <p>{getFormattedTime(ticket.submissionTime)}</p>
                             </div>
                           </div>
