@@ -10,7 +10,7 @@ function createServer() {
 
   io = new Server(server, {
     cors: {
-      origin: process.env.BASE_URL,
+      origin: "https://it-ticket-management-system-om-app.vercel.app",
       credentials: true,
     },
   });
@@ -26,7 +26,6 @@ function createServer() {
   return server;
 }
 
-// Add this getter
 function getIO() {
   if (!io) {
     throw new Error("Socket.io not initialized. Call createServer() first.");
@@ -35,7 +34,6 @@ function getIO() {
 }
 
 module.exports = { createServer, getIO };
-
 
 // // src/config/socket.js
 // require("dotenv").config();

@@ -1,5 +1,4 @@
 const ticketModel = require("../models/ticket.model");
-// const { io } = require("../config/socket");
 const { getIO } = require("../config/socket");
 
 
