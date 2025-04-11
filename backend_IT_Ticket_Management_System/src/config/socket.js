@@ -8,6 +8,7 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: "https://it-ticket-management-system-om-app.vercel.app",
+    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   },
 });

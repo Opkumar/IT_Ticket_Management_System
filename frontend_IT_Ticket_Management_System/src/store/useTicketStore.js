@@ -77,6 +77,15 @@ export const useTicketStore = create((set, get) => ({
       console.warn("Socket not initialized, cannot subscribe to messages.");
       return;
     }
+    socket.on("createTicket", (ticket) => {
+      console.log("Received new ticket via socket:", ticket);
+      set((state) => {
+       const updatedAllTickets = [...state.allTickets, ticket];
+        return {
+          allTickets: updatedAllTickets,
+        };
+
+      })})
   
     socket.on("ticketUpdates", (ticket) => {
       console.log("Received ticket update via socket:", ticket);

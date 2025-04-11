@@ -9,8 +9,13 @@ function ITteamPage() {
   const [view, setView] = useState(true);
 
   const { authUser } = useAuthStore();
-  const { getAllTickets, allTickets: tickets, updateTicket,subscribeToMessages,
-    unsubscribeFromMessages, } = useTicketStore();
+  const {
+    getAllTickets,
+    allTickets: tickets,
+    updateTicket,
+    subscribeToMessages,
+    unsubscribeFromMessages,
+  } = useTicketStore();
   const {
     allRequirements: requirements,
     getAllRequirements,
@@ -24,12 +29,17 @@ function ITteamPage() {
       setLoading(false);
       subscribeToMessages();
 
-    return () => unsubscribeFromMessages();
+      return () => unsubscribeFromMessages();
     } catch (error) {
       console.log(error);
       setLoading(true);
     }
-  }, [getAllTickets, getAllRequirements]);
+  }, [
+    getAllTickets,
+    getAllRequirements,
+    subscribeToMessages,
+    unsubscribeFromMessages,
+  ]);
 
   useEffect(() => {
     const fetchAcceptedTickets = async () => {
@@ -131,63 +141,65 @@ function ITteamPage() {
           tickets.filter((ticket) => !ticket.acceptedTicketByUserId).length >
           0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {tickets.filter((ticket) => !ticket.acceptedTicketByUserId).map((ticket) => (
-                <div
-                  key={ticket._id}
-                  className="border rounded-lg shadow-md p-4 bg-white flex flex-col justify-between"
-                >
-                  <div className="">
-                    <h2 className="text-xl font-semibold mb-2">
-                      {ticket.typeIssue}
-                    </h2>
+              {tickets
+                .filter((ticket) => !ticket.acceptedTicketByUserId)
+                .map((ticket) => (
+                  <div
+                    key={ticket._id}
+                    className="border rounded-lg shadow-md p-4 bg-white flex flex-col justify-between"
+                  >
+                    <div className="">
+                      <h2 className="text-xl font-semibold mb-2">
+                        {ticket.typeIssue}
+                      </h2>
 
-                    <div className="mb-3">
-                      <img
-                        src={
-                          ticket.issueImage
-                            ? ticket.issueImage
-                            : "https://www.shutterstock.com/image-vector/default-ui-image-placeholder-wireframes-600nw-1037719192.jpg"
-                        }
-                        alt="issue"
-                        className="w-full h-40 object-cover rounded-md"
-                      />
-                    </div>
+                      <div className="mb-3">
+                        <img
+                          src={
+                            ticket.issueImage
+                              ? ticket.issueImage
+                              : "https://www.shutterstock.com/image-vector/default-ui-image-placeholder-wireframes-600nw-1037719192.jpg"
+                          }
+                          alt="issue"
+                          className="w-full h-40 object-cover rounded-md"
+                        />
+                      </div>
 
-                    <p className="text-gray-600 mb-1">
-                      Details: {ticket.issueDetail}
-                    </p>
-                    <p className="text-gray-600 mb-1">
-                      Address: {ticket.issueAddress}
-                    </p>
-                    <div className="flex justify-between items-center mt-3 text-gray-600 text-sm">
-                      <p className="font-bold">
-                        Priority:{" "}
-                        {ticket.urgent ? (
-                          <span className="text-red-400">Urgent</span>
-                        ) : (
-                          <span className="text-green-400">Normal</span>
-                        )}
+                      <p className="text-gray-600 mb-1">
+                        Details: {ticket.issueDetail}
                       </p>
-                      <div className="flex gap-1 text-sm">
-                        <p>{getFormattedDate(ticket.submissionTime)} at</p>
-                        <p>{getFormattedTime(ticket.submissionTime)}</p>
+                      <p className="text-gray-600 mb-1">
+                        Address: {ticket.issueAddress}
+                      </p>
+                      <div className="flex justify-between items-center mt-3 text-gray-600 text-sm">
+                        <p className="font-bold">
+                          Priority:{" "}
+                          {ticket.urgent ? (
+                            <span className="text-red-400">Urgent</span>
+                          ) : (
+                            <span className="text-green-400">Normal</span>
+                          )}
+                        </p>
+                        <div className="flex gap-1 text-sm">
+                          <p>{getFormattedDate(ticket.submissionTime)} at</p>
+                          <p>{getFormattedTime(ticket.submissionTime)}</p>
+                        </div>
                       </div>
                     </div>
+                    <div className="flex  justify-center mt-4 h-11 ">
+                      <button
+                        type="button" // Prevent default form submission
+                        className="border p-2 font-bold shadow-md rounded-sm bg-gray-400 hover:bg-gray-500 transition-all w-full text-center "
+                        onClick={(e) => {
+                          e.preventDefault(); // Prevent default behavior
+                          handleAssignToMe(ticket); // Call your function
+                        }}
+                      >
+                        Assign To Me
+                      </button>
+                    </div>
                   </div>
-                  <div className="flex  justify-center mt-4 h-11 ">
-                    <button
-                      type="button" // Prevent default form submission
-                      className="border p-2 font-bold shadow-md rounded-sm bg-gray-400 hover:bg-gray-500 transition-all w-full text-center "
-                      onClick={(e) => {
-                        e.preventDefault(); // Prevent default behavior
-                        handleAssignToMe(ticket); // Call your function
-                      }}
-                    >
-                      Assign To Me
-                    </button>
-                  </div>
-                </div>
-              ))}
+                ))}
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center text-center py-10 min-h-[calc(100vh-76px)]">

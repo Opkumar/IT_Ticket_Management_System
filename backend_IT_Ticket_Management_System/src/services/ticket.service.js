@@ -32,6 +32,11 @@ module.exports.createTicket = async ({
     submissionTime,
   });
 
+  if (io) {
+    io.emit("createTicket", ticket);
+    console.log("✅ Ticket created emitted via socket.");
+  }
+
   return ticket;
 };
 

@@ -18,7 +18,7 @@ function TrackTicketView({ ticket, confirmationView }) {
     try {
       await updateUser({
         userId: itUserId, // Ensure you provide the correct user ID
-        sentiments: rating,
+        sentiments: [rating],
       });
     } catch (error) {
       console.error("error in IT Executive data fetch : ", error);
