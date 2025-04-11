@@ -1,38 +1,27 @@
 const { Server } = require("socket.io");
+const express = require("express");
 const http = require("http");
-const app = require("../app");
 
-let io;
+const app = express();
+const server = http.createServer(app);
 
-function createServer() {
-  const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "https://it-ticket-management-system-om-app.vercel.app",
+    credentials: true,
+  },
+});
 
-  io = new Server(server, {
-    cors: {
-      origin: "https://it-ticket-management-system-om-app.vercel.app",
-      credentials: true,
-    },
+io.on("connection", (socket) => {
+  console.log(`[${new Date().toISOString()}] A user connected: ${socket.id}`);
+
+  socket.on("disconnect", () => {
+    console.log(`[${new Date().toISOString()}] A user disconnected: ${socket.id}`);
   });
+});
 
-  io.on("connection", (socket) => {
-    console.log("A user connected", socket.id);
+module.exports = { app, server, io };
 
-    socket.on("disconnect", () => {
-      console.log("A user disconnected", socket.id);
-    });
-  });
-
-  return server;
-}
-
-function getIO() {
-  if (!io) {
-    throw new Error("Socket.io not initialized. Call createServer() first.");
-  }
-  return io;
-}
-
-module.exports = { createServer, getIO };
 
 // // src/config/socket.js
 // require("dotenv").config();
