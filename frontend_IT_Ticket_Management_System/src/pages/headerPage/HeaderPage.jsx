@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { NavLink, Link} from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import {
   Sheet,
   SheetContent,
@@ -12,7 +12,6 @@ import useAuthStore from "@/store/useAuthStore";
 import Logo from "@/components/logoComponent/Logo";
 
 function HeaderPage() {
-  const [rating, setRating] = useState(0);
   const { authUser, logout } = useAuthStore();
 
   const handleLogout = () => {
@@ -77,18 +76,28 @@ function HeaderPage() {
                 {authUser?.role === "it-team" && (
                   <div className="grid justify-center">
                     <h3 className="font-bold text-lg">Rate Our Service</h3>
-
                     <div className="flex space-x-2">
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <span
-                          key={star}
-                          className={`text-2xl ${
-                            star <= rating ? "text-yellow-500" : "text-gray-400"
-                          }`}
-                        >
-                          ★
-                        </span>
-                      ))}
+                      {(() => {
+                        const sentiments = authUser.sentiments || [];
+                        const average =
+                          sentiments.length > 0
+                            ? sentiments.reduce((sum, val) => sum + val, 0) /
+                              sentiments.length
+                            : 0;
+
+                        return [1, 2, 3, 4, 5].map((star) => (
+                          <span
+                            key={star}
+                            className={`text-2xl ${
+                              star <= Math.round(average)
+                                ? "text-yellow-500"
+                                : "text-gray-400"
+                            }`}
+                          >
+                            ★
+                          </span>
+                        ));
+                      })()}
                     </div>
                   </div>
                 )}

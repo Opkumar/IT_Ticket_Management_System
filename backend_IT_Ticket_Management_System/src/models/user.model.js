@@ -2,14 +2,14 @@ const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
-const sentimentSchema = new mongoose.Schema({
-  feedback: {
-    type: Number,
-  },
-  givenByUserId: {
-    type: String,
-  },
-});
+// const sentimentSchema = new mongoose.Schema({
+//   feedback: {
+//     type: Number,
+//   },
+//   givenByUserId: {
+//     type: String,
+//   },
+// });
 
 const userSchema = new mongoose.Schema(
   {
@@ -56,7 +56,10 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    sentiments: [sentimentSchema],
+    sentiments: {
+      type: [Number],
+      default: [],
+    },
     todayAcceptedTickets: {
       type: Number,
       default: 0,
