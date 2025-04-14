@@ -28,5 +28,8 @@ router.get("/check",authMiddleware.authUser,userController.getUserProfile);
 router.get("/get-users",authMiddleware.authUser,userController.getUsersDetails);
 router.post("/update",authMiddleware.authUser,userController.updateUserProfile);
 router.get("/logout",authMiddleware.authUser,userController.logoutUser);
+router.post("/reset-password",userController.resetPassword);
+router.post("/reset-password/:id/:token",userController.updatePassword);
+
 
 module.exports = router;

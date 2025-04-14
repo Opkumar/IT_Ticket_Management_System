@@ -500,7 +500,7 @@ function TicketPage() {
         return;
       }
     }
-    console.log(selectedAddressIn);
+    // console.log(selectedAddressIn);
     if (selectedAddressIn === null || "") {
       setRequireIssue2(true);
       setSubmitLoading(false);

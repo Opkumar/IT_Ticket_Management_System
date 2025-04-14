@@ -7,6 +7,7 @@ const sendEmail = require("../utils/sendEmail.js");
 const tokenModel = require("../models/token.model.js");
 const { oauth2Client } = require("../utils/googleClient.js");
 const axios = require("axios");
+const resetPasswordEmail = require("../utils/resetPasswordEmail.js");
 
 const isValidDomain = (email) => {
   const allowedDomains = [
@@ -229,11 +230,65 @@ module.exports.updateUserProfile = async (req, res, next) => {
   res.status(200).json(updateUser);
 };
 
-module.exports.logoutUser = async (req, res, next) => {
+module.exports.logoutUser = async (req, res, next) => {  
   res.clearCookie("token");
   const token = req.cookies.token || req.headers.authorization?.split(" ")[1];
 
   await blacklistTokenModel.create({ token });
 
   res.status(200).json({ message: "Logout successfully" });
+};
+
+module.exports.resetPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    const user = await userModel.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const token = await user.generateAuthToken();
+
+    const token2 = await tokenModel.create({
+      userId: user._id,
+      token: token,
+    });
+
+    const resetUrl = `${process.env.BASE_URL}/reset-password/${user._id}/${token2.token}`;
+    // const resetUrl = `http://localhost:5173/reset-password/${user._id}/${token2.token}`;
+    await resetPasswordEmail(user.email, "Password Reset", resetUrl);
+
+    res.status(200).json({ message: "Password reset link sent to email" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+module.exports.updatePassword = async (req, res) => {
+  try {
+    const { id, token } = req.params;
+    const { newPassword } = req.body;
+
+    const user = await userModel.findById(id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const validToken = await tokenModel.findOne({ userId:id, token });
+    if (!validToken) {
+      return res.status(400).json({ message: "Invalid or expired token" });
+    }
+
+    const hashedPassword = await userModel.hashPassword(newPassword);
+    user.password = hashedPassword;
+    await user.save();
+
+    await validToken.deleteOne();
+
+    res.status(200).json({ message: "Password updated successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 };

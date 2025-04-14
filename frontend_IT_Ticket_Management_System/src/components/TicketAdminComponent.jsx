@@ -1,11 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import {
-  ChevronDown,
-  MoreHorizontal,
-  Filter,
-  CalendarIcon,
-} from "lucide-react";
+import { ChevronDown, MoreHorizontal, Filter } from "lucide-react";
 import {
   flexRender,
   getCoreRowModel,
@@ -60,6 +55,7 @@ import {
 
 import ComAdminRequirementList from "./ComAdminRequirementListComponent";
 import ItTable from "./ItTableComponent";
+import useTicketStore from "@/store/useTicketStore";
 
 function TicketAdmin({ allUsers, allTickets: data }) {
   const [sorting, setSorting] = useState([]);
@@ -68,11 +64,25 @@ function TicketAdmin({ allUsers, allTickets: data }) {
   const [columnVisibility, setColumnVisibility] = useState({});
   const [rowSelection, setRowSelection] = useState({});
   const [itAssignedView, setItAssignedView] = useState(false);
+  const [itReAssignedView, setItReAssignedView] = useState(false);
   const [isOpenView, setIsOpenView] = useState(true);
   const [ticketDetails, setTicketDetails] = useState(null);
   const [expandedRow, setExpandedRow] = useState(null);
   const [dateRange, setDateRange] = useState({ from: null, to: null });
   const [open, setOpen] = useState(false); // Track popover state
+
+  const [selectedTicket, setSelectedTicket] = useState(null);
+  const { updateTicket } = useTicketStore();
+
+  const handlePriorityChange = async (data) => {
+    try {
+      await updateTicket(data);
+      console.log("Priority updated ");
+      window.location.reload();
+    } catch (err) {
+      console.error("Failed to update priority", err);
+    }
+  };
 
   const itUserDataMap = useMemo(() => {
     return allUsers.reduce((acc, user) => {
@@ -106,14 +116,10 @@ function TicketAdmin({ allUsers, allTickets: data }) {
           ? getFormattedDateAndTime(row.original.assignedAt)
           : "N/A",
         "Start Working": row.original.startToTicket
-          ? getFormattedDateAndTime(
-              row.original.startWorkingOnTicketIssueTime
-            )
+          ? getFormattedDateAndTime(row.original.startWorkingOnTicketIssueTime)
           : "N/A",
         "Reached Address": row.original.reachIssueAddress
-          ? getFormattedDateAndTime(
-              row.original.reachAddressIssueTime
-            )
+          ? getFormattedDateAndTime(row.original.reachAddressIssueTime)
           : "N/A",
         "Started Solving": row.original.solvingIssue
           ? getFormattedDateAndTime(row.original.solvingIssueTime)
@@ -121,8 +127,7 @@ function TicketAdmin({ allUsers, allTickets: data }) {
         "Completed Issue": row.original.completedIssue
           ? getFormattedDateAndTime(row.original.completedTime)
           : "N/A",
-        "User Issue Reason":
-          row.original.userIssueReasonDetail || "N/A",
+        "User Issue Reason": row.original.userIssueReasonDetail || "N/A",
       };
     });
 
@@ -138,6 +143,7 @@ function TicketAdmin({ allUsers, allTickets: data }) {
   const columns = [
     {
       accessorKey: "issueDetail",
+      meta: { label: "Title" },
       header: ({ column }) => {
         return (
           <div className="flex items-center space-x-2">
@@ -166,6 +172,7 @@ function TicketAdmin({ allUsers, allTickets: data }) {
     },
     {
       accessorKey: "urgent",
+      meta: { label: "Priority" },
       header: ({ column }) => {
         return (
           <div className="flex items-center space-x-2">
@@ -202,18 +209,56 @@ function TicketAdmin({ allUsers, allTickets: data }) {
           </div>
         );
       },
-      cell: ({ row }) => (
-        <div
-          className={`capitalize ${
-            row.getValue("urgent") ? "text-red-500 font-semibold" : ""
-          }`}
-        >
-          {row.getValue("urgent")}
-        </div>
-      ),
+      cell: ({ row }) => {
+        const priority = row.getValue("urgent");
+        const ticketId = row.original._id; // Get the ticket ID from the row data
+
+        return (
+          <HoverCard>
+            <HoverCardTrigger asChild>
+              <div
+                className={`capitalize cursor-pointer ${
+                  priority === "urgent"
+                    ? "text-red-500 font-semibold"
+                    : priority === "moderate"
+                    ? "text-yellow-500 font-semibold"
+                    : "text-green-600"
+                }`}
+              >
+                {priority}
+              </div>
+            </HoverCardTrigger>
+
+            <HoverCardContent className="w-48 space-y-1" asChild>
+              <div className="w-full">
+                <div className="text-sm font-medium text-muted-foreground mb-2">
+                  Change Priority
+                </div>
+                {["normal", "moderate", "urgent"].map((level) => (
+                  <Button
+                    key={level}
+                    variant="ghost"
+                    size="sm"
+                    className="w-full justify-start text-left capitalize"
+                    onClick={(e) => {
+                      handlePriorityChange({
+                        ticketId,
+                        urgent: level,
+                      });
+                    }}
+                  >
+                    {level}
+                  </Button>
+                ))}
+              </div>
+            </HoverCardContent>
+          </HoverCard>
+        );
+      },
     },
     {
       accessorKey: "typeIssue",
+      meta: { label: "Category" },
       header: ({ column }) => {
         return (
           <div className="flex items-center space-x-2">
@@ -307,6 +352,7 @@ function TicketAdmin({ allUsers, allTickets: data }) {
     },
     {
       accessorKey: "submissionTime",
+      meta: { label: "Ticket Raised Time" },
       header: ({ column }) => (
         <div className="flex items-center space-x-2">
           <span className="">Ticket Raised Time</span>
@@ -367,6 +413,7 @@ function TicketAdmin({ allUsers, allTickets: data }) {
     },
     {
       accessorKey: "acceptedTicketByUserId",
+      meta: { label: "Assigned to" },
       header: ({ column }) => {
         return (
           <div className="flex items-center space-x-2">
@@ -406,36 +453,64 @@ function TicketAdmin({ allUsers, allTickets: data }) {
         const assignedUser = itUserDataMap[assignedUserId];
 
         return assignedUserId ? (
-          <HoverCard>
-            <HoverCardTrigger asChild>
-              <Button className="text-orange-400" variant="link">
-                {assignedUser?.fullname?.firstname || "Unknown User"}
-              </Button>
-            </HoverCardTrigger>
-            <HoverCardContent className="w-80">
-              <div className="flex justify-between space-x-4">
-                <Avatar>
-                  <AvatarImage
-                    src={assignedUser?.userImage || "/default-avatar.png"}
-                  />
-                </Avatar>
-                <div className="space-y-1">
-                  <h4 className="text-sm font-semibold">
-                    {assignedUser?.fullname?.firstname}{" "}
-                    {assignedUser?.fullname?.lastname}
-                  </h4>
-                  <p className="text-sm">{assignedUser?.email}</p>
-                  <div className="flex items-center pt-2">
-                    <span className="text-xs text-muted-foreground">
-                      Role: {assignedUser?.role}
-                    </span>
+          <div className="">
+            <HoverCard>
+              <HoverCardTrigger asChild>
+                <Button className="text-orange-400" variant="link">
+                  {assignedUser?.fullname?.firstname || "Unknown User"}
+                </Button>
+              </HoverCardTrigger>
+              <HoverCardContent className="w-80">
+                <div className="flex justify-between space-x-4">
+                  <Avatar>
+                    <AvatarImage
+                      src={assignedUser?.userImage || "/default-avatar.png"}
+                    />
+                  </Avatar>
+                  <div className="space-y-1">
+                    <h4 className="text-sm font-semibold">
+                      {assignedUser?.fullname?.firstname}{" "}
+                      {assignedUser?.fullname?.lastname}
+                    </h4>
+                    <p className="text-sm">{assignedUser?.email}</p>
+                    <div className="flex items-center pt-2">
+                      <span className="text-xs text-muted-foreground">
+                        Role: {assignedUser?.role}
+                      </span>
+                    </div>
+                    <div className="flex justify-end">
+                      <Button
+                        variant="outline"
+                        onClick={() => {
+                          setSelectedTicket(row.original);
+                          setItReAssignedView(true);
+                        }}
+                        className="bg-transparent text-red-400"
+                      >
+                        Re-Assign
+                      </Button>
+                    </div>
                   </div>
-                  
-                  
                 </div>
-              </div>
-            </HoverCardContent>
-          </HoverCard>
+              </HoverCardContent>
+            </HoverCard>
+            <Dialog open={itReAssignedView} onOpenChange={setItReAssignedView}>
+              <DialogContent className="max-w-[1000px]">
+                <DialogHeader>
+                  <DialogTitle>Re-Assign To IT Member</DialogTitle>
+                </DialogHeader>
+                {itReAssignedView && (
+                  <ItTable
+                    itrole={"it-team"}
+                    itReAssignedView={itReAssignedView}
+                    ticketDataOfRow={selectedTicket}
+                    allUsers={allUsers}
+                    allTickets={data}
+                  />
+                )}
+              </DialogContent>
+            </Dialog>
+          </div>
         ) : (
           <Dialog open={itAssignedView} onOpenChange={setItAssignedView}>
             <DialogTrigger asChild>
@@ -469,6 +544,7 @@ function TicketAdmin({ allUsers, allTickets: data }) {
     },
     {
       accessorKey: "status",
+      meta: { label: "Status" },
       header: ({ column }) => {
         return (
           <div className="flex items-center space-x-2">
@@ -605,37 +681,6 @@ function TicketAdmin({ allUsers, allTickets: data }) {
     },
   ];
 
-  const applyFilter = (columnId, value) => {
-    setColumnFilters((prev) => {
-      const existingFilter = prev.find((filter) => filter.id === columnId);
-      if (existingFilter) {
-        // Update existing filter
-        return prev.map((filter) =>
-          filter.id === columnId ? { ...filter, value } : filter
-        );
-      } else {
-        // Add new filter
-        return [...prev, { id: columnId, value }];
-      }
-    });
-  };
-
-  const applyFilter2 = (columnId, value) => {
-    setColumnFilters((prevFilters) => {
-      const existingFilter = prevFilters.find(
-        (filter) => filter.id === columnId
-      );
-
-      if (existingFilter) {
-        return prevFilters.map((filter) =>
-          filter.id === columnId ? { ...filter, value } : filter
-        );
-      } else {
-        return [...prevFilters, { id: columnId, value }];
-      }
-    });
-  };
-
   const table = useReactTable({
     data,
     columns,
@@ -680,30 +725,63 @@ function TicketAdmin({ allUsers, allTickets: data }) {
 
   return (
     <div className="w-full">
-      <div className="flex w-full h-10 pl-2 bg-white shadow-sm">
-        <button
-          className={`px-5 ${
-            isOpenView
-              ? "text-blue-700 border-b-4 border-blue-600 rounded-md"
-              : ""
-          }`}
-          onClick={() => setIsOpenView(true)}
-        >
-          Issue Tickets
-        </button>
-        <button
-          className={`px-5 ${
-            !isOpenView
-              ? "text-blue-700 border-b-4 border-blue-600 rounded-md"
-              : ""
-          }`}
-          onClick={() => setIsOpenView(false)}
-        >
-          Requirement Tickets
-        </button>
+      <div className="w-full bg-white rounded-t-lg shadow-sm p-1">
+        <div className="flex gap-1 items-center">
+          {/* Issue Tickets Tab */}
+          <button
+            className={`flex items-center justify-center px-6 py-3 text-sm font-medium rounded-md transition-all duration-200 ease-in-out ${
+              isOpenView
+                ? "bg-blue-50 text-blue-700 border-b-2 border-blue-600 shadow-sm"
+                : "text-gray-600 hover:text-gray-800 hover:bg-gray-50"
+            }`}
+            onClick={() => setIsOpenView(true)}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4 mr-2"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"
+              />
+            </svg>
+            Issue Tickets
+          </button>
+
+          {/* Requirement Tickets Tab */}
+          <button
+            className={`flex items-center justify-center px-6 py-3 text-sm font-medium rounded-md transition-all duration-200 ease-in-out ${
+              !isOpenView
+                ? "bg-blue-50 text-blue-700 border-b-2 border-blue-600 shadow-sm"
+                : "text-gray-600 hover:text-gray-800 hover:bg-gray-50"
+            }`}
+            onClick={() => setIsOpenView(false)}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4 mr-2"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+              />
+            </svg>
+            Requirement Tickets
+          </button>
+        </div>
       </div>
       {isOpenView ? (
-        <div className="w-full p-10">
+        <div className="w-full px-10 py-2">
           <div className="flex items-center py-4">
             <Input
               placeholder="Filter tickets..."
@@ -727,20 +805,18 @@ function TicketAdmin({ allUsers, allTickets: data }) {
                 {table
                   .getAllColumns()
                   .filter((column) => column.getCanHide())
-                  .map((column) => {
-                    return (
-                      <DropdownMenuCheckboxItem
-                        key={column.id}
-                        className="capitalize"
-                        checked={column.getIsVisible()}
-                        onCheckedChange={(value) =>
-                          column.toggleVisibility(!!value)
-                        }
-                      >
-                        {column.id}
-                      </DropdownMenuCheckboxItem>
-                    );
-                  })}
+                  .map((column) => (
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className="capitalize"
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) =>
+                        column.toggleVisibility(!!value)
+                      }
+                    >
+                      {column.columnDef.meta?.label || column.id}
+                    </DropdownMenuCheckboxItem>
+                  ))}
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
@@ -748,7 +824,7 @@ function TicketAdmin({ allUsers, allTickets: data }) {
             <Table>
               <TableHeader>
                 {table.getHeaderGroups().map((headerGroup) => (
-                  <TableRow key={headerGroup.id}>
+                  <TableRow key={headerGroup.id} className="bg-slate-200">
                     {headerGroup.headers.map((header) => (
                       <TableHead key={header.id}>
                         {header.isPlaceholder
@@ -1004,29 +1080,29 @@ function TicketAdmin({ allUsers, allTickets: data }) {
             </Table>
           </div>
           <div className="flex items-center justify-end space-x-2 py-4 px-5">
-                    <div className="flex-1 text-sm text-muted-foreground">
-                      {table.getFilteredSelectedRowModel().rows.length} of{" "}
-                      {table.getFilteredRowModel().rows.length} row(s) selected.
-                    </div>
-                    <div className="space-x-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => table.previousPage()}
-                        disabled={!table.getCanPreviousPage()}
-                      >
-                        Previous
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => table.nextPage()}
-                        disabled={!table.getCanNextPage()}
-                      >
-                        Next
-                      </Button>
-                    </div>
-                  </div>
+            <div className="flex-1 text-sm text-muted-foreground">
+              {table.getFilteredSelectedRowModel().rows.length} of{" "}
+              {table.getFilteredRowModel().rows.length} row(s) selected.
+            </div>
+            <div className="space-x-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => table.previousPage()}
+                disabled={!table.getCanPreviousPage()}
+              >
+                Previous
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => table.nextPage()}
+                disabled={!table.getCanNextPage()}
+              >
+                Next
+              </Button>
+            </div>
+          </div>
         </div>
       ) : (
         <ComAdminRequirementList />
@@ -1036,4 +1112,3 @@ function TicketAdmin({ allUsers, allTickets: data }) {
 }
 
 export default TicketAdmin;
-

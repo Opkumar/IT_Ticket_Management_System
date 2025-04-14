@@ -114,7 +114,7 @@ function HeaderPage() {
                     </SheetClose>
                   </NavLink>
 
-                  {authUser?.role === "faculty" && (
+                  {authUser?.role !== "it-team" && (
                     <NavLink
                       to="/create-ticket"
                       className={({ isActive }) =>

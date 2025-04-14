@@ -1,4 +1,3 @@
-import useAuthStore from '@/store/useAuthStore';
 import React from 'react';
 import Autoplay from "embla-carousel-autoplay";
 

@@ -1,7 +1,7 @@
 import { axiosInstance } from "@/lib/axios";
 import { create } from "zustand";
 import io from "socket.io-client";
-// const BASE_URL = "https://it-ticket-management-system-xi.vercel.app";
+// const BASE_URL = "http://localhost:5173";
 const BASE_URL = "https://it-ticket-management-system.onrender.com";
 
 export const useAuthStore = create((set, get) => ({
@@ -13,25 +13,7 @@ export const useAuthStore = create((set, get) => ({
   allUsers: [],
   socket: null,
 
-  // checkAuth: async () => {
-  //   set({ isCheckingAuth: true });
-  //   try {
-  //     const res = await axiosInstance.get("/users/check", {
-  //       withCredentials: true, // VERY IMPORTANT to include cookies
-  //     });
-  //     set({ authUser: res.data });
-
-  //     get().connectSocket();
-  //   } catch (error) {
-  //     console.log(
-  //       "Error in checkAuth:",
-  //       error?.response?.data?.message || error.message
-  //     );
-  //     set({ authUser: null });
-  //   } finally {
-  //     set({ isCheckingAuth: false });
-  //   }
-  // },
+  
   checkAuth: async () => {
     set({ isCheckingAuth: true });
   
@@ -101,31 +83,14 @@ export const useAuthStore = create((set, get) => ({
         "Google Auth Error:",
         error?.response?.data?.message || error.message
       );
+      set({ authUser: null });
+      throw error; // Rethrow the error to handle it in the component
     } finally {
       set({ isLoggingIn: false });
     }
   },
 
-  // login: async (info) => {
-  //   set({ isLoggingIn: true });
-  //   try {
-  //     const res = await axiosInstance.post("/users/login", info, {
-  //       withCredentials: true,
-  //     });
-  //     set({ authUser: res.data });
-  //     console.log("User login successful");
-  //     get().connectSocket();
-  //   } catch (error) {
-  //     console.log(
-  //       "Login Error:",
-  //       error?.response?.data?.message || error.message
-  //     );
-  //     set({ authUser: null });
-  //   } finally {
-  //     set({ isLoggingIn: false });
-  //   }
-  // },
-  login: async (info) => {
+ login: async (info) => {
     set({ isLoggingIn: true });
     try {
       const res = await axiosInstance.post("/users/login", info, {
@@ -145,14 +110,20 @@ export const useAuthStore = create((set, get) => ({
         error?.response?.data?.message || error.message
       );
       set({ authUser: null });
+      throw error; // Rethrow the error to handle it in the component
     } finally {
       set({ isLoggingIn: false });
     }
   },
   logout: async () => {
     try {
-      await axiosInstance.get("/users/logout");
+      const token = localStorage.getItem("token");
+      await axiosInstance.get("/users/logout", {
+        withCredentials: true,
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      });
       set({ authUser: null });
+      localStorage.removeItem("token");
       console.log("User logged out successfully");
       get().socket.disconnect();
     } catch (error) {
@@ -160,6 +131,35 @@ export const useAuthStore = create((set, get) => ({
         "Logout Error:",
         error?.response?.data?.message || error.message
       );
+    }
+  },
+  resetPassword: async (email) => {
+    try {
+      const res = await axiosInstance.post("/users/reset-password", { email });
+      console.log("Password reset email sent successfully");
+      return res.data;
+    } catch (error) {
+      console.log(
+        "Reset Password Error:",
+        error?.response?.data?.message || error.message
+      );
+      throw error; // Rethrow the error to handle it in the component
+    }
+  },
+  updatePassword: async (id, token, newPassword) => {
+    try {
+      const res = await axiosInstance.post(
+        `/users/reset-password/${id}/${token}`,
+        { newPassword }
+      );
+      console.log("Password updated successfully");
+      return res.data;
+    } catch (error) {
+      console.log(
+        "Update Password Error:",
+        error?.response?.data?.message || error.message
+      );
+      throw error; // Rethrow the error to handle it in the component
     }
   },
 

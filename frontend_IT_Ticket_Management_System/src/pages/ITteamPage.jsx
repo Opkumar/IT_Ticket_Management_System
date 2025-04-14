@@ -41,43 +41,6 @@ function ITteamPage() {
     unsubscribeFromMessages,
   ]);
 
-  useEffect(() => {
-    const fetchAcceptedTickets = async () => {
-      //   if (!user) {
-      //     console.error("No authenticated user found!");
-      //     return;
-      //   }
-      //   try {
-      //     const acceptedTicketsRef = ref(db, `users/${user.uid}/acceptedTickets`);
-      //     const today = format(new Date(), "dd/MM/yyyy");
-      //     const snapshot = await get(acceptedTicketsRef);
-      //     if (snapshot.exists()) {
-      //       let todayAcceptedTickets = 0;
-      //       let todayCompletedTickets = 0;
-      //       snapshot.forEach((doc) => {
-      //         const ticketData = doc.val();
-      //         const ticketDate = format(ticketData.assignedTime, "dd/MM/yyyy");
-      //         if (ticketData.completedIssue === false && ticketDate === today) {
-      //           todayAcceptedTickets++;
-      //         }
-      //         if (ticketData.completedIssue === true && ticketDate === today) {
-      //           todayCompletedTickets++;
-      //         }
-      //       });
-      //       // Increment acceptedTicketNumber instead of replacing it
-      //       await update(ref(db, `users/${user.uid}`), {
-      //         todayAcceptedTickets: todayAcceptedTickets,
-      //         todayCompletedTickets: todayCompletedTickets,
-      //       });
-      //     }
-      //   } catch (error) {
-      //     console.error("Error fetching accepted tickets: ", error);
-      //   }
-    };
-
-    fetchAcceptedTickets();
-  }, []); // Run this effect when user changes
-
   const handleAssignToMe = async (ticket) => {
     try {
       await updateTicket({
@@ -89,7 +52,6 @@ function ITteamPage() {
       // window.location.reload();
     } catch (error) {
       console.error("Error assigning ticket: ", error);
-      //   setError("Failed to assign ticket.");
     }
   };
   const handleAssignToMe2 = async (requirement) => {

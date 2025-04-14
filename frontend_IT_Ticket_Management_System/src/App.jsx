@@ -1,9 +1,4 @@
-import {
-  Routes,
-  Route,
-  Navigate,
-
-} from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { useEffect, useMemo } from "react";
 import useAuthStore from "./store/useAuthStore";
 // import SignupPage from "./pages/signupPage";
@@ -24,7 +19,7 @@ import AssignedRequirementsPage from "./pages/AssignedRequirementsPage";
 import HistoryItTeamPage from "./pages/HistoryItTeamPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import PrivateRoute from "./utils/PrivateRoute";
-
+import ResetPassword from "./pages/ResetPassword";
 
 function App() {
   const { checkAuth, authUser, isCheckingAuth } = useAuthStore();
@@ -61,8 +56,7 @@ function App() {
   }
 
   return (
-    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID
-    }>
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
       <div>
         {authUser && <HeaderPage />}
 
@@ -70,20 +64,76 @@ function App() {
           <Route
             path="/"
             element={
-              authUser ? <PrivateRoute>{renderRoleComponent}</PrivateRoute> : <Navigate to="/login"  />
+              authUser ? (
+                <PrivateRoute>{renderRoleComponent}</PrivateRoute>
+              ) : (
+                <Navigate to="/login" />
+              )
             }
           />
-          <Route path="/signup" element={!authUser ? <SignupPage /> : <Navigate to="/"  />} />
-          <Route path="/login" element={!authUser ? <LoginPage /> : <Navigate to="/"  />} />
+          <Route
+            path="/signup"
+            element={!authUser ? <SignupPage /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/login"
+            element={!authUser ? <LoginPage /> : <Navigate to="/" />}
+          />
           <Route path="/:id/verify/:token" element={<VerifyPage />} />
+          <Route
+            path="/reset-password/:id/:token"
+            element={<ResetPassword />}
+          />
 
           {/* Protected Routes */}
-          <Route path="/create-ticket" element={<PrivateRoute><TicketPage /></PrivateRoute>} />
-          <Route path="/ticket/tracking" element={<PrivateRoute><TrackTicketPage /></PrivateRoute>} />
-          <Route path="/ticket/history" element={<PrivateRoute><HistoryTicketPage /></PrivateRoute>} />
-          <Route path="/ticket/assigned-ticket" element={<PrivateRoute><AssignedTicketsPage /></PrivateRoute>} />
-          <Route path="/Requirement/assigned-Requirement" element={<PrivateRoute><AssignedRequirementsPage /></PrivateRoute>} />
-          <Route path="/ticket-it-team/history" element={<PrivateRoute><HistoryItTeamPage /></PrivateRoute>} />
+          <Route
+            path="/create-ticket"
+            element={
+              <PrivateRoute>
+                <TicketPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/ticket/tracking"
+            element={
+              <PrivateRoute>
+                <TrackTicketPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/ticket/history"
+            element={
+              <PrivateRoute>
+                <HistoryTicketPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/ticket/assigned-ticket"
+            element={
+              <PrivateRoute>
+                <AssignedTicketsPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/Requirement/assigned-Requirement"
+            element={
+              <PrivateRoute>
+                <AssignedRequirementsPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/ticket-it-team/history"
+            element={
+              <PrivateRoute>
+                <HistoryItTeamPage />
+              </PrivateRoute>
+            }
+          />
 
           <Route path="/*" element={<NotFoundPage />} />
         </Routes>

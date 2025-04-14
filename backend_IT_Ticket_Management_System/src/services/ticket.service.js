@@ -55,6 +55,7 @@ module.exports.updateTicket = async (data) => {
       ticketId,
       acceptedTicketByUserId,
       submissionTime,
+      urgent,
       assignedAt,
       startWorkingOnTicketIssueTime,
       reachAddressIssueTime,
@@ -81,6 +82,7 @@ module.exports.updateTicket = async (data) => {
     // Only update fields that are provided
     if (acceptedTicketByUserId !== undefined) ticket.acceptedTicketByUserId = acceptedTicketByUserId;
     if (submissionTime !== undefined) ticket.submissionTime = submissionTime;
+    if (urgent !== undefined) ticket.urgent = urgent;
     if (assignedAt !== undefined) ticket.assignedAt = assignedAt;
     if (startWorkingOnTicketIssueTime !== undefined) ticket.startWorkingOnTicketIssueTime = startWorkingOnTicketIssueTime;
     if (reachAddressIssueTime !== undefined) ticket.reachAddressIssueTime = reachAddressIssueTime;
