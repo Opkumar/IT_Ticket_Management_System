@@ -1,8 +1,8 @@
 import { axiosInstance } from "@/lib/axios";
 import { create } from "zustand";
 import io from "socket.io-client";
-const BASE_URL = "http://localhost:5173";
-// const BASE_URL = "https://it-ticket-management-system.onrender.com";
+// const BASE_URL = "http://localhost:5173";
+const BASE_URL = "https://it-ticket-management-system.onrender.com";
 
 export const useAuthStore = create((set, get) => ({
   authUser: null,
