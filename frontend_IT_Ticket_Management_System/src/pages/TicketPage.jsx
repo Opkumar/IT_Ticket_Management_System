@@ -376,7 +376,8 @@ function TicketPage() {
                       <ChevronDown className="ml-2 h-4 w-4" />
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-[280px]">
+
+                  <DropdownMenuContent className="w-[280px] max-h-[234px] overflow-y-auto">
                     {addressOptions.map((address) => (
                       <Fragment key={address.value}>
                         <DropdownMenuItem
