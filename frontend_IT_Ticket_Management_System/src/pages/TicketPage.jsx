@@ -209,7 +209,7 @@ function TicketPage() {
                   <DropdownMenuTrigger asChild>
                     <Button
                       variant="outline"
-                      className="w-full justify-between"
+                      className="w-full justify-between focus:outline-none"
                     >
                       {selectedOption
                         ? options.find((opt) => opt.value === selectedOption)
@@ -362,7 +362,7 @@ function TicketPage() {
                   <DropdownMenuTrigger asChild>
                     <Button
                       variant="outline"
-                      className="w-full justify-between"
+                      className="w-full justify-between focus:outline-none"
                     >
                       {selectedAddress
                         ? addressOptions.find(
