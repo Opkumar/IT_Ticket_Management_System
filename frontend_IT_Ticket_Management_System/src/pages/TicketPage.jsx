@@ -458,25 +458,6 @@ function TicketPage() {
                 )}
               </div>
 
-              {/* Urgency Toggle */}
-              {/* <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <div
-                    className={`w-14 h-7 flex items-center bg-gray-300 rounded-full p-1 cursor-pointer transition-colors duration-300 ${
-                      isOn ? "bg-green-500" : ""
-                    }`}
-                    onClick={toggleSwitch}
-                  >
-                    <div
-                      className={`bg-white w-5 h-5 rounded-full shadow-md transform transition-transform duration-300 ${
-                        isOn ? "translate-x-7" : ""
-                      }`}
-                    ></div>
-                  </div>
-                  <span className="ml-3 text-gray-700">Is it urgent?</span>
-                </div>
-              </div> */}
-
               {/* Submit Button */}
               <div className="flex justify-center items-center">
                 <button

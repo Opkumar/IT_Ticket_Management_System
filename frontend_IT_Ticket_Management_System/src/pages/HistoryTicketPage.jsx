@@ -7,9 +7,7 @@ function HistoryTicketPage() {
   const [tractView, setTrackView] = useState(true);
   const [ticketIndex, setTicketIndex] = useState(null);
   const [view, setView] = useState(true);
-
   const { getUserTickets ,userTickets:ticketTracking} = useTicketStore();
- 
 
   useEffect(() => {
     const fetchTicketData = async () => {
@@ -22,8 +20,6 @@ function HistoryTicketPage() {
 
     fetchTicketData();
   }, [getUserTickets]);
-
-
 
   return (
     <div className="min-h-[calc(100vh-76px)]">

@@ -1,10 +1,9 @@
 import useAuthStore from "@/store/useAuthStore";
 import useRequirementStore from "@/store/useRequirementStore";
 import { getFormattedDate } from "@/utils/dateTimeUtils";
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 
 function AssignedRequirementsPage() {
-  //  const [requirements, setRequirements] = useState([]);
 
   const {
     allRequirements: requirements,
@@ -16,7 +15,6 @@ function AssignedRequirementsPage() {
     getAllRequirements();
   }, [getAllRequirements]);
 
-  // console.log(requirements);
 
   const handleAssignCompleted = async (requirement) => {
     try {
@@ -31,15 +29,6 @@ function AssignedRequirementsPage() {
     }
   };
 
-  // if (loading) {
-  //   return (
-  //     <div className="text-center py-10 min-h-[calc(100vh-76px)]">
-  //       <div className="flex justify-center items-center h-screen bg-gray-50">
-  //         <div className="w-16 h-16 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
-  //       </div>
-  //     </div>
-  //   );
-  // }
   return (
     <div className="container mx-auto  p-5 min-h-[calc(100vh-76px)]">
       <h1 className={`text-2xl font-bold mb-2 p-2 text-center rounded-md `}>
