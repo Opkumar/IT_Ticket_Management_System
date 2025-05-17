@@ -1119,7 +1119,8 @@ import React from "react"
 
 import { useState, useEffect, useMemo } from "react"
 import { Avatar, AvatarImage } from "@/components/ui/avatar"
-import { ChevronDown, MoreHorizontal, Filter, Download, Calendar } from "lucide-react"
+import { ChevronDown, MoreHorizontal, Filter, Download } from "lucide-react"
+import { Calendar } from "@/components/ui/calendar";
 import {
   flexRender,
   getCoreRowModel,
@@ -1179,6 +1180,7 @@ export default function TicketAdmin({ allUsers, allTickets: data }) {
     resolvingIssue: "false",
     completedIssue: "false",
   })
+  const [open, setOpen] = useState(false);
 
   const handlePriorityChange = async (data) => {
     try {
