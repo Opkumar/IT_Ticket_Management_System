@@ -140,546 +140,546 @@
 //     XLSX.writeFile(workbook, "tickets_data.xlsx");
 //   };
 
-//   const columns = [
-//     {
-//       accessorKey: "issueDetail",
-//       meta: { label: "Title" },
-//       header: ({ column }) => {
-//         return (
-//           <div className="flex items-center space-x-2">
-//             <span>Title</span>
-//             <DropdownMenu>
-//               <DropdownMenuTrigger asChild>
-//                 <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-//                   <Filter className="h-4 w-4" />
-//                 </Button>
-//               </DropdownMenuTrigger>
-//               <DropdownMenuContent align="start">
-//                 <Input
-//                   placeholder="Filter titles..."
-//                   value={column.getFilterValue() || ""}
-//                   onChange={(e) => column.setFilterValue(e.target.value)}
-//                   className="max-w-sm mb-2"
-//                 />
-//               </DropdownMenuContent>
-//             </DropdownMenu>
-//           </div>
-//         );
-//       },
-//       cell: ({ row }) => (
-//         <div className="capitalize">{row.getValue("issueDetail")}</div>
-//       ),
-//     },
-//     {
-//       accessorKey: "urgent",
-//       meta: { label: "Priority" },
-//       header: ({ column }) => {
-//         return (
-//           <div className="flex items-center space-x-2">
-//             <span>Priority</span>
-//             <DropdownMenu>
-//               <DropdownMenuTrigger asChild>
-//                 <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-//                   <Filter className="h-4 w-4" />
-//                 </Button>
-//               </DropdownMenuTrigger>
-//               <DropdownMenuContent align="start">
-//                 <DropdownMenuItem
-//                   onClick={() => column.setFilterValue(undefined)}
-//                 >
-//                   All
-//                 </DropdownMenuItem>
-//                 <DropdownMenuItem
-//                   onClick={() => column.setFilterValue("normal")}
-//                 >
-//                   Normal
-//                 </DropdownMenuItem>
-//                 <DropdownMenuItem
-//                   onClick={() => column.setFilterValue("moderate")}
-//                 >
-//                   Moderate
-//                 </DropdownMenuItem>
-//                 <DropdownMenuItem
-//                   onClick={() => column.setFilterValue("urgent")}
-//                 >
-//                   Urgent
-//                 </DropdownMenuItem>
-//               </DropdownMenuContent>
-//             </DropdownMenu>
-//           </div>
-//         );
-//       },
-//       cell: ({ row }) => {
-//         const priority = row.getValue("urgent");
-//         const ticketId = row.original._id; // Get the ticket ID from the row data
+  // const columns = [
+  //   {
+  //     accessorKey: "issueDetail",
+  //     meta: { label: "Title" },
+  //     header: ({ column }) => {
+  //       return (
+  //         <div className="flex items-center space-x-2">
+  //           <span>Title</span>
+  //           <DropdownMenu>
+  //             <DropdownMenuTrigger asChild>
+  //               <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+  //                 <Filter className="h-4 w-4" />
+  //               </Button>
+  //             </DropdownMenuTrigger>
+  //             <DropdownMenuContent align="start">
+  //               <Input
+  //                 placeholder="Filter titles..."
+  //                 value={column.getFilterValue() || ""}
+  //                 onChange={(e) => column.setFilterValue(e.target.value)}
+  //                 className="max-w-sm mb-2"
+  //               />
+  //             </DropdownMenuContent>
+  //           </DropdownMenu>
+  //         </div>
+  //       );
+  //     },
+  //     cell: ({ row }) => (
+  //       <div className="capitalize">{row.getValue("issueDetail")}</div>
+  //     ),
+  //   },
+  //   {
+  //     accessorKey: "urgent",
+  //     meta: { label: "Priority" },
+  //     header: ({ column }) => {
+  //       return (
+  //         <div className="flex items-center space-x-2">
+  //           <span>Priority</span>
+  //           <DropdownMenu>
+  //             <DropdownMenuTrigger asChild>
+  //               <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+  //                 <Filter className="h-4 w-4" />
+  //               </Button>
+  //             </DropdownMenuTrigger>
+  //             <DropdownMenuContent align="start">
+  //               <DropdownMenuItem
+  //                 onClick={() => column.setFilterValue(undefined)}
+  //               >
+  //                 All
+  //               </DropdownMenuItem>
+  //               <DropdownMenuItem
+  //                 onClick={() => column.setFilterValue("normal")}
+  //               >
+  //                 Normal
+  //               </DropdownMenuItem>
+  //               <DropdownMenuItem
+  //                 onClick={() => column.setFilterValue("moderate")}
+  //               >
+  //                 Moderate
+  //               </DropdownMenuItem>
+  //               <DropdownMenuItem
+  //                 onClick={() => column.setFilterValue("urgent")}
+  //               >
+  //                 Urgent
+  //               </DropdownMenuItem>
+  //             </DropdownMenuContent>
+  //           </DropdownMenu>
+  //         </div>
+  //       );
+  //     },
+  //     cell: ({ row }) => {
+  //       const priority = row.getValue("urgent");
+  //       const ticketId = row.original._id; // Get the ticket ID from the row data
 
-//         return (
-//           <HoverCard>
-//             <HoverCardTrigger asChild>
-//               <div
-//                 className={`capitalize cursor-pointer ${
-//                   priority === "urgent"
-//                     ? "text-red-500 font-semibold"
-//                     : priority === "moderate"
-//                     ? "text-yellow-500 font-semibold"
-//                     : "text-green-600"
-//                 }`}
-//               >
-//                 {priority}
-//               </div>
-//             </HoverCardTrigger>
+  //       return (
+  //         <HoverCard>
+  //           <HoverCardTrigger asChild>
+  //             <div
+  //               className={`capitalize cursor-pointer ${
+  //                 priority === "urgent"
+  //                   ? "text-red-500 font-semibold"
+  //                   : priority === "moderate"
+  //                   ? "text-yellow-500 font-semibold"
+  //                   : "text-green-600"
+  //               }`}
+  //             >
+  //               {priority}
+  //             </div>
+  //           </HoverCardTrigger>
 
-//             <HoverCardContent className="w-48 space-y-1" asChild>
-//               <div className="w-full">
-//                 <div className="text-sm font-medium text-muted-foreground mb-2">
-//                   Change Priority
-//                 </div>
-//                 {["normal", "moderate", "urgent"].map((level) => (
-//                   <Button
-//                     key={level}
-//                     variant="ghost"
-//                     size="sm"
-//                     className="w-full justify-start text-left capitalize"
-//                     onClick={(e) => {
-//                       handlePriorityChange({
-//                         ticketId,
-//                         urgent: level,
-//                       });
-//                     }}
-//                   >
-//                     {level}
-//                   </Button>
-//                 ))}
-//               </div>
-//             </HoverCardContent>
-//           </HoverCard>
-//         );
-//       },
-//     },
-//     {
-//       accessorKey: "typeIssue",
-//       meta: { label: "Category" },
-//       header: ({ column }) => {
-//         return (
-//           <div className="flex items-center space-x-2">
-//             <span>Category</span>
-//             <DropdownMenu>
-//               <DropdownMenuTrigger asChild>
-//                 <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-//                   <Filter className="h-4 w-4" />
-//                 </Button>
-//               </DropdownMenuTrigger>
-//               <DropdownMenuContent
-//                 align="start"
-//                 className="max-h-[300px] overflow-y-auto"
-//               >
-//                 <DropdownMenuItem
-//                   onClick={() => column.setFilterValue(undefined)}
-//                 >
-//                   All Categories
-//                 </DropdownMenuItem>
-//                 <DropdownMenuItem
-//                   onClick={() =>
-//                     column.setFilterValue("Network / Connectivity")
-//                   }
-//                 >
-//                   Network / Connectivity
-//                 </DropdownMenuItem>
-//                 <DropdownMenuItem
-//                   onClick={() => column.setFilterValue("Laptop")}
-//                 >
-//                   Laptop
-//                 </DropdownMenuItem>
-//                 <DropdownMenuItem
-//                   onClick={() => column.setFilterValue("Desktop")}
-//                 >
-//                   Desktop
-//                 </DropdownMenuItem>
-//                 <DropdownMenuItem
-//                   onClick={() => column.setFilterValue("Printer")}
-//                 >
-//                   Printer
-//                 </DropdownMenuItem>
-//                 <DropdownMenuItem
-//                   onClick={() => column.setFilterValue("CCTV Camera")}
-//                 >
-//                   CCTV Camera
-//                 </DropdownMenuItem>
-//                 <DropdownMenuItem
-//                   onClick={() => column.setFilterValue("Software Issue")}
-//                 >
-//                   Software Issue
-//                 </DropdownMenuItem>
-//                 <DropdownMenuItem
-//                   onClick={() => column.setFilterValue("Cloud Service Issue")}
-//                 >
-//                   Cloud Service Issue
-//                 </DropdownMenuItem>
-//                 <DropdownMenuItem
-//                   onClick={() =>
-//                     column.setFilterValue("Email & Communication Issue")
-//                   }
-//                 >
-//                   Email & Communication Issue
-//                 </DropdownMenuItem>
-//                 <DropdownMenuItem
-//                   onClick={() =>
-//                     column.setFilterValue("User Account & Access Issue")
-//                   }
-//                 >
-//                   User Account & Access Issue
-//                 </DropdownMenuItem>
-//                 <DropdownMenuItem
-//                   onClick={() => column.setFilterValue("IT Support Services")}
-//                 >
-//                   IT Support Services
-//                 </DropdownMenuItem>
-//                 <DropdownMenuItem
-//                   onClick={() =>
-//                     column.setFilterValue("Backup & Recovery Issues")
-//                   }
-//                 >
-//                   Backup & Recovery Issues
-//                 </DropdownMenuItem>
-//               </DropdownMenuContent>
-//             </DropdownMenu>
-//           </div>
-//         );
-//       },
-//       cell: ({ row }) => (
-//         <div className="capitalize">{row.getValue("typeIssue")}</div>
-//       ),
-//     },
-//     {
-//       accessorKey: "submissionTime",
-//       meta: { label: "Ticket Raised Time" },
-//       header: ({ column }) => (
-//         <div className="flex items-center space-x-2">
-//           <span className="">Ticket Raised Time</span>
-//           <Popover open={open} onOpenChange={setOpen}>
-//             <PopoverTrigger asChild>
-//               <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-//                 <Filter className="h-4 w-4" />
-//                 {/* {dateRange.from && dateRange.to
-//                     ? `${format(dateRange.from, "MMM dd, yyyy")} - ${format(dateRange.to, "MMM dd, yyyy")}`
-//                     : "Select date range"}
-//                  */}
-//               </Button>
-//             </PopoverTrigger>
-//             <PopoverContent
-//               align="start"
-//               className="w-auto p-2 bg-white shadow-lg rounded-lg"
-//             >
-//               <Calendar
-//                 mode="range"
-//                 selected={dateRange}
-//                 onSelect={(newRange) => {
-//                   setDateRange(newRange);
-//                   let endDate = newRange?.to
-//                     ? new Date(newRange.to)
-//                     : undefined;
-//                   if (endDate) endDate.setHours(23, 59, 59, 999);
+  //           <HoverCardContent className="w-48 space-y-1" asChild>
+  //             <div className="w-full">
+  //               <div className="text-sm font-medium text-muted-foreground mb-2">
+  //                 Change Priority
+  //               </div>
+  //               {["normal", "moderate", "urgent"].map((level) => (
+  //                 <Button
+  //                   key={level}
+  //                   variant="ghost"
+  //                   size="sm"
+  //                   className="w-full justify-start text-left capitalize"
+  //                   onClick={(e) => {
+  //                     handlePriorityChange({
+  //                       ticketId,
+  //                       urgent: level,
+  //                     });
+  //                   }}
+  //                 >
+  //                   {level}
+  //                 </Button>
+  //               ))}
+  //             </div>
+  //           </HoverCardContent>
+  //         </HoverCard>
+  //       );
+  //     },
+  //   },
+  //   {
+  //     accessorKey: "typeIssue",
+  //     meta: { label: "Category" },
+  //     header: ({ column }) => {
+  //       return (
+  //         <div className="flex items-center space-x-2">
+  //           <span>Category</span>
+  //           <DropdownMenu>
+  //             <DropdownMenuTrigger asChild>
+  //               <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+  //                 <Filter className="h-4 w-4" />
+  //               </Button>
+  //             </DropdownMenuTrigger>
+  //             <DropdownMenuContent
+  //               align="start"
+  //               className="max-h-[300px] overflow-y-auto"
+  //             >
+  //               <DropdownMenuItem
+  //                 onClick={() => column.setFilterValue(undefined)}
+  //               >
+  //                 All Categories
+  //               </DropdownMenuItem>
+  //               <DropdownMenuItem
+  //                 onClick={() =>
+  //                   column.setFilterValue("Network / Connectivity")
+  //                 }
+  //               >
+  //                 Network / Connectivity
+  //               </DropdownMenuItem>
+  //               <DropdownMenuItem
+  //                 onClick={() => column.setFilterValue("Laptop")}
+  //               >
+  //                 Laptop
+  //               </DropdownMenuItem>
+  //               <DropdownMenuItem
+  //                 onClick={() => column.setFilterValue("Desktop")}
+  //               >
+  //                 Desktop
+  //               </DropdownMenuItem>
+  //               <DropdownMenuItem
+  //                 onClick={() => column.setFilterValue("Printer")}
+  //               >
+  //                 Printer
+  //               </DropdownMenuItem>
+  //               <DropdownMenuItem
+  //                 onClick={() => column.setFilterValue("CCTV Camera")}
+  //               >
+  //                 CCTV Camera
+  //               </DropdownMenuItem>
+  //               <DropdownMenuItem
+  //                 onClick={() => column.setFilterValue("Software Issue")}
+  //               >
+  //                 Software Issue
+  //               </DropdownMenuItem>
+  //               <DropdownMenuItem
+  //                 onClick={() => column.setFilterValue("Cloud Service Issue")}
+  //               >
+  //                 Cloud Service Issue
+  //               </DropdownMenuItem>
+  //               <DropdownMenuItem
+  //                 onClick={() =>
+  //                   column.setFilterValue("Email & Communication Issue")
+  //                 }
+  //               >
+  //                 Email & Communication Issue
+  //               </DropdownMenuItem>
+  //               <DropdownMenuItem
+  //                 onClick={() =>
+  //                   column.setFilterValue("User Account & Access Issue")
+  //                 }
+  //               >
+  //                 User Account & Access Issue
+  //               </DropdownMenuItem>
+  //               <DropdownMenuItem
+  //                 onClick={() => column.setFilterValue("IT Support Services")}
+  //               >
+  //                 IT Support Services
+  //               </DropdownMenuItem>
+  //               <DropdownMenuItem
+  //                 onClick={() =>
+  //                   column.setFilterValue("Backup & Recovery Issues")
+  //                 }
+  //               >
+  //                 Backup & Recovery Issues
+  //               </DropdownMenuItem>
+  //             </DropdownMenuContent>
+  //           </DropdownMenu>
+  //         </div>
+  //       );
+  //     },
+  //     cell: ({ row }) => (
+  //       <div className="capitalize">{row.getValue("typeIssue")}</div>
+  //     ),
+  //   },
+  //   {
+  //     accessorKey: "submissionTime",
+  //     meta: { label: "Ticket Raised Time" },
+  //     header: ({ column }) => (
+  //       <div className="flex items-center space-x-2">
+  //         <span className="">Ticket Raised Time</span>
+  //         <Popover open={open} onOpenChange={setOpen}>
+  //           <PopoverTrigger asChild>
+  //             <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+  //               <Filter className="h-4 w-4" />
+  //               {/* {dateRange.from && dateRange.to
+  //                   ? `${format(dateRange.from, "MMM dd, yyyy")} - ${format(dateRange.to, "MMM dd, yyyy")}`
+  //                   : "Select date range"}
+  //                */}
+  //             </Button>
+  //           </PopoverTrigger>
+  //           <PopoverContent
+  //             align="start"
+  //             className="w-auto p-2 bg-white shadow-lg rounded-lg"
+  //           >
+  //             <Calendar
+  //               mode="range"
+  //               selected={dateRange}
+  //               onSelect={(newRange) => {
+  //                 setDateRange(newRange);
+  //                 let endDate = newRange?.to
+  //                   ? new Date(newRange.to)
+  //                   : undefined;
+  //                 if (endDate) endDate.setHours(23, 59, 59, 999);
 
-//                   column.setFilterValue(
-//                     newRange?.from && endDate
-//                       ? [newRange.from, endDate]
-//                       : undefined
-//                   );
-//                 }}
-//                 initialFocus
-//               />
-//               <div className="flex justify-between">
-//                 <Button onClick={() => setDateRange(undefined)}>
-//                   Clear Filter
-//                 </Button>
-//                 <Button onClick={() => setOpen(false)}> Close</Button>
-//               </div>
-//             </PopoverContent>
-//           </Popover>
-//         </div>
-//       ),
-//       cell: ({ row }) => (
-//         <div className="text-gray-600">
-//           {format(new Date(row.getValue("submissionTime")), "MMM dd, yyyy")} at{" "}
-//           {format(new Date(row.getValue("submissionTime")), "hh:mm a")}
-//         </div>
-//       ),
-//       filterFn: (row, columnId, filterValue) => {
-//         if (!filterValue || !filterValue.length) return true;
-//         const rowDate = new Date(row.getValue(columnId));
-//         const [start, end] = filterValue;
-//         return rowDate >= start && rowDate <= end;
-//       },
-//     },
-//     {
-//       accessorKey: "acceptedTicketByUserId",
-//       meta: { label: "Assigned to" },
-//       header: ({ column }) => {
-//         return (
-//           <div className="flex items-center space-x-2">
-//             <span>Assigned to</span>
-//             <DropdownMenu>
-//               <DropdownMenuTrigger asChild>
-//                 <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-//                   <Filter className="h-4 w-4" />
-//                 </Button>
-//               </DropdownMenuTrigger>
-//               <DropdownMenuContent align="start">
-//                 <DropdownMenuItem
-//                   onClick={() => column.setFilterValue(undefined)}
-//                 >
-//                   All
-//                 </DropdownMenuItem>
-//                 <DropdownMenuItem onClick={() => column.setFilterValue("")}>
-//                   No Assign
-//                 </DropdownMenuItem>
-//                 {allUsers
-//                   .filter((user) => user.role === "it-team")
-//                   .map((user) => (
-//                     <DropdownMenuItem
-//                       key={user._id}
-//                       onClick={() => column.setFilterValue(user._id)}
-//                     >
-//                       {user.fullname?.firstname} {user.fullname?.lastname}
-//                     </DropdownMenuItem>
-//                   ))}
-//               </DropdownMenuContent>
-//             </DropdownMenu>
-//           </div>
-//         );
-//       },
-//       cell: ({ row }) => {
-//         const assignedUserId = row.getValue("acceptedTicketByUserId");
-//         const assignedUser = itUserDataMap[assignedUserId];
+  //                 column.setFilterValue(
+  //                   newRange?.from && endDate
+  //                     ? [newRange.from, endDate]
+  //                     : undefined
+  //                 );
+  //               }}
+  //               initialFocus
+  //             />
+  //             <div className="flex justify-between">
+  //               <Button onClick={() => setDateRange(undefined)}>
+  //                 Clear Filter
+  //               </Button>
+  //               <Button onClick={() => setOpen(false)}> Close</Button>
+  //             </div>
+  //           </PopoverContent>
+  //         </Popover>
+  //       </div>
+  //     ),
+  //     cell: ({ row }) => (
+  //       <div className="text-gray-600">
+  //         {format(new Date(row.getValue("submissionTime")), "MMM dd, yyyy")} at{" "}
+  //         {format(new Date(row.getValue("submissionTime")), "hh:mm a")}
+  //       </div>
+  //     ),
+  //     filterFn: (row, columnId, filterValue) => {
+  //       if (!filterValue || !filterValue.length) return true;
+  //       const rowDate = new Date(row.getValue(columnId));
+  //       const [start, end] = filterValue;
+  //       return rowDate >= start && rowDate <= end;
+  //     },
+  //   },
+  //   {
+  //     accessorKey: "acceptedTicketByUserId",
+  //     meta: { label: "Assigned to" },
+  //     header: ({ column }) => {
+  //       return (
+  //         <div className="flex items-center space-x-2">
+  //           <span>Assigned to</span>
+  //           <DropdownMenu>
+  //             <DropdownMenuTrigger asChild>
+  //               <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+  //                 <Filter className="h-4 w-4" />
+  //               </Button>
+  //             </DropdownMenuTrigger>
+  //             <DropdownMenuContent align="start">
+  //               <DropdownMenuItem
+  //                 onClick={() => column.setFilterValue(undefined)}
+  //               >
+  //                 All
+  //               </DropdownMenuItem>
+  //               <DropdownMenuItem onClick={() => column.setFilterValue("")}>
+  //                 No Assign
+  //               </DropdownMenuItem>
+  //               {allUsers
+  //                 .filter((user) => user.role === "it-team")
+  //                 .map((user) => (
+  //                   <DropdownMenuItem
+  //                     key={user._id}
+  //                     onClick={() => column.setFilterValue(user._id)}
+  //                   >
+  //                     {user.fullname?.firstname} {user.fullname?.lastname}
+  //                   </DropdownMenuItem>
+  //                 ))}
+  //             </DropdownMenuContent>
+  //           </DropdownMenu>
+  //         </div>
+  //       );
+  //     },
+  //     cell: ({ row }) => {
+  //       const assignedUserId = row.getValue("acceptedTicketByUserId");
+  //       const assignedUser = itUserDataMap[assignedUserId];
 
-//         return assignedUserId ? (
-//           <div className="">
-//             <HoverCard>
-//               <HoverCardTrigger asChild>
-//                 <Button className="text-orange-400" variant="link">
-//                   {assignedUser?.fullname?.firstname || "Unknown User"}
-//                 </Button>
-//               </HoverCardTrigger>
-//               <HoverCardContent className="w-80">
-//                 <div className="flex justify-between space-x-4">
-//                   <Avatar>
-//                     <AvatarImage
-//                       src={assignedUser?.userImage || "/default-avatar.png"}
-//                     />
-//                   </Avatar>
-//                   <div className="space-y-1">
-//                     <h4 className="text-sm font-semibold">
-//                       {assignedUser?.fullname?.firstname}{" "}
-//                       {assignedUser?.fullname?.lastname}
-//                     </h4>
-//                     <p className="text-sm">{assignedUser?.email}</p>
-//                     <div className="flex items-center pt-2">
-//                       <span className="text-xs text-muted-foreground">
-//                         Role: {assignedUser?.role}
-//                       </span>
-//                     </div>
-//                     <div className="flex justify-end">
-//                       <Button
-//                         variant="outline"
-//                         onClick={() => {
-//                           setSelectedTicket(row.original);
-//                           setItReAssignedView(true);
-//                         }}
-//                         className="bg-transparent text-red-400"
-//                       >
-//                         Re-Assign
-//                       </Button>
-//                     </div>
-//                   </div>
-//                 </div>
-//               </HoverCardContent>
-//             </HoverCard>
-//             <Dialog open={itReAssignedView} onOpenChange={setItReAssignedView}>
-//               <DialogContent className="max-w-[1000px]">
-//                 <DialogHeader>
-//                   <DialogTitle>Re-Assign To IT Member</DialogTitle>
-//                 </DialogHeader>
-//                 {itReAssignedView && (
-//                   <ItTable
-//                     itrole={"it-team"}
-//                     itReAssignedView={itReAssignedView}
-//                     ticketDataOfRow={selectedTicket}
-//                     allUsers={allUsers}
-//                     allTickets={data}
-//                   />
-//                 )}
-//               </DialogContent>
-//             </Dialog>
-//           </div>
-//         ) : (
-//           <Dialog open={itAssignedView} onOpenChange={setItAssignedView}>
-//             <DialogTrigger asChild>
-//               <Button
-//                 variant="outline"
-//                 onClick={() => {
-//                   setItAssignedView(true);
-//                 }}
-//                 className="border-none bg-transparent text-red-400"
-//               >
-//                 No Assign
-//               </Button>
-//             </DialogTrigger>
-//             <DialogContent className="max-w-[1000px]">
-//               <DialogHeader>
-//                 <DialogTitle>Assign To IT Member</DialogTitle>
-//               </DialogHeader>
-//               {itAssignedView && (
-//                 <ItTable
-//                   itrole={"it-team"}
-//                   itAssignedView={itAssignedView}
-//                   ticketDataOfRow={row.original}
-//                   allUsers={allUsers}
-//                   allTickets={data}
-//                 />
-//               )}
-//             </DialogContent>
-//           </Dialog>
-//         );
-//       },
-//     },
-//     {
-//       accessorKey: "status",
-//       meta: { label: "Status" },
-//       header: ({ column }) => {
-//         return (
-//           <div className="flex items-center space-x-2">
-//             <span>Status</span>
-//             <DropdownMenu>
-//               <DropdownMenuTrigger asChild>
-//                 <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-//                   <Filter className="h-4 w-4" />
-//                 </Button>
-//               </DropdownMenuTrigger>
-//               <DropdownMenuContent align="start">
-//                 <DropdownMenuItem
-//                   onClick={() => column.setFilterValue(undefined)}
-//                 >
-//                   All
-//                 </DropdownMenuItem>
-//                 <DropdownMenuItem
-//                   onClick={() => column.setFilterValue("Pending")}
-//                 >
-//                   Pending
-//                 </DropdownMenuItem>
-//                 <DropdownMenuItem
-//                   onClick={() => column.setFilterValue("In Progress")}
-//                 >
-//                   In Progress
-//                 </DropdownMenuItem>
-//                 <DropdownMenuItem
-//                   onClick={() => column.setFilterValue("Resolving")}
-//                 >
-//                   Resolving
-//                 </DropdownMenuItem>
-//                 <DropdownMenuItem
-//                   onClick={() => column.setFilterValue("Completed")}
-//                 >
-//                   Completed
-//                 </DropdownMenuItem>
-//               </DropdownMenuContent>
-//             </DropdownMenu>
-//           </div>
-//         );
-//       },
-//       cell: ({ row }) => {
-//         const [selectedFilters, setSelectedFilters] = useState({
-//           assigned: "false",
-//           startToTicket: "false",
-//           reachIssueAddress: "false",
-//           solvingIssue: "false",
-//           resolvingIssue: "false",
-//           completedIssue: "false",
-//         });
+  //       return assignedUserId ? (
+  //         <div className="">
+  //           <HoverCard>
+  //             <HoverCardTrigger asChild>
+  //               <Button className="text-orange-400" variant="link">
+  //                 {assignedUser?.fullname?.firstname || "Unknown User"}
+  //               </Button>
+  //             </HoverCardTrigger>
+  //             <HoverCardContent className="w-80">
+  //               <div className="flex justify-between space-x-4">
+  //                 <Avatar>
+  //                   <AvatarImage
+  //                     src={assignedUser?.userImage || "/default-avatar.png"}
+  //                   />
+  //                 </Avatar>
+  //                 <div className="space-y-1">
+  //                   <h4 className="text-sm font-semibold">
+  //                     {assignedUser?.fullname?.firstname}{" "}
+  //                     {assignedUser?.fullname?.lastname}
+  //                   </h4>
+  //                   <p className="text-sm">{assignedUser?.email}</p>
+  //                   <div className="flex items-center pt-2">
+  //                     <span className="text-xs text-muted-foreground">
+  //                       Role: {assignedUser?.role}
+  //                     </span>
+  //                   </div>
+  //                   <div className="flex justify-end">
+  //                     <Button
+  //                       variant="outline"
+  //                       onClick={() => {
+  //                         setSelectedTicket(row.original);
+  //                         setItReAssignedView(true);
+  //                       }}
+  //                       className="bg-transparent text-red-400"
+  //                     >
+  //                       Re-Assign
+  //                     </Button>
+  //                   </div>
+  //                 </div>
+  //               </div>
+  //             </HoverCardContent>
+  //           </HoverCard>
+  //           <Dialog open={itReAssignedView} onOpenChange={setItReAssignedView}>
+  //             <DialogContent className="max-w-[1000px]">
+  //               <DialogHeader>
+  //                 <DialogTitle>Re-Assign To IT Member</DialogTitle>
+  //               </DialogHeader>
+  //               {itReAssignedView && (
+  //                 <ItTable
+  //                   itrole={"it-team"}
+  //                   itReAssignedView={itReAssignedView}
+  //                   ticketDataOfRow={selectedTicket}
+  //                   allUsers={allUsers}
+  //                   allTickets={data}
+  //                 />
+  //               )}
+  //             </DialogContent>
+  //           </Dialog>
+  //         </div>
+  //       ) : (
+  //         <Dialog open={itAssignedView} onOpenChange={setItAssignedView}>
+  //           <DialogTrigger asChild>
+  //             <Button
+  //               variant="outline"
+  //               onClick={() => {
+  //                 setItAssignedView(true);
+  //               }}
+  //               className="border-none bg-transparent text-red-400"
+  //             >
+  //               No Assign
+  //             </Button>
+  //           </DialogTrigger>
+  //           <DialogContent className="max-w-[1000px]">
+  //             <DialogHeader>
+  //               <DialogTitle>Assign To IT Member</DialogTitle>
+  //             </DialogHeader>
+  //             {itAssignedView && (
+  //               <ItTable
+  //                 itrole={"it-team"}
+  //                 itAssignedView={itAssignedView}
+  //                 ticketDataOfRow={row.original}
+  //                 allUsers={allUsers}
+  //                 allTickets={data}
+  //               />
+  //             )}
+  //           </DialogContent>
+  //         </Dialog>
+  //       );
+  //     },
+  //   },
+  //   {
+  //     accessorKey: "status",
+  //     meta: { label: "Status" },
+  //     header: ({ column }) => {
+  //       return (
+  //         <div className="flex items-center space-x-2">
+  //           <span>Status</span>
+  //           <DropdownMenu>
+  //             <DropdownMenuTrigger asChild>
+  //               <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+  //                 <Filter className="h-4 w-4" />
+  //               </Button>
+  //             </DropdownMenuTrigger>
+  //             <DropdownMenuContent align="start">
+  //               <DropdownMenuItem
+  //                 onClick={() => column.setFilterValue(undefined)}
+  //               >
+  //                 All
+  //               </DropdownMenuItem>
+  //               <DropdownMenuItem
+  //                 onClick={() => column.setFilterValue("Pending")}
+  //               >
+  //                 Pending
+  //               </DropdownMenuItem>
+  //               <DropdownMenuItem
+  //                 onClick={() => column.setFilterValue("In Progress")}
+  //               >
+  //                 In Progress
+  //               </DropdownMenuItem>
+  //               <DropdownMenuItem
+  //                 onClick={() => column.setFilterValue("Resolving")}
+  //               >
+  //                 Resolving
+  //               </DropdownMenuItem>
+  //               <DropdownMenuItem
+  //                 onClick={() => column.setFilterValue("Completed")}
+  //               >
+  //                 Completed
+  //               </DropdownMenuItem>
+  //             </DropdownMenuContent>
+  //           </DropdownMenu>
+  //         </div>
+  //       );
+  //     },
+  //     cell: ({ row }) => {
+  //       const [selectedFilters, setSelectedFilters] = useState({
+  //         assigned: "false",
+  //         startToTicket: "false",
+  //         reachIssueAddress: "false",
+  //         solvingIssue: "false",
+  //         resolvingIssue: "false",
+  //         completedIssue: "false",
+  //       });
 
-//         // Fetch ticket details when the component mounts
-//         useEffect(() => {
-//           const fetchTicketDetails = async () => {
-//             if (row.original.acceptedTicketByUserId) {
-//               try {
-//                 const ticketData = data.find(
-//                   (ticket) =>
-//                     ticket.acceptedTicketByUserId ===
-//                     row.original.acceptedTicketByUserId
-//                 );
+  //       // Fetch ticket details when the component mounts
+  //       useEffect(() => {
+  //         const fetchTicketDetails = async () => {
+  //           if (row.original.acceptedTicketByUserId) {
+  //             try {
+  //               const ticketData = data.find(
+  //                 (ticket) =>
+  //                   ticket.acceptedTicketByUserId ===
+  //                   row.original.acceptedTicketByUserId
+  //               );
 
-//                 setSelectedFilters((prev) => ({
-//                   ...prev,
-//                   assigned: ticketData?.assigned ? "true" : "false",
-//                   startToTicket: ticketData?.startToTicket ? "true" : "false",
-//                   reachIssueAddress: ticketData?.reachIssueAddress
-//                     ? "true"
-//                     : "false",
-//                   solvingIssue: ticketData?.solvingIssue ? "true" : "false",
-//                   resolvingIssue: ticketData?.resolvingIssue ? "true" : "false",
-//                   completedIssue: ticketData?.completedIssue ? "true" : "false",
-//                 }));
-//               } catch (error) {
-//                 console.error("Error fetching ticket details:", error);
-//               }
-//             }
-//           };
+  //               setSelectedFilters((prev) => ({
+  //                 ...prev,
+  //                 assigned: ticketData?.assigned ? "true" : "false",
+  //                 startToTicket: ticketData?.startToTicket ? "true" : "false",
+  //                 reachIssueAddress: ticketData?.reachIssueAddress
+  //                   ? "true"
+  //                   : "false",
+  //                 solvingIssue: ticketData?.solvingIssue ? "true" : "false",
+  //                 resolvingIssue: ticketData?.resolvingIssue ? "true" : "false",
+  //                 completedIssue: ticketData?.completedIssue ? "true" : "false",
+  //               }));
+  //             } catch (error) {
+  //               console.error("Error fetching ticket details:", error);
+  //             }
+  //           }
+  //         };
 
-//           fetchTicketDetails();
-//         }, [row.original.acceptedTicketByUserId, data]); //Fixed dependency
+  //         fetchTicketDetails();
+  //       }, [row.original.acceptedTicketByUserId, data]); //Fixed dependency
 
-//         // Determine status based on selectedFilters
-//         let status = "----";
-//         if (
-//           selectedFilters.assigned === "true" &&
-//           selectedFilters.completedIssue === "false"
-//         ) {
-//           if (selectedFilters.startToTicket === "false") {
-//             status = "Pending";
-//           } else if (selectedFilters.resolvingIssue === "true") {
-//             status = "Resolving";
-//           } else {
-//             status = "In Progress";
-//           }
-//         } else if (selectedFilters.completedIssue === "true") {
-//           status = "Completed";
-//         }
+  //       // Determine status based on selectedFilters
+  //       let status = "----";
+  //       if (
+  //         selectedFilters.assigned === "true" &&
+  //         selectedFilters.completedIssue === "false"
+  //       ) {
+  //         if (selectedFilters.startToTicket === "false") {
+  //           status = "Pending";
+  //         } else if (selectedFilters.resolvingIssue === "true") {
+  //           status = "Resolving";
+  //         } else {
+  //           status = "In Progress";
+  //         }
+  //       } else if (selectedFilters.completedIssue === "true") {
+  //         status = "Completed";
+  //       }
 
-//         // Set color based on status
-//         const statusColor =
-//           status === "Pending"
-//             ? "text-red-400"
-//             : status === "In Progress"
-//             ? "text-blue-400"
-//             : status === "Resolving"
-//             ? "text-purple-400"
-//             : status === "Completed"
-//             ? "text-green-400"
-//             : "text-red-400";
+  //       // Set color based on status
+  //       const statusColor =
+  //         status === "Pending"
+  //           ? "text-red-400"
+  //           : status === "In Progress"
+  //           ? "text-blue-400"
+  //           : status === "Resolving"
+  //           ? "text-purple-400"
+  //           : status === "Completed"
+  //           ? "text-green-400"
+  //           : "text-red-400";
 
-//         return <div className={statusColor}>{status}</div>;
-//       },
-//     },
-//     {
-//       id: "actions",
-//       enableHiding: false,
-//       cell: ({ row }) => {
-//         return (
-//           <Button
-//             variant="outline"
-//             className="h-8 w-8 p-0 bg-slate-400"
-//             onClick={() => {
-//               const newExpandedRow = expandedRow === row.id ? null : row.id;
-//               handleRowClickData(row);
-//               setExpandedRow(newExpandedRow);
-//               handleRowClick(row.id);
-//             }}
-//           >
-//             <MoreHorizontal className="h-4 w-4" />
-//           </Button>
-//         );
-//       },
-//     },
-//   ];
+  //       return <div className={statusColor}>{status}</div>;
+  //     },
+  //   },
+  //   {
+  //     id: "actions",
+  //     enableHiding: false,
+  //     cell: ({ row }) => {
+  //       return (
+  //         <Button
+  //           variant="outline"
+  //           className="h-8 w-8 p-0 bg-slate-400"
+  //           onClick={() => {
+  //             const newExpandedRow = expandedRow === row.id ? null : row.id;
+  //             handleRowClickData(row);
+  //             setExpandedRow(newExpandedRow);
+  //             handleRowClick(row.id);
+  //           }}
+  //         >
+  //           <MoreHorizontal className="h-4 w-4" />
+  //         </Button>
+  //       );
+  //     },
+  //   },
+  // ];
 
 //   const table = useReactTable({
 //     data,
@@ -1153,8 +1153,7 @@ import { getFormattedDateAndTime } from "@/utils/dateTimeUtils"
 
 import ComAdminRequirementList from "./ComAdminRequirementListComponent";
 import ItTable from "./ItTableComponent";
-// import ComAdminRequirementList from "./com-admin-requirement-list-component"
-// import ItTable from "./it-table-component"
+
 import useTicketStore from "@/store/useTicketStore"
 
 export default function TicketAdmin({ allUsers, allTickets: data }) {
@@ -1236,7 +1235,6 @@ export default function TicketAdmin({ allUsers, allTickets: data }) {
     // Save the file
     XLSX.writeFile(workbook, "tickets_data.xlsx")
   }
-
   const columns = [
     {
       accessorKey: "issueDetail",
@@ -1261,9 +1259,11 @@ export default function TicketAdmin({ allUsers, allTickets: data }) {
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-        )
+        );
       },
-      cell: ({ row }) => <div className="capitalize">{row.getValue("issueDetail")}</div>,
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("issueDetail")}</div>
+      ),
     },
     {
       accessorKey: "urgent",
@@ -1279,44 +1279,67 @@ export default function TicketAdmin({ allUsers, allTickets: data }) {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start">
-                <DropdownMenuItem onClick={() => column.setFilterValue(undefined)}>All</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => column.setFilterValue("normal")}>Normal</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => column.setFilterValue("moderate")}>Moderate</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => column.setFilterValue("urgent")}>Urgent</DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => column.setFilterValue(undefined)}
+                >
+                  All
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => column.setFilterValue("normal")}
+                >
+                  Normal
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => column.setFilterValue("moderate")}
+                >
+                  Moderate
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => column.setFilterValue("urgent")}
+                >
+                  Urgent
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-        )
+        );
       },
       cell: ({ row }) => {
-        const priority = row.getValue("urgent")
-        const ticketId = row.original._id
+        const priority = row.getValue("urgent");
+        const ticketId = row.original._id; // Get the ticket ID from the row data
 
         return (
           <HoverCard>
             <HoverCardTrigger asChild>
-              <Badge
-                variant={priority === "urgent" ? "destructive" : priority === "moderate" ? "warning" : "secondary"}
-                className="cursor-pointer"
+              <div
+                className={`capitalize cursor-pointer ${
+                  priority === "urgent"
+                    ? "text-red-500 font-semibold"
+                    : priority === "moderate"
+                    ? "text-yellow-500 font-semibold"
+                    : "text-green-600"
+                }`}
               >
                 {priority}
-              </Badge>
+              </div>
             </HoverCardTrigger>
 
             <HoverCardContent className="w-48 space-y-1" asChild>
               <div className="w-full">
-                <div className="text-sm font-medium text-muted-foreground mb-2">Change Priority</div>
+                <div className="text-sm font-medium text-muted-foreground mb-2">
+                  Change Priority
+                </div>
                 {["normal", "moderate", "urgent"].map((level) => (
                   <Button
                     key={level}
                     variant="ghost"
                     size="sm"
                     className="w-full justify-start text-left capitalize"
-                    onClick={() => {
+                    onClick={(e) => {
                       handlePriorityChange({
                         ticketId,
                         urgent: level,
-                      })
+                      });
                     }}
                   >
                     {level}
@@ -1325,7 +1348,7 @@ export default function TicketAdmin({ allUsers, allTickets: data }) {
               </div>
             </HoverCardContent>
           </HoverCard>
-        )
+        );
       },
     },
     {
@@ -1341,39 +1364,86 @@ export default function TicketAdmin({ allUsers, allTickets: data }) {
                   <Filter className="h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="start" className="max-h-[300px] overflow-y-auto">
-                <DropdownMenuItem onClick={() => column.setFilterValue(undefined)}>All Categories</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => column.setFilterValue("Network / Connectivity")}>
+              <DropdownMenuContent
+                align="start"
+                className="max-h-[300px] overflow-y-auto"
+              >
+                <DropdownMenuItem
+                  onClick={() => column.setFilterValue(undefined)}
+                >
+                  All Categories
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() =>
+                    column.setFilterValue("Network / Connectivity")
+                  }
+                >
                   Network / Connectivity
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => column.setFilterValue("Laptop")}>Laptop</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => column.setFilterValue("Desktop")}>Desktop</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => column.setFilterValue("Printer")}>Printer</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => column.setFilterValue("CCTV Camera")}>CCTV Camera</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => column.setFilterValue("Software Issue")}>
+                <DropdownMenuItem
+                  onClick={() => column.setFilterValue("Laptop")}
+                >
+                  Laptop
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => column.setFilterValue("Desktop")}
+                >
+                  Desktop
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => column.setFilterValue("Printer")}
+                >
+                  Printer
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => column.setFilterValue("CCTV Camera")}
+                >
+                  CCTV Camera
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => column.setFilterValue("Software Issue")}
+                >
                   Software Issue
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => column.setFilterValue("Cloud Service Issue")}>
+                <DropdownMenuItem
+                  onClick={() => column.setFilterValue("Cloud Service Issue")}
+                >
                   Cloud Service Issue
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => column.setFilterValue("Email & Communication Issue")}>
+                <DropdownMenuItem
+                  onClick={() =>
+                    column.setFilterValue("Email & Communication Issue")
+                  }
+                >
                   Email & Communication Issue
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => column.setFilterValue("User Account & Access Issue")}>
+                <DropdownMenuItem
+                  onClick={() =>
+                    column.setFilterValue("User Account & Access Issue")
+                  }
+                >
                   User Account & Access Issue
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => column.setFilterValue("IT Support Services")}>
+                <DropdownMenuItem
+                  onClick={() => column.setFilterValue("IT Support Services")}
+                >
                   IT Support Services
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => column.setFilterValue("Backup & Recovery Issues")}>
+                <DropdownMenuItem
+                  onClick={() =>
+                    column.setFilterValue("Backup & Recovery Issues")
+                  }
+                >
                   Backup & Recovery Issues
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-        )
+        );
       },
-      cell: ({ row }) => <div className="capitalize">{row.getValue("typeIssue")}</div>,
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("typeIssue")}</div>
+      ),
     },
     {
       accessorKey: "submissionTime",
@@ -1381,48 +1451,59 @@ export default function TicketAdmin({ allUsers, allTickets: data }) {
       header: ({ column }) => (
         <div className="flex items-center space-x-2">
           <span className="">Ticket Raised Time</span>
-          <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
+          <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
               <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                <Calendar className="h-4 w-4" />
+                <Filter className="h-4 w-4" />
+                {/* {dateRange.from && dateRange.to
+                    ? `${format(dateRange.from, "MMM dd, yyyy")} - ${format(dateRange.to, "MMM dd, yyyy")}`
+                    : "Select date range"}
+                 */}
               </Button>
             </PopoverTrigger>
-            <PopoverContent align="start" className="w-auto p-2 bg-white shadow-lg rounded-lg">
-              <CalendarComponent
+            <PopoverContent
+              align="start"
+              className="w-auto p-2 bg-white shadow-lg rounded-lg"
+            >
+              <Calendar
                 mode="range"
                 selected={dateRange}
                 onSelect={(newRange) => {
-                  setDateRange(newRange)
-                  const endDate = newRange?.to ? new Date(newRange.to) : undefined
-                  if (endDate) endDate.setHours(23, 59, 59, 999)
+                  setDateRange(newRange);
+                  let endDate = newRange?.to
+                    ? new Date(newRange.to)
+                    : undefined;
+                  if (endDate) endDate.setHours(23, 59, 59, 999);
 
-                  column.setFilterValue(newRange?.from && endDate ? [newRange.from, endDate] : undefined)
+                  column.setFilterValue(
+                    newRange?.from && endDate
+                      ? [newRange.from, endDate]
+                      : undefined
+                  );
                 }}
                 initialFocus
               />
-              <div className="flex justify-between mt-2">
-                <Button variant="outline" size="sm" onClick={() => setDateRange(undefined)}>
-                  Clear
+              <div className="flex justify-between">
+                <Button onClick={() => setDateRange(undefined)}>
+                  Clear Filter
                 </Button>
-                <Button size="sm" onClick={() => setCalendarOpen(false)}>
-                  Apply
-                </Button>
+                <Button onClick={() => setOpen(false)}> Close</Button>
               </div>
             </PopoverContent>
           </Popover>
         </div>
       ),
       cell: ({ row }) => (
-        <div className="text-gray-600 whitespace-nowrap">
-          {format(new Date(row.getValue("submissionTime")), "MMM dd, yyyy")}
-          <div className="text-xs">{format(new Date(row.getValue("submissionTime")), "hh:mm a")}</div>
+        <div className="text-gray-600">
+          {format(new Date(row.getValue("submissionTime")), "MMM dd, yyyy")} at{" "}
+          {format(new Date(row.getValue("submissionTime")), "hh:mm a")}
         </div>
       ),
       filterFn: (row, columnId, filterValue) => {
-        if (!filterValue || !filterValue.length) return true
-        const rowDate = new Date(row.getValue(columnId))
-        const [start, end] = filterValue
-        return rowDate >= start && rowDate <= end
+        if (!filterValue || !filterValue.length) return true;
+        const rowDate = new Date(row.getValue(columnId));
+        const [start, end] = filterValue;
+        return rowDate >= start && rowDate <= end;
       },
     },
     {
@@ -1439,51 +1520,65 @@ export default function TicketAdmin({ allUsers, allTickets: data }) {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start">
-                <DropdownMenuItem onClick={() => column.setFilterValue(undefined)}>All</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => column.setFilterValue("")}>No Assign</DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => column.setFilterValue(undefined)}
+                >
+                  All
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => column.setFilterValue("")}>
+                  No Assign
+                </DropdownMenuItem>
                 {allUsers
                   .filter((user) => user.role === "it-team")
                   .map((user) => (
-                    <DropdownMenuItem key={user._id} onClick={() => column.setFilterValue(user._id)}>
+                    <DropdownMenuItem
+                      key={user._id}
+                      onClick={() => column.setFilterValue(user._id)}
+                    >
                       {user.fullname?.firstname} {user.fullname?.lastname}
                     </DropdownMenuItem>
                   ))}
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-        )
+        );
       },
       cell: ({ row }) => {
-        const assignedUserId = row.getValue("acceptedTicketByUserId")
-        const assignedUser = itUserDataMap[assignedUserId]
+        const assignedUserId = row.getValue("acceptedTicketByUserId");
+        const assignedUser = itUserDataMap[assignedUserId];
 
         return assignedUserId ? (
           <div className="">
             <HoverCard>
               <HoverCardTrigger asChild>
-                <Button className="text-orange-400 p-0 h-auto" variant="link">
+                <Button className="text-orange-400" variant="link">
                   {assignedUser?.fullname?.firstname || "Unknown User"}
                 </Button>
               </HoverCardTrigger>
               <HoverCardContent className="w-80">
                 <div className="flex justify-between space-x-4">
                   <Avatar>
-                    <AvatarImage src={assignedUser?.userImage || "/placeholder.svg?height=40&width=40"} />
+                    <AvatarImage
+                      src={assignedUser?.userImage || "/default-avatar.png"}
+                    />
                   </Avatar>
                   <div className="space-y-1">
                     <h4 className="text-sm font-semibold">
-                      {assignedUser?.fullname?.firstname} {assignedUser?.fullname?.lastname}
+                      {assignedUser?.fullname?.firstname}{" "}
+                      {assignedUser?.fullname?.lastname}
                     </h4>
                     <p className="text-sm">{assignedUser?.email}</p>
                     <div className="flex items-center pt-2">
-                      <span className="text-xs text-muted-foreground">Role: {assignedUser?.role}</span>
+                      <span className="text-xs text-muted-foreground">
+                        Role: {assignedUser?.role}
+                      </span>
                     </div>
                     <div className="flex justify-end">
                       <Button
                         variant="outline"
                         onClick={() => {
-                          setSelectedTicket(row.original)
-                          setItReAssignedView(true)
+                          setSelectedTicket(row.original);
+                          setItReAssignedView(true);
                         }}
                         className="bg-transparent text-red-400"
                       >
@@ -1495,7 +1590,7 @@ export default function TicketAdmin({ allUsers, allTickets: data }) {
               </HoverCardContent>
             </HoverCard>
             <Dialog open={itReAssignedView} onOpenChange={setItReAssignedView}>
-              <DialogContent className="max-w-[1000px] max-h-[90vh] overflow-auto">
+              <DialogContent className="max-w-[1000px]">
                 <DialogHeader>
                   <DialogTitle>Re-Assign To IT Member</DialogTitle>
                 </DialogHeader>
@@ -1517,14 +1612,14 @@ export default function TicketAdmin({ allUsers, allTickets: data }) {
               <Button
                 variant="outline"
                 onClick={() => {
-                  setItAssignedView(true)
+                  setItAssignedView(true);
                 }}
-                className="border-none bg-transparent text-red-400 p-0 h-auto"
+                className="border-none bg-transparent text-red-400"
               >
                 No Assign
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-[1000px] max-h-[90vh] overflow-auto">
+            <DialogContent className="max-w-[1000px]">
               <DialogHeader>
                 <DialogTitle>Assign To IT Member</DialogTitle>
               </DialogHeader>
@@ -1539,7 +1634,7 @@ export default function TicketAdmin({ allUsers, allTickets: data }) {
               )}
             </DialogContent>
           </Dialog>
-        )
+        );
       },
     },
     {
@@ -1556,71 +1651,107 @@ export default function TicketAdmin({ allUsers, allTickets: data }) {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start">
-                <DropdownMenuItem onClick={() => column.setFilterValue(undefined)}>All</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => column.setFilterValue("Pending")}>Pending</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => column.setFilterValue("In Progress")}>In Progress</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => column.setFilterValue("Resolving")}>Resolving</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => column.setFilterValue("Completed")}>Completed</DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => column.setFilterValue(undefined)}
+                >
+                  All
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => column.setFilterValue("Pending")}
+                >
+                  Pending
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => column.setFilterValue("In Progress")}
+                >
+                  In Progress
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => column.setFilterValue("Resolving")}
+                >
+                  Resolving
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => column.setFilterValue("Completed")}
+                >
+                  Completed
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-        )
+        );
       },
       cell: ({ row }) => {
+        const [selectedFilters, setSelectedFilters] = useState({
+          assigned: "false",
+          startToTicket: "false",
+          reachIssueAddress: "false",
+          solvingIssue: "false",
+          resolvingIssue: "false",
+          completedIssue: "false",
+        });
+
         // Fetch ticket details when the component mounts
         useEffect(() => {
           const fetchTicketDetails = async () => {
             if (row.original.acceptedTicketByUserId) {
               try {
                 const ticketData = data.find(
-                  (ticket) => ticket.acceptedTicketByUserId === row.original.acceptedTicketByUserId,
-                )
+                  (ticket) =>
+                    ticket.acceptedTicketByUserId ===
+                    row.original.acceptedTicketByUserId
+                );
 
                 setSelectedFilters((prev) => ({
                   ...prev,
                   assigned: ticketData?.assigned ? "true" : "false",
                   startToTicket: ticketData?.startToTicket ? "true" : "false",
-                  reachIssueAddress: ticketData?.reachIssueAddress ? "true" : "false",
+                  reachIssueAddress: ticketData?.reachIssueAddress
+                    ? "true"
+                    : "false",
                   solvingIssue: ticketData?.solvingIssue ? "true" : "false",
                   resolvingIssue: ticketData?.resolvingIssue ? "true" : "false",
                   completedIssue: ticketData?.completedIssue ? "true" : "false",
-                }))
+                }));
               } catch (error) {
-                console.error("Error fetching ticket details:", error)
+                console.error("Error fetching ticket details:", error);
               }
             }
-          }
+          };
 
-          fetchTicketDetails()
-        }, [row.original.acceptedTicketByUserId, data])
+          fetchTicketDetails();
+        }, [row.original.acceptedTicketByUserId, data]); //Fixed dependency
 
         // Determine status based on selectedFilters
-        let status = "----"
-        if (selectedFilters.assigned === "true" && selectedFilters.completedIssue === "false") {
+        let status = "----";
+        if (
+          selectedFilters.assigned === "true" &&
+          selectedFilters.completedIssue === "false"
+        ) {
           if (selectedFilters.startToTicket === "false") {
-            status = "Pending"
+            status = "Pending";
           } else if (selectedFilters.resolvingIssue === "true") {
-            status = "Resolving"
+            status = "Resolving";
           } else {
-            status = "In Progress"
+            status = "In Progress";
           }
         } else if (selectedFilters.completedIssue === "true") {
-          status = "Completed"
+          status = "Completed";
         }
 
         // Set color based on status
-        const statusVariant =
+        const statusColor =
           status === "Pending"
-            ? "destructive"
+            ? "text-red-400"
             : status === "In Progress"
-              ? "default"
-              : status === "Resolving"
-                ? "warning"
-                : status === "Completed"
-                  ? "success"
-                  : "outline"
+            ? "text-blue-400"
+            : status === "Resolving"
+            ? "text-purple-400"
+            : status === "Completed"
+            ? "text-green-400"
+            : "text-red-400";
 
-        return <Badge variant={statusVariant}>{status}</Badge>
+        return <div className={statusColor}>{status}</div>;
       },
     },
     {
@@ -1629,21 +1760,428 @@ export default function TicketAdmin({ allUsers, allTickets: data }) {
       cell: ({ row }) => {
         return (
           <Button
-            variant="ghost"
-            size="icon"
-            className="h-8 w-8"
+            variant="outline"
+            className="h-8 w-8 p-0 bg-slate-400"
             onClick={() => {
-              const newExpandedRow = expandedRow === row.id ? null : row.id
-              handleRowClickData(row)
-              setExpandedRow(newExpandedRow)
+              const newExpandedRow = expandedRow === row.id ? null : row.id;
+              handleRowClickData(row);
+              setExpandedRow(newExpandedRow);
+              handleRowClick(row.id);
             }}
           >
             <MoreHorizontal className="h-4 w-4" />
           </Button>
-        )
+        );
       },
     },
-  ]
+  ];
+  // const columns = [
+  //   {
+  //     accessorKey: "issueDetail",
+  //     meta: { label: "Title" },
+  //     header: ({ column }) => {
+  //       return (
+  //         <div className="flex items-center space-x-2">
+  //           <span>Title</span>
+  //           <DropdownMenu>
+  //             <DropdownMenuTrigger asChild>
+  //               <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+  //                 <Filter className="h-4 w-4" />
+  //               </Button>
+  //             </DropdownMenuTrigger>
+  //             <DropdownMenuContent align="start">
+  //               <Input
+  //                 placeholder="Filter titles..."
+  //                 value={column.getFilterValue() || ""}
+  //                 onChange={(e) => column.setFilterValue(e.target.value)}
+  //                 className="max-w-sm mb-2"
+  //               />
+  //             </DropdownMenuContent>
+  //           </DropdownMenu>
+  //         </div>
+  //       )
+  //     },
+  //     cell: ({ row }) => <div className="capitalize">{row.getValue("issueDetail")}</div>,
+  //   },
+  //   {
+  //     accessorKey: "urgent",
+  //     meta: { label: "Priority" },
+  //     header: ({ column }) => {
+  //       return (
+  //         <div className="flex items-center space-x-2">
+  //           <span>Priority</span>
+  //           <DropdownMenu>
+  //             <DropdownMenuTrigger asChild>
+  //               <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+  //                 <Filter className="h-4 w-4" />
+  //               </Button>
+  //             </DropdownMenuTrigger>
+  //             <DropdownMenuContent align="start">
+  //               <DropdownMenuItem onClick={() => column.setFilterValue(undefined)}>All</DropdownMenuItem>
+  //               <DropdownMenuItem onClick={() => column.setFilterValue("normal")}>Normal</DropdownMenuItem>
+  //               <DropdownMenuItem onClick={() => column.setFilterValue("moderate")}>Moderate</DropdownMenuItem>
+  //               <DropdownMenuItem onClick={() => column.setFilterValue("urgent")}>Urgent</DropdownMenuItem>
+  //             </DropdownMenuContent>
+  //           </DropdownMenu>
+  //         </div>
+  //       )
+  //     },
+  //     cell: ({ row }) => {
+  //       const priority = row.getValue("urgent")
+  //       const ticketId = row.original._id
+
+  //       return (
+  //         <HoverCard>
+  //           <HoverCardTrigger asChild>
+  //             <Badge
+  //               variant={priority === "urgent" ? "destructive" : priority === "moderate" ? "warning" : "secondary"}
+  //               className="cursor-pointer"
+  //             >
+  //               {priority}
+  //             </Badge>
+  //           </HoverCardTrigger>
+
+  //           <HoverCardContent className="w-48 space-y-1" asChild>
+  //             <div className="w-full">
+  //               <div className="text-sm font-medium text-muted-foreground mb-2">Change Priority</div>
+  //               {["normal", "moderate", "urgent"].map((level) => (
+  //                 <Button
+  //                   key={level}
+  //                   variant="ghost"
+  //                   size="sm"
+  //                   className="w-full justify-start text-left capitalize"
+  //                   onClick={() => {
+  //                     handlePriorityChange({
+  //                       ticketId,
+  //                       urgent: level,
+  //                     })
+  //                   }}
+  //                 >
+  //                   {level}
+  //                 </Button>
+  //               ))}
+  //             </div>
+  //           </HoverCardContent>
+  //         </HoverCard>
+  //       )
+  //     },
+  //   },
+  //   {
+  //     accessorKey: "typeIssue",
+  //     meta: { label: "Category" },
+  //     header: ({ column }) => {
+  //       return (
+  //         <div className="flex items-center space-x-2">
+  //           <span>Category</span>
+  //           <DropdownMenu>
+  //             <DropdownMenuTrigger asChild>
+  //               <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+  //                 <Filter className="h-4 w-4" />
+  //               </Button>
+  //             </DropdownMenuTrigger>
+  //             <DropdownMenuContent align="start" className="max-h-[300px] overflow-y-auto">
+  //               <DropdownMenuItem onClick={() => column.setFilterValue(undefined)}>All Categories</DropdownMenuItem>
+  //               <DropdownMenuItem onClick={() => column.setFilterValue("Network / Connectivity")}>
+  //                 Network / Connectivity
+  //               </DropdownMenuItem>
+  //               <DropdownMenuItem onClick={() => column.setFilterValue("Laptop")}>Laptop</DropdownMenuItem>
+  //               <DropdownMenuItem onClick={() => column.setFilterValue("Desktop")}>Desktop</DropdownMenuItem>
+  //               <DropdownMenuItem onClick={() => column.setFilterValue("Printer")}>Printer</DropdownMenuItem>
+  //               <DropdownMenuItem onClick={() => column.setFilterValue("CCTV Camera")}>CCTV Camera</DropdownMenuItem>
+  //               <DropdownMenuItem onClick={() => column.setFilterValue("Software Issue")}>
+  //                 Software Issue
+  //               </DropdownMenuItem>
+  //               <DropdownMenuItem onClick={() => column.setFilterValue("Cloud Service Issue")}>
+  //                 Cloud Service Issue
+  //               </DropdownMenuItem>
+  //               <DropdownMenuItem onClick={() => column.setFilterValue("Email & Communication Issue")}>
+  //                 Email & Communication Issue
+  //               </DropdownMenuItem>
+  //               <DropdownMenuItem onClick={() => column.setFilterValue("User Account & Access Issue")}>
+  //                 User Account & Access Issue
+  //               </DropdownMenuItem>
+  //               <DropdownMenuItem onClick={() => column.setFilterValue("IT Support Services")}>
+  //                 IT Support Services
+  //               </DropdownMenuItem>
+  //               <DropdownMenuItem onClick={() => column.setFilterValue("Backup & Recovery Issues")}>
+  //                 Backup & Recovery Issues
+  //               </DropdownMenuItem>
+  //             </DropdownMenuContent>
+  //           </DropdownMenu>
+  //         </div>
+  //       )
+  //     },
+  //     cell: ({ row }) => <div className="capitalize">{row.getValue("typeIssue")}</div>,
+  //   },
+  //   {
+  //     accessorKey: "submissionTime",
+  //     meta: { label: "Ticket Raised Time" },
+  //     header: ({ column }) => (
+  //       <div className="flex items-center space-x-2">
+  //         <span className="">Ticket Raised Time</span>
+  //         <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
+  //           <PopoverTrigger asChild>
+  //             <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+  //               <Calendar className="h-4 w-4" />
+  //             </Button>
+  //           </PopoverTrigger>
+  //           <PopoverContent align="start" className="w-auto p-2 bg-white shadow-lg rounded-lg">
+  //             <CalendarComponent
+  //               mode="range"
+  //               selected={dateRange}
+  //               onSelect={(newRange) => {
+  //                 setDateRange(newRange)
+  //                 const endDate = newRange?.to ? new Date(newRange.to) : undefined
+  //                 if (endDate) endDate.setHours(23, 59, 59, 999)
+
+  //                 column.setFilterValue(newRange?.from && endDate ? [newRange.from, endDate] : undefined)
+  //               }}
+  //               initialFocus
+  //             />
+  //             <div className="flex justify-between mt-2">
+  //               <Button variant="outline" size="sm" onClick={() => setDateRange(undefined)}>
+  //                 Clear
+  //               </Button>
+  //               <Button size="sm" onClick={() => setCalendarOpen(false)}>
+  //                 Apply
+  //               </Button>
+  //             </div>
+  //           </PopoverContent>
+  //         </Popover>
+  //       </div>
+  //     ),
+  //     cell: ({ row }) => (
+  //       <div className="text-gray-600 whitespace-nowrap">
+  //         {format(new Date(row.getValue("submissionTime")), "MMM dd, yyyy")}
+  //         <div className="text-xs">{format(new Date(row.getValue("submissionTime")), "hh:mm a")}</div>
+  //       </div>
+  //     ),
+  //     filterFn: (row, columnId, filterValue) => {
+  //       if (!filterValue || !filterValue.length) return true
+  //       const rowDate = new Date(row.getValue(columnId))
+  //       const [start, end] = filterValue
+  //       return rowDate >= start && rowDate <= end
+  //     },
+  //   },
+  //   {
+  //     accessorKey: "acceptedTicketByUserId",
+  //     meta: { label: "Assigned to" },
+  //     header: ({ column }) => {
+  //       return (
+  //         <div className="flex items-center space-x-2">
+  //           <span>Assigned to</span>
+  //           <DropdownMenu>
+  //             <DropdownMenuTrigger asChild>
+  //               <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+  //                 <Filter className="h-4 w-4" />
+  //               </Button>
+  //             </DropdownMenuTrigger>
+  //             <DropdownMenuContent align="start">
+  //               <DropdownMenuItem onClick={() => column.setFilterValue(undefined)}>All</DropdownMenuItem>
+  //               <DropdownMenuItem onClick={() => column.setFilterValue("")}>No Assign</DropdownMenuItem>
+  //               {allUsers
+  //                 .filter((user) => user.role === "it-team")
+  //                 .map((user) => (
+  //                   <DropdownMenuItem key={user._id} onClick={() => column.setFilterValue(user._id)}>
+  //                     {user.fullname?.firstname} {user.fullname?.lastname}
+  //                   </DropdownMenuItem>
+  //                 ))}
+  //             </DropdownMenuContent>
+  //           </DropdownMenu>
+  //         </div>
+  //       )
+  //     },
+  //     cell: ({ row }) => {
+  //       const assignedUserId = row.getValue("acceptedTicketByUserId")
+  //       const assignedUser = itUserDataMap[assignedUserId]
+
+  //       return assignedUserId ? (
+  //         <div className="">
+  //           <HoverCard>
+  //             <HoverCardTrigger asChild>
+  //               <Button className="text-orange-400 p-0 h-auto" variant="link">
+  //                 {assignedUser?.fullname?.firstname || "Unknown User"}
+  //               </Button>
+  //             </HoverCardTrigger>
+  //             <HoverCardContent className="w-80">
+  //               <div className="flex justify-between space-x-4">
+  //                 <Avatar>
+  //                   <AvatarImage src={assignedUser?.userImage || "/placeholder.svg?height=40&width=40"} />
+  //                 </Avatar>
+  //                 <div className="space-y-1">
+  //                   <h4 className="text-sm font-semibold">
+  //                     {assignedUser?.fullname?.firstname} {assignedUser?.fullname?.lastname}
+  //                   </h4>
+  //                   <p className="text-sm">{assignedUser?.email}</p>
+  //                   <div className="flex items-center pt-2">
+  //                     <span className="text-xs text-muted-foreground">Role: {assignedUser?.role}</span>
+  //                   </div>
+  //                   <div className="flex justify-end">
+  //                     <Button
+  //                       variant="outline"
+  //                       onClick={() => {
+  //                         setSelectedTicket(row.original)
+  //                         setItReAssignedView(true)
+  //                       }}
+  //                       className="bg-transparent text-red-400"
+  //                     >
+  //                       Re-Assign
+  //                     </Button>
+  //                   </div>
+  //                 </div>
+  //               </div>
+  //             </HoverCardContent>
+  //           </HoverCard>
+  //           <Dialog open={itReAssignedView} onOpenChange={setItReAssignedView}>
+  //             <DialogContent className="max-w-[1000px] max-h-[90vh] overflow-auto">
+  //               <DialogHeader>
+  //                 <DialogTitle>Re-Assign To IT Member</DialogTitle>
+  //               </DialogHeader>
+  //               {itReAssignedView && (
+  //                 <ItTable
+  //                   itrole={"it-team"}
+  //                   itReAssignedView={itReAssignedView}
+  //                   ticketDataOfRow={selectedTicket}
+  //                   allUsers={allUsers}
+  //                   allTickets={data}
+  //                 />
+  //               )}
+  //             </DialogContent>
+  //           </Dialog>
+  //         </div>
+  //       ) : (
+  //         <Dialog open={itAssignedView} onOpenChange={setItAssignedView}>
+  //           <DialogTrigger asChild>
+  //             <Button
+  //               variant="outline"
+  //               onClick={() => {
+  //                 setItAssignedView(true)
+  //               }}
+  //               className="border-none bg-transparent text-red-400 p-0 h-auto"
+  //             >
+  //               No Assign
+  //             </Button>
+  //           </DialogTrigger>
+  //           <DialogContent className="max-w-[1000px] max-h-[90vh] overflow-auto">
+  //             <DialogHeader>
+  //               <DialogTitle>Assign To IT Member</DialogTitle>
+  //             </DialogHeader>
+  //             {itAssignedView && (
+  //               <ItTable
+  //                 itrole={"it-team"}
+  //                 itAssignedView={itAssignedView}
+  //                 ticketDataOfRow={row.original}
+  //                 allUsers={allUsers}
+  //                 allTickets={data}
+  //               />
+  //             )}
+  //           </DialogContent>
+  //         </Dialog>
+  //       )
+  //     },
+  //   },
+  //   {
+  //     accessorKey: "status",
+  //     meta: { label: "Status" },
+  //     header: ({ column }) => {
+  //       return (
+  //         <div className="flex items-center space-x-2">
+  //           <span>Status</span>
+  //           <DropdownMenu>
+  //             <DropdownMenuTrigger asChild>
+  //               <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+  //                 <Filter className="h-4 w-4" />
+  //               </Button>
+  //             </DropdownMenuTrigger>
+  //             <DropdownMenuContent align="start">
+  //               <DropdownMenuItem onClick={() => column.setFilterValue(undefined)}>All</DropdownMenuItem>
+  //               <DropdownMenuItem onClick={() => column.setFilterValue("Pending")}>Pending</DropdownMenuItem>
+  //               <DropdownMenuItem onClick={() => column.setFilterValue("In Progress")}>In Progress</DropdownMenuItem>
+  //               <DropdownMenuItem onClick={() => column.setFilterValue("Resolving")}>Resolving</DropdownMenuItem>
+  //               <DropdownMenuItem onClick={() => column.setFilterValue("Completed")}>Completed</DropdownMenuItem>
+  //             </DropdownMenuContent>
+  //           </DropdownMenu>
+  //         </div>
+  //       )
+  //     },
+  //     cell: ({ row }) => {
+  //       // Fetch ticket details when the component mounts
+  //       useEffect(() => {
+  //         const fetchTicketDetails = async () => {
+  //           if (row.original.acceptedTicketByUserId) {
+  //             try {
+  //               const ticketData = data.find(
+  //                 (ticket) => ticket.acceptedTicketByUserId === row.original.acceptedTicketByUserId,
+  //               )
+
+  //               setSelectedFilters((prev) => ({
+  //                 ...prev,
+  //                 assigned: ticketData?.assigned ? "true" : "false",
+  //                 startToTicket: ticketData?.startToTicket ? "true" : "false",
+  //                 reachIssueAddress: ticketData?.reachIssueAddress ? "true" : "false",
+  //                 solvingIssue: ticketData?.solvingIssue ? "true" : "false",
+  //                 resolvingIssue: ticketData?.resolvingIssue ? "true" : "false",
+  //                 completedIssue: ticketData?.completedIssue ? "true" : "false",
+  //               }))
+  //             } catch (error) {
+  //               console.error("Error fetching ticket details:", error)
+  //             }
+  //           }
+  //         }
+
+  //         fetchTicketDetails()
+  //       }, [row.original.acceptedTicketByUserId, data])
+
+  //       // Determine status based on selectedFilters
+  //       let status = "----"
+  //       if (selectedFilters.assigned === "true" && selectedFilters.completedIssue === "false") {
+  //         if (selectedFilters.startToTicket === "false") {
+  //           status = "Pending"
+  //         } else if (selectedFilters.resolvingIssue === "true") {
+  //           status = "Resolving"
+  //         } else {
+  //           status = "In Progress"
+  //         }
+  //       } else if (selectedFilters.completedIssue === "true") {
+  //         status = "Completed"
+  //       }
+
+  //       // Set color based on status
+  //       const statusVariant =
+  //         status === "Pending"
+  //           ? "destructive"
+  //           : status === "In Progress"
+  //             ? "default"
+  //             : status === "Resolving"
+  //               ? "warning"
+  //               : status === "Completed"
+  //                 ? "success"
+  //                 : "outline"
+
+  //       return <Badge variant={statusVariant}>{status}</Badge>
+  //     },
+  //   },
+  //   {
+  //     id: "actions",
+  //     enableHiding: false,
+  //     cell: ({ row }) => {
+  //       return (
+  //         <Button
+  //           variant="ghost"
+  //           size="icon"
+  //           className="h-8 w-8"
+  //           onClick={() => {
+  //             const newExpandedRow = expandedRow === row.id ? null : row.id
+  //             handleRowClickData(row)
+  //             setExpandedRow(newExpandedRow)
+  //           }}
+  //         >
+  //           <MoreHorizontal className="h-4 w-4" />
+  //         </Button>
+  //       )
+  //     },
+  //   },
+  // ]
 
   const table = useReactTable({
     data,
@@ -1675,6 +2213,9 @@ export default function TicketAdmin({ allUsers, allTickets: data }) {
     },
   })
 
+    const handleRowClick = (rowId) => {
+    setExpandedRow(expandedRow === rowId ? null : rowId);
+  };
   return (
     <div className="w-full">
       <Tabs defaultValue="issues" value={activeTab} onValueChange={setActiveTab} className="w-full">
