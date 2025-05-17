@@ -8,6 +8,7 @@ import {
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import useRequirementStore from "@/store/useRequirementStore";
+import addressOptions from "@/constants/issueAddress.js";
 
 function RequirementPage() {
   const [startingDate, setStartingDate] = useState("");
@@ -50,36 +51,36 @@ function RequirementPage() {
   };
 
   // Sample address options
-  const addressOptions = [
-    {
-      label: "Block A",
-      value: "A",
-      subOption: [
-        { label: "A001", value: "Block A / A001" },
-        { label: "A101", value: "Block A / A101" },
-        { label: "A201", value: "Block A / A201" },
-      ],
-    },
-    {
-      label: "Block B",
-      value: "B",
-      subOption: [
-        { label: "B001", value: "Block B / B001" },
-        { label: "B101", value: "Block B / B101" },
-        { label: "B201", value: "Block B / B201" },
-      ],
-    },
-    {
-      label: "Block C",
-      value: "C",
-      subOption: [
-        { label: "C001", value: "Block C / C001" },
-        { label: "C101", value: "Block C / C101" },
-        { label: "C201", value: "Block C / C201" },
-      ],
-    },
-    { label: "Other", value: "Other" },
-  ];
+  // const addressOptions = [
+  //   {
+  //     label: "Block A",
+  //     value: "A",
+  //     subOption: [
+  //       { label: "A001", value: "Block A / A001" },
+  //       { label: "A101", value: "Block A / A101" },
+  //       { label: "A201", value: "Block A / A201" },
+  //     ],
+  //   },
+  //   {
+  //     label: "Block B",
+  //     value: "B",
+  //     subOption: [
+  //       { label: "B001", value: "Block B / B001" },
+  //       { label: "B101", value: "Block B / B101" },
+  //       { label: "B201", value: "Block B / B201" },
+  //     ],
+  //   },
+  //   {
+  //     label: "Block C",
+  //     value: "C",
+  //     subOption: [
+  //       { label: "C001", value: "Block C / C001" },
+  //       { label: "C101", value: "Block C / C101" },
+  //       { label: "C201", value: "Block C / C201" },
+  //     ],
+  //   },
+  //   { label: "Other", value: "Other" },
+  // ];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -258,7 +259,7 @@ function RequirementPage() {
                 <ChevronDown className="ml-2 h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-[280px]">
+            <DropdownMenuContent className="w-[280px] max-h-[234px] overflow-y-auto">
               {addressOptions.map((address) => (
                 <Fragment key={address.value}>
                   <DropdownMenuItem
